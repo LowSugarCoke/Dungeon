@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="gameView.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Dungeon.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gameView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

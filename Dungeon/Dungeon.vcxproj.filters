@@ -23,6 +23,12 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Header Files\qtComponent">
+      <UniqueIdentifier>{2e989ba8-58a1-43af-95fb-39b025398c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qtComponent">
+      <UniqueIdentifier>{baecd4a9-8c93-42b0-b28b-200189f78141}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,6 +36,9 @@
     </ClCompile>
     <ClCompile Include="Dungeon.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameView.cpp">
+      <Filter>Source Files\qtComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,5 +55,10 @@
     <QtRcc Include="Dungeon.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gameView.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
