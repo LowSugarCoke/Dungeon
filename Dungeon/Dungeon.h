@@ -19,6 +19,7 @@ public:
     Dungeon(QWidget* parent = Q_NULLPTR);
     void nextLevel();
     void win();
+    void lose();
 private:
     Ui::DungeonClass ui;
     void initUI();

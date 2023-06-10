@@ -17,7 +17,7 @@ Dungeon::Dungeon(QWidget* parent)
     // Initialize the hero
 {
     ui.setupUi(this);
-
+    hero->setFocus();
     scene = new GameScene(this);
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
@@ -36,6 +36,19 @@ void Dungeon::win() {
     endingScene->setSceneImg(UIResource::kWin);
     sceneView->setScene(endingScene);
     endingScene->fadeIn(1000);
+    endingScene->setMessage("You Win");
+    this->setCentralWidget(sceneView);
+}
+
+void Dungeon::lose() {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    this->resize(screenGeometry.width(), screenGeometry.height());
+    endingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    endingScene->setSceneImg(UIResource::kWin);
+    sceneView->setScene(endingScene);
+    endingScene->fadeIn(1000);
+    endingScene->setMessage("You Lose");
     this->setCentralWidget(sceneView);
 }
 
@@ -82,6 +95,6 @@ void Dungeon::initUI() {
 
 
     this->setCentralWidget(sceneView);
-    hero->setFocus();
+
     //this->showFullScreen();
 }

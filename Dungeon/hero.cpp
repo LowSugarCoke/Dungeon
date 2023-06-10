@@ -97,7 +97,9 @@ void Hero::decreaseLife() {
 
     // if life becomes 0, restart the game or handle game over
     if (life == 0) {
-        // handle game over or restart
+        if (gameScene) {
+            gameScene->lose();
+        }
     }
 }
 

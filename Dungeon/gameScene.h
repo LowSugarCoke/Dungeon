@@ -21,6 +21,7 @@ public:
     void decreaseCollectionCount();
     bool isAllCollectionsCollected() const;
     void nextLevel();
+    void lose();
     void setHero(Hero* hero);
 
 private:

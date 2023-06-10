@@ -49,7 +49,7 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
 
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
     MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
-
+    hero->setFocus();
     QImage brickImage(kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution
@@ -191,6 +191,11 @@ void GameScene::nextLevel() {
         static_cast<Dungeon*>(parent())->win();
     }
 
+}
+
+void GameScene::lose() {
+    this->removeItem(hero);
+    static_cast<Dungeon*>(parent())->lose();
 }
 
 void GameScene::setHero(Hero* hero) {

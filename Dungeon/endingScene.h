@@ -12,8 +12,11 @@ public:
     void setSceneImg(const QString& kSceneImg);
     void fadeIn(int duration);
     void fadeOut(int duration);
+    void setMessage(const QString& message);
 
 private:
     QGraphicsPixmapItem* m_backgroundItem;
     QGraphicsOpacityEffect* m_opacityEffect;
+
+    QGraphicsTextItem* m_textItem;
 };
