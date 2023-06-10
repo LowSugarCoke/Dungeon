@@ -4,9 +4,11 @@
 #include "gameScene.h"
 #include "collection.h"
 #include "potion.h"
+#include "trap.h"
 
 #include <QPainter>
 #include <QKeyEvent>
+#include <QTimer>
 
 #include <qdebug.h>
 
@@ -24,6 +26,10 @@ void Hero::setHeroImg(const QString& kHeroImg) {
 }
 
 void Hero::keyPressEvent(QKeyEvent* event) {
+
+    if (isFrozen) {
+        return;  // Ignore user input if hero is frozen
+    }
 
     qDebug() << "Key Pressed: " << event->text();
 
@@ -47,7 +53,22 @@ void Hero::keyPressEvent(QKeyEvent* event) {
     setPos(newPos);
     checkCollision();
 
-    if (!collidingItems().isEmpty()) {
+    QList<QGraphicsItem*> collidingItems = this->collidingItems();
+
+    for (auto* item : collidingItems) {
+        auto* trap = dynamic_cast<Trap*>(item);
+        if (trap) {
+            QGraphicsItem::keyPressEvent(event);  // Pass the event to the base class
+            isFrozen = true;
+            QTimer::singleShot(1000, [this]() {
+                isFrozen = false;
+                });
+            return;
+        }
+    }
+
+
+    if (!this->collidingItems().isEmpty()) {
         // If colliding with any item, undo move
         setPos(beforePos);
         return;
@@ -112,6 +133,8 @@ void Hero::checkCollision() {
                 gameScene->updateLifeText(life);
             }
         }
+
+
 
     }
 }

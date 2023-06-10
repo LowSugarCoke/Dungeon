@@ -8,6 +8,7 @@
 #include "hero.h"
 #include "gameScene.h"
 #include "gameView.h"
+#include "endingScene.h"
 
 
 class Dungeon : public QMainWindow
@@ -17,6 +18,7 @@ class Dungeon : public QMainWindow
 public:
     Dungeon(QWidget* parent = Q_NULLPTR);
     void nextLevel();
+    void win();
 private:
     Ui::DungeonClass ui;
     void initUI();
@@ -26,4 +28,5 @@ private:
 
     GameScene* scene;
     GameView* sceneView;
+    EndingScene* endingScene;
 };

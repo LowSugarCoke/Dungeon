@@ -11,6 +11,7 @@
 #include "collection.h"
 #include "potion.h"
 #include "Dungeon.h"
+#include "trap.h"
 
 static const std::pair<int, int> mazeSize{ 20,10 };
 
@@ -18,6 +19,7 @@ GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent)
     , lifeText(new QGraphicsTextItem())
     , levelText(new QGraphicsTextItem())
+    , level(1)
 {
     lifeText->setDefaultTextColor(Qt::white); // Choose the color
     lifeText->setFont(QFont("times", 16)); // Set the font and size
@@ -89,7 +91,23 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         }
     }
 
-    for (int i = 0; i < kLevelElement.starCount; i++) {
+    for (int i = 0; i < kLevelElement.trapCount; i++) {
+        Trap* trap = new Trap();
+        trap->setTrapImg(UIResource::kTrap);
+
+        // Add the monster to the scene
+        this->addItem(trap);
+
+        // Position the monster in a random location that doesn't collide with anything
+        int x, y;
+        do {
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+            trap->setPos(x, y);
+        } while (!trap->collidingItems().isEmpty());
+    }
+
+    for (int i = 0; i < kLevelElement.potionCount; i++) {
         Potion* potion = new Potion();
         potion->setPotionImg(UIResource::kPotion);
 
@@ -158,14 +176,21 @@ void GameScene::decreaseCollectionCount() {
 }
 bool GameScene::isAllCollectionsCollected() const { return remainingCollections == 0; }
 void GameScene::nextLevel() {
-
+    level++;
     this->removeItem(hero);
 
 
     // Save the current Hero's life.
     heroLife = hero->getLife();
-    // Continue to the next level.
-    static_cast<Dungeon*>(parent())->nextLevel();
+
+    if (level != 2) {
+        // Continue to the next level.
+        static_cast<Dungeon*>(parent())->nextLevel();
+    }
+    else {
+        static_cast<Dungeon*>(parent())->win();
+    }
+
 }
 
 void GameScene::setHero(Hero* hero) {

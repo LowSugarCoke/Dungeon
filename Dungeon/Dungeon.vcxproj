@@ -84,6 +84,7 @@
     <ClCompile Include="brickItem.cpp" />
     <ClCompile Include="collection.cpp" />
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="endingScene.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameView.cpp" />
     <ClCompile Include="hero.cpp" />
@@ -105,6 +106,7 @@
   <ItemGroup>
     <ClInclude Include="brickItem.h" />
     <ClInclude Include="collection.h" />
+    <QtMoc Include="endingScene.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
     <ClInclude Include="hero.h" />

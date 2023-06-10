@@ -17,4 +17,5 @@ private:
     std::vector<std::vector<int>> maze;
 
     void DFS(const Level::LevelElement& kLevelElement);
+
 };

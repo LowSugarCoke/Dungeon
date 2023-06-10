@@ -30,6 +30,7 @@ private:
     int remainingCollections;
     Hero* hero;
     int heroLife;
+    int level;
 
 
 };

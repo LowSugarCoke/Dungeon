@@ -19,4 +19,6 @@ private:
     int brickSize = 40;  // Save the size of your maze cells here
     int life = 3;
     std::pair<int, int> startPos;
+    bool isFrozen;
+
 };

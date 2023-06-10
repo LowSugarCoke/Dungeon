@@ -5,7 +5,7 @@
 
 #include "gameScene.h"
 
-GameView::GameView(GameScene* scene, QWidget* parent)
+GameView::GameView(QGraphicsScene* scene, QWidget* parent)
     : QGraphicsView(scene, parent)
 {
 }

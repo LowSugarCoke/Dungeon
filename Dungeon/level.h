@@ -11,6 +11,7 @@ namespace Level {
         int monsterspeed; // more low more quick ( 1000 = 1s)
         int starCount; // more star more difficult
         int potionCount; // more potion more easy
+        int trapCount; // more trap more hard
     };
 
     static const LevelElement kEasy{
@@ -18,8 +19,9 @@ namespace Level {
        3, // mazeLevel = 3;
        5,  // monsterCount
        1000, // monsterspeed
-       3, // starCount
+       1, // starCount
        1, // potionCount
+       3, // trapCount
     };
 
     static const LevelElement kMedium{
@@ -29,6 +31,7 @@ namespace Level {
         700, // monsterspeed
         10, // starCount
         2, // potionCount
+        3, // trapCount
     };
 
     static const LevelElement kHard{
@@ -38,6 +41,7 @@ namespace Level {
         300, // monsterspeed
         15, // starCount
         2, // potionCount
+        3, // trapCount
     };
 
 

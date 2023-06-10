@@ -19,10 +19,24 @@ Dungeon::Dungeon(QWidget* parent)
     ui.setupUi(this);
 
     scene = new GameScene(this);
-
     sceneView = new GameView(scene, this);
+    endingScene = new EndingScene(this);
+
+
+
 
     initUI();
+}
+
+void Dungeon::win() {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    this->resize(screenGeometry.width(), screenGeometry.height());
+    endingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    endingScene->setSceneImg(UIResource::kWin);
+    sceneView->setScene(endingScene);
+    endingScene->fadeIn(1000);
+    this->setCentralWidget(sceneView);
 }
 
 void Dungeon::nextLevel() {
@@ -43,6 +57,7 @@ void Dungeon::nextLevel() {
     hero->setLife(heroLife);
     hero->setPos(heroPos);
     hero->setFocus();
+    this->setCentralWidget(sceneView);
 
 }
 
