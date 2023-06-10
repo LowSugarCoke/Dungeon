@@ -5,7 +5,7 @@
 
 class MazeGenerator {
 public:
-    MazeGenerator(int width, int height, Difficulty difficulty);
+    MazeGenerator(int width, int height, const Level::LevelElement& kLevelElement);
 
     int operator()(int i, int j) const;
     int getWidth() const;
@@ -15,7 +15,6 @@ private:
     int width;
     int height;
     std::vector<std::vector<int>> maze;
-    Difficulty difficulty;
-    void DFS();
-    int MazeGenerator::getDeadEndProbability();
+
+    void DFS(const Level::LevelElement& kLevelElement);
 };

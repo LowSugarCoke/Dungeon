@@ -10,7 +10,7 @@ class GameScene : public QGraphicsScene
 public:
     GameScene(QObject* parent = nullptr);
     void setSceneImg(const QString& kSceneImg);
-    void generatorRandomMap(const QString& kBrickImg, Difficulty difficulty);
+    void generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement);
 
 private:
     int brickSize = 40;  // Save the size of your maze cells here

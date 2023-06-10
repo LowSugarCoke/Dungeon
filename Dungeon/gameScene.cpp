@@ -9,6 +9,8 @@
 #include "level.h"
 #include "resource.h"
 
+static const std::pair<int, int> mazeSize{ 20,10 };
+
 GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent) {
 
@@ -19,8 +21,9 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
     setBackgroundBrush(QBrush(backgroundImage));
 }
 
-void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficulty) {
-    MazeGenerator maze(20, 10, difficulty);  // Create a 30x15 maze
+void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
+    MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
+
     QImage brickImage(kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution
@@ -55,12 +58,9 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficul
     bool heroPlaced = false;
     while (!heroPlaced) {
         // Set the hero's position to a random place in the scene
-        int x = QRandomGenerator::global()->bounded(20) * brickSize + offsetX;
-        int y = QRandomGenerator::global()->bounded(10) * brickSize + offsetY;
+        int x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+        int y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
 
-        if (x < 200 || x>1500 || y < 200 || y>700) {
-            continue;
-        }
         hero->setPos(x, y);
 
         // Check if the hero is colliding with something
@@ -72,21 +72,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficul
 
 
     // Create the monsters based on the difficulty level
-    int monsterCount;
-    switch (difficulty) {
-    case Difficulty::EASY:
-        monsterCount = 5;
-        break;
-    case Difficulty::MEDIUM:
-        monsterCount = 10;
-        break;
-    case Difficulty::HARD:
-        monsterCount = 15;
-        break;
-    default:
-        monsterCount = 5;
-        break;
-    }
+    int monsterCount = kLevelElement.monsterCount;
 
     for (int i = 0; i < monsterCount; i++) {
         Monster* monster = new Monster();
@@ -100,15 +86,15 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficul
         // Position the monster in a random location that doesn't collide with anything
         int x, y;
         do {
-            x = QRandomGenerator::global()->bounded(20) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(10) * brickSize + offsetY;
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
             monster->setPos(x, y);
         } while (!monster->collidingItems().isEmpty());
 
         // Setup a timer to move the monster every 1 second
         QTimer* timer = new QTimer();
         QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
-        timer->start(500);
+        timer->start(kLevelElement.monsterspeed);
     }
 
 

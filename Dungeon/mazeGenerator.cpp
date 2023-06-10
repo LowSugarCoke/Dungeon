@@ -9,11 +9,11 @@
 
 
 
-MazeGenerator::MazeGenerator(int width, int height, Difficulty difficulty)
-    : width(width * 2 + 1), height(height * 2 + 1), difficulty(difficulty),
+MazeGenerator::MazeGenerator(int width, int height, const Level::LevelElement& kLevelElement)
+    : width(width * 2 + 1), height(height * 2 + 1),
     maze(this->width, std::vector<int>(this->height, 1)) {
 
-    DFS();
+    DFS(kLevelElement);
 }
 
 
@@ -29,10 +29,10 @@ int MazeGenerator::getHeight() const {
     return height;
 }
 
-void MazeGenerator::DFS() {
+void MazeGenerator::DFS(const Level::LevelElement& kLevelElement) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, getDeadEndProbability());
+    std::uniform_int_distribution<> dis(0, kLevelElement.mazeLevel);
 
     std::stack<std::pair<int, int>> st;
     st.push({ 2, 2 });
@@ -77,14 +77,5 @@ void MazeGenerator::DFS() {
                 }
             }
         }
-    }
-}
-
-int MazeGenerator::getDeadEndProbability() {
-    switch (difficulty) {
-    case EASY: return 3;
-    case MEDIUM: return 4;
-    case HARD: return 8;
-    default: return 4;  // default to MEDIUM difficulty
     }
 }
