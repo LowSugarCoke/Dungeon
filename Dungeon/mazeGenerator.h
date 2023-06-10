@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
 
+enum Difficulty { EASY, MEDIUM, HARD };
 class MazeGenerator {
 public:
-    MazeGenerator(int width, int height);
+    MazeGenerator(int width, int height, Difficulty difficulty);
 
     int operator()(int i, int j) const;
     int getWidth() const;
@@ -13,6 +14,7 @@ private:
     int width;
     int height;
     std::vector<std::vector<int>> maze;
-
+    Difficulty difficulty;
     void DFS();
+    int MazeGenerator::getDeadEndProbability();
 };

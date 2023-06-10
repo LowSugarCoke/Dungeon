@@ -1,7 +1,6 @@
 #include "gameScene.h"
 
 #include "brickItem.h"
-#include "mazeGenerator.h"
 
 GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent) {
@@ -13,8 +12,8 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
     setBackgroundBrush(QBrush(backgroundImage));
 }
 
-void GameScene::generatorRandomMap(const QString& kBrickImg) {
-    MazeGenerator maze(30, 15);  // Create a 30x15 maze
+void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficulty) {
+    MazeGenerator maze(30, 15, difficulty);  // Create a 30x15 maze
     QImage brickImage(kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution

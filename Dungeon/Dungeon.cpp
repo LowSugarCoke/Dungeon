@@ -22,7 +22,7 @@ void Dungeon::initUI() {
     GameScene* scene = new GameScene(this);
     scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     scene->setSceneImg(UIResource::kSceneImg);
-    scene->generatorRandomMap(UIResource::kBrickImg);
+    scene->generatorRandomMap(UIResource::kBrickImg, Difficulty::EASY);
 
     auto sceneView = new GameView(scene, this);
 
