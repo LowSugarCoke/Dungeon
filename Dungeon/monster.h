@@ -13,6 +13,8 @@ public:
     void setStepSize(const int& kStepSize);
     void randomMove();
 
+
+
 private:
     int brickSize;
 };

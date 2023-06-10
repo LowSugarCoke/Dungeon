@@ -12,9 +12,32 @@
 static const std::pair<int, int> mazeSize{ 20,10 };
 
 GameScene::GameScene(QObject* parent)
-    : QGraphicsScene(parent) {
+    : QGraphicsScene(parent)
+    , lifeText(new QGraphicsTextItem())
+    , levelText(new QGraphicsTextItem())
+{
+    lifeText->setDefaultTextColor(Qt::white); // Choose the color
+    lifeText->setFont(QFont("times", 16)); // Set the font and size
+    addItem(lifeText); // Add to the scene
+
+    levelText->setDefaultTextColor(Qt::white); // Choose the color
+    levelText->setFont(QFont("times", 16)); // Set the font and size
+    addItem(levelText); // Add to the scene
+
+
 
 }
+
+void GameScene::updateLifeText(int life) {
+    lifeText->setPlainText(QString("Life: %1").arg(life));
+    lifeText->setPos(20, 10); // Place it in the top left corner
+}
+
+void GameScene::updateLevelText(QString level) {
+    levelText->setPlainText(QString("Level: %1").arg(level));
+    levelText->setPos(100, 10); // Place it in the top left corner
+}
+
 
 void GameScene::setSceneImg(const QString& kSceneImg) {
     QImage backgroundImage(kSceneImg);
@@ -65,14 +88,16 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
         // Check if the hero is colliding with something
         if (hero->collidingItems().isEmpty()) {
+            hero->setStartPos({ x,y });
             // If not, then the hero is successfully placed
             heroPlaced = true;
         }
     }
 
-
     // Create the monsters based on the difficulty level
     int monsterCount = kLevelElement.monsterCount;
+
+
 
     for (int i = 0; i < monsterCount; i++) {
         Monster* monster = new Monster();
@@ -97,6 +122,6 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         timer->start(kLevelElement.monsterspeed);
     }
 
-
-
+    updateLevelText(kLevelElement.level);
+    updateLifeText(hero->getLife());
 }

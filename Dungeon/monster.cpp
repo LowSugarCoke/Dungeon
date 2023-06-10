@@ -1,5 +1,7 @@
 #include "monster.h"
 
+#include "hero.h"
+
 #include <QPainter>
 #include <QKeyEvent>
 #include <QRandomGenerator>
@@ -12,9 +14,11 @@ Monster::Monster()
 
 }
 
+
+
 void Monster::setMonsterImg(const QString& kMonsterImg) {
     QPixmap pixmap(kMonsterImg);  // Change this to your image path
-    setPixmap(pixmap.scaled(QSize(35, 35), Qt::KeepAspectRatio));
+    setPixmap(pixmap.scaled(QSize(34, 34), Qt::KeepAspectRatio));
 }
 
 void Monster::keyPressEvent(QKeyEvent* event) {
@@ -37,10 +41,25 @@ void Monster::keyPressEvent(QKeyEvent* event) {
     // Check for collisions
     setPos(newPos);
     if (!collidingItems().isEmpty()) {
+
+
+        // Check for collisions with the hero after the move
+        QList<QGraphicsItem*> collidingItems = this->collidingItems();
+
+        for (auto* item : collidingItems) {
+            // Check if the colliding item is the hero
+            auto* hero = dynamic_cast<Hero*>(item);
+            if (hero) {
+                hero->checkCollision();
+            }
+        }
+
         // If colliding with any item, undo move
         setPos(beforePos);
         return;
     }
+
+
 
     QGraphicsItem::keyPressEvent(event);  // Pass the event to the base class
 }
@@ -74,4 +93,5 @@ void Monster::randomMove() {
     // Pass the event to keyPressEvent function
     keyPressEvent(event);
     delete event;  // Don't forget to delete the event after we are done
+
 }
