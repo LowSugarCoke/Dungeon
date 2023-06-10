@@ -9,6 +9,7 @@
 #include "gameScene.h"
 #include "gameView.h"
 #include "endingScene.h"
+#include "mainMenuScene.h"
 
 
 class Dungeon : public QMainWindow
@@ -20,9 +21,10 @@ public:
     void nextLevel();
     void win();
     void lose();
+    void battle();
 private:
     Ui::DungeonClass ui;
-    void initUI();
+
     int heroLife;
     Level::LevelElement currentLevel;
     Hero* hero; // Add this line
@@ -30,4 +32,5 @@ private:
     GameScene* scene;
     GameView* sceneView;
     EndingScene* endingScene;
+    MainMenuScene* menuScene;
 };

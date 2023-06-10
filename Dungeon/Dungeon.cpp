@@ -21,11 +21,19 @@ Dungeon::Dungeon(QWidget* parent)
     scene = new GameScene(this);
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
+    menuScene = new MainMenuScene(this);
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    this->resize(screenGeometry.width(), screenGeometry.height());
+    menuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    menuScene->setSceneImg(UIResource::kMenu);
+    sceneView->setScene(menuScene);
 
 
+    this->setCentralWidget(sceneView);
 
 
-    initUI();
 }
 
 void Dungeon::win() {
@@ -50,6 +58,7 @@ void Dungeon::lose() {
     endingScene->fadeIn(1000);
     endingScene->setMessage("You Lose");
     this->setCentralWidget(sceneView);
+
 }
 
 void Dungeon::nextLevel() {
@@ -65,7 +74,7 @@ void Dungeon::nextLevel() {
     }
 
     // Recreate the game scene for the new level
-    initUI();
+    battle();
     // Restore the Hero's life and position in the new scene
     hero->setLife(heroLife);
     hero->setPos(heroPos);
@@ -74,26 +83,23 @@ void Dungeon::nextLevel() {
 
 }
 
-void Dungeon::initUI() {
+void Dungeon::battle() {
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
 
-
-
-
-
     scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     scene->setSceneImg(UIResource::kSceneImg);
 
+    hero->setFocus();
     hero->setHeroImg(UIResource::kHero);
     scene->setHero(hero);
 
     scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
 
 
-
+    sceneView->setScene(scene);
     this->setCentralWidget(sceneView);
 
     //this->showFullScreen();

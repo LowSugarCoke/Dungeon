@@ -29,6 +29,13 @@ GameScene::GameScene(QObject* parent)
     levelText->setFont(QFont("times", 16)); // Set the font and size
     addItem(levelText); // Add to the scene
 
+
+    m_backgroundItem = new QGraphicsPixmapItem();
+    addItem(m_backgroundItem);
+    m_opacityEffect = new QGraphicsOpacityEffect();
+    m_opacityEffect->setOpacity(1.0);
+
+    m_backgroundItem->setGraphicsEffect(m_opacityEffect);
 }
 
 void GameScene::updateLifeText(int life) {

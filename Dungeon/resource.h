@@ -12,4 +12,6 @@ namespace UIResource {
     const static QString kTrap = "Resources\\img\\trap.png";
     const static QString kWin = "Resources\\img\\win.jfif";
     const static QString kLose = "Resources\\img\\lose.jpg";
+    const static QString kButton = "Resources\\img\\button.png";
+    const static QString kMenu = "Resources\\img\\menu.jpg";
 }

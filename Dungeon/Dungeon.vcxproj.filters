@@ -76,6 +76,9 @@
     <ClCompile Include="endingScene.cpp">
       <Filter>Source Files\qtComponent</Filter>
     </ClCompile>
+    <ClCompile Include="mainMenuScene.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h">
@@ -85,6 +88,9 @@
       <Filter>Header Files\qtComponent</Filter>
     </QtMoc>
     <QtMoc Include="endingScene.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </QtMoc>
+    <QtMoc Include="mainMenuScene.h">
       <Filter>Header Files\qtComponent</Filter>
     </QtMoc>
   </ItemGroup>

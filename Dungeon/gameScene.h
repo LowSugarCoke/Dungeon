@@ -7,6 +7,8 @@
 #include "hero.h"
 #include "gameScene.h"
 #include "gameView.h"
+#include <QGraphicsPixmapItem>
+#include <QGraphicsOpacityEffect>
 
 class BrickItem;
 class GameScene : public QGraphicsScene
@@ -14,6 +16,7 @@ class GameScene : public QGraphicsScene
 public:
     GameScene(QObject* parent = nullptr);
     void setSceneImg(const QString& kSceneImg);
+
     void generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement);
     void updateLifeText(int life);
     void updateLevelText(QString level);
@@ -33,5 +36,8 @@ private:
     int heroLife;
     int level;
 
+
+    QGraphicsPixmapItem* m_backgroundItem;
+    QGraphicsOpacityEffect* m_opacityEffect;
 
 };

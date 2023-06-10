@@ -89,6 +89,7 @@
     <ClCompile Include="gameView.cpp" />
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainMenuScene.cpp" />
     <ClCompile Include="mazeGenerator.cpp" />
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="potion.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="gameView.h" />
     <ClInclude Include="hero.h" />
     <ClInclude Include="level.h" />
+    <QtMoc Include="mainMenuScene.h" />
     <ClInclude Include="mazeGenerator.h" />
     <ClInclude Include="potion.h" />
     <ClInclude Include="trap.h" />
