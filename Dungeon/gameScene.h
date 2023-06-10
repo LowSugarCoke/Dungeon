@@ -15,4 +15,5 @@ public:
 private:
     int brickSize = 40;  // Save the size of your maze cells here
 
+
 };

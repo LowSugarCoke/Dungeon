@@ -88,6 +88,7 @@
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mazeGenerator.cpp" />
+    <ClCompile Include="monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h" />
@@ -103,7 +104,9 @@
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
     <ClInclude Include="hero.h" />
+    <ClInclude Include="level.h" />
     <ClInclude Include="mazeGenerator.h" />
+    <QtMoc Include="monster.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

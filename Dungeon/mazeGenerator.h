@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 
-enum Difficulty { EASY, MEDIUM, HARD };
+#include "level.h"
+
 class MazeGenerator {
 public:
     MazeGenerator(int width, int height, Difficulty difficulty);

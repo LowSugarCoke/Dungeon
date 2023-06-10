@@ -1,10 +1,12 @@
 #include "gameScene.h"
 
 #include <QRandomGenerator>
+#include <QTimer>
 
 #include "brickItem.h"
 #include "hero.h"
-
+#include "monster.h"
+#include "level.h"
 #include "resource.h"
 
 GameScene::GameScene(QObject* parent)
@@ -67,6 +69,48 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, Difficulty difficul
             heroPlaced = true;
         }
     }
+
+
+    // Create the monsters based on the difficulty level
+    int monsterCount;
+    switch (difficulty) {
+    case Difficulty::EASY:
+        monsterCount = 5;
+        break;
+    case Difficulty::MEDIUM:
+        monsterCount = 10;
+        break;
+    case Difficulty::HARD:
+        monsterCount = 15;
+        break;
+    default:
+        monsterCount = 5;
+        break;
+    }
+
+    for (int i = 0; i < monsterCount; i++) {
+        Monster* monster = new Monster();
+        monster->setMonsterImg(UIResource::kMonster);
+        // Set the step size to be the same as the brick size
+        monster->setStepSize(brickSize);
+
+        // Add the monster to the scene
+        this->addItem(monster);
+
+        // Position the monster in a random location that doesn't collide with anything
+        int x, y;
+        do {
+            x = QRandomGenerator::global()->bounded(20) * brickSize + offsetX;
+            y = QRandomGenerator::global()->bounded(10) * brickSize + offsetY;
+            monster->setPos(x, y);
+        } while (!monster->collidingItems().isEmpty());
+
+        // Setup a timer to move the monster every 1 second
+        QTimer* timer = new QTimer();
+        QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
+        timer->start(500);
+    }
+
 
 
 }
