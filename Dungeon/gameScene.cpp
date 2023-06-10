@@ -56,7 +56,7 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
 
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
     MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
-    hero->setFocus();
+
     QImage brickImage(kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution
@@ -184,7 +184,7 @@ void GameScene::decreaseCollectionCount() {
 bool GameScene::isAllCollectionsCollected() const { return remainingCollections == 0; }
 void GameScene::nextLevel() {
     level++;
-    this->removeItem(hero);
+    //this->removeItem(hero);
 
 
     // Save the current Hero's life.

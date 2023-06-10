@@ -17,7 +17,6 @@ Dungeon::Dungeon(QWidget* parent)
     // Initialize the hero
 {
     ui.setupUi(this);
-    hero->setFocus();
     scene = new GameScene(this);
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
@@ -85,22 +84,20 @@ void Dungeon::nextLevel() {
 
 void Dungeon::battle() {
 
+    menuScene->fadeOut(1000);
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
 
     scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     scene->setSceneImg(UIResource::kSceneImg);
-
-    hero->setFocus();
     hero->setHeroImg(UIResource::kHero);
     scene->setHero(hero);
 
     scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
 
-
-    sceneView->setScene(scene);
-    this->setCentralWidget(sceneView);
+    QTimer::singleShot(1000, [&]() {sceneView->setScene(scene);  hero->setFocus(); });
 
     //this->showFullScreen();
 }
