@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="brickItem.cpp" />
+    <ClCompile Include="collection.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameView.cpp" />
@@ -89,6 +90,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mazeGenerator.cpp" />
     <ClCompile Include="monster.cpp" />
+    <ClCompile Include="potion.cpp" />
+    <ClCompile Include="trap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h" />
@@ -101,11 +104,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="brickItem.h" />
+    <ClInclude Include="collection.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
     <ClInclude Include="hero.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="mazeGenerator.h" />
+    <ClInclude Include="potion.h" />
+    <ClInclude Include="trap.h" />
     <QtMoc Include="monster.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

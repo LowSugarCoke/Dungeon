@@ -2,9 +2,13 @@
 
 #include "monster.h"
 #include "gameScene.h"
+#include "collection.h"
+#include "potion.h"
 
 #include <QPainter>
 #include <QKeyEvent>
+
+#include <qdebug.h>
 
 Hero::Hero()
     : QGraphicsPixmapItem() {
@@ -20,6 +24,9 @@ void Hero::setHeroImg(const QString& kHeroImg) {
 }
 
 void Hero::keyPressEvent(QKeyEvent* event) {
+
+    qDebug() << "Key Pressed: " << event->text();
+
     // Calculate new position
     QPointF newPos = pos();
     QPointF beforePos = pos();
@@ -77,6 +84,10 @@ int Hero::getLife() const {
     return life;
 }
 
+void Hero::setLife(int life) {
+    this->life = life;
+}
+
 void Hero::checkCollision() {
     QList<QGraphicsItem*> collidingItems = this->collidingItems();
 
@@ -85,11 +96,30 @@ void Hero::checkCollision() {
         auto* monster = dynamic_cast<Monster*>(item);
         if (monster) {
             this->decreaseLife();
-            // ... reset the game or position of hero and monsters
         }
+        auto* collection = dynamic_cast<Collection*>(item);
+        if (collection) {
+            collection->disappear();
+        }
+        auto* potion = dynamic_cast<Potion*>(item);
+        if (potion) {
+            addLife();
+            potion->disappear();
+
+            // Update the life text
+            GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+            if (gameScene) {
+                gameScene->updateLifeText(life);
+            }
+        }
+
     }
 }
 
 void Hero::setStartPos(std::pair<int, int> startPos) {
     this->startPos = startPos;
+}
+
+void Hero::addLife() {
+    life += 1;
 }

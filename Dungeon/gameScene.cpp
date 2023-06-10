@@ -8,6 +8,9 @@
 #include "monster.h"
 #include "level.h"
 #include "resource.h"
+#include "collection.h"
+#include "potion.h"
+#include "Dungeon.h"
 
 static const std::pair<int, int> mazeSize{ 20,10 };
 
@@ -23,8 +26,6 @@ GameScene::GameScene(QObject* parent)
     levelText->setDefaultTextColor(Qt::white); // Choose the color
     levelText->setFont(QFont("times", 16)); // Set the font and size
     addItem(levelText); // Add to the scene
-
-
 
 }
 
@@ -68,12 +69,6 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         }
     }
 
-    // Create the hero
-    Hero* hero = new Hero();
-
-    // Set the focus to the hero
-    hero->setFocus();
-    hero->setHeroImg(UIResource::kHero);
     // Add the hero to the scene
     this->addItem(hero);
 
@@ -94,10 +89,42 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         }
     }
 
+    for (int i = 0; i < kLevelElement.starCount; i++) {
+        Potion* potion = new Potion();
+        potion->setPotionImg(UIResource::kPotion);
+
+        // Add the monster to the scene
+        this->addItem(potion);
+
+        // Position the monster in a random location that doesn't collide with anything
+        int x, y;
+        do {
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+            potion->setPos(x, y);
+        } while (!potion->collidingItems().isEmpty());
+    }
+
+    remainingCollections = kLevelElement.starCount;
+    for (int i = 0; i < kLevelElement.starCount; i++) {
+        Collection* collection = new Collection();
+        collection->setCollectionImg(UIResource::kStar);
+
+        // Add the monster to the scene
+        this->addItem(collection);
+
+        // Position the monster in a random location that doesn't collide with anything
+        int x, y;
+        do {
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+            collection->setPos(x, y);
+        } while (!collection->collidingItems().isEmpty());
+    }
+
+
     // Create the monsters based on the difficulty level
     int monsterCount = kLevelElement.monsterCount;
-
-
 
     for (int i = 0; i < monsterCount; i++) {
         Monster* monster = new Monster();
@@ -124,4 +151,23 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
     updateLevelText(kLevelElement.level);
     updateLifeText(hero->getLife());
+}
+
+void GameScene::decreaseCollectionCount() {
+    --remainingCollections;
+}
+bool GameScene::isAllCollectionsCollected() const { return remainingCollections == 0; }
+void GameScene::nextLevel() {
+
+    this->removeItem(hero);
+
+
+    // Save the current Hero's life.
+    heroLife = hero->getLife();
+    // Continue to the next level.
+    static_cast<Dungeon*>(parent())->nextLevel();
+}
+
+void GameScene::setHero(Hero* hero) {
+    this->hero = hero;
 }

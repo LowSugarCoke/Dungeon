@@ -1,6 +1,7 @@
 #include "monster.h"
 
 #include "hero.h"
+#include "collection.h"
 
 #include <QPainter>
 #include <QKeyEvent>
@@ -43,6 +44,7 @@ void Monster::keyPressEvent(QKeyEvent* event) {
     if (!collidingItems().isEmpty()) {
 
 
+
         // Check for collisions with the hero after the move
         QList<QGraphicsItem*> collidingItems = this->collidingItems();
 
@@ -51,12 +53,17 @@ void Monster::keyPressEvent(QKeyEvent* event) {
             auto* hero = dynamic_cast<Hero*>(item);
             if (hero) {
                 hero->checkCollision();
+                // If colliding with any item, undo move
             }
-        }
 
-        // If colliding with any item, undo move
-        setPos(beforePos);
-        return;
+            auto* collection = dynamic_cast<Collection*>(item);
+            if (!collection) {
+                setPos(beforePos);
+                return;
+            }
+
+
+        }
     }
 
 

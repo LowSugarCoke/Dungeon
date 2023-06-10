@@ -64,6 +64,15 @@
     <ClCompile Include="monster.cpp">
       <Filter>Source Files\qtComponent</Filter>
     </ClCompile>
+    <ClCompile Include="collection.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="trap.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="potion.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h">
@@ -104,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="level.h">
       <Filter>Header Files\global</Filter>
+    </ClInclude>
+    <ClInclude Include="trap.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="potion.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="collection.h">
+      <Filter>Header Files\qtComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,7 +9,9 @@ public:
     void setStepSize(const int& kStepSize);
     void keyPressEvent(QKeyEvent* event) override;
     void decreaseLife();
+    void addLife();
     int getLife() const;
+    void setLife(int life);
     void checkCollision();
     void setStartPos(std::pair<int, int> startPos);
 
