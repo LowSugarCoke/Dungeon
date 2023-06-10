@@ -1,17 +1,9 @@
 ﻿#include "gameView.h"
 
-#include <string>
-
 #include <QPoint>
 #include <QResizeEvent>
 
-const static QString kDefaultSceneImg = "Resources\\img\\scene.jpg";
-
-GameScene::GameScene(QObject* parent)
-    : QGraphicsScene(parent) {
-    QImage backgroundImage(kDefaultSceneImg);
-    setBackgroundBrush(QBrush(backgroundImage));
-}
+#include "gameScene.h"
 
 GameView::GameView(GameScene* scene, QWidget* parent)
     : QGraphicsView(scene, parent)

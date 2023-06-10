@@ -2,6 +2,8 @@
 
 #include <QScreen>
 
+#include "resource.h"
+#include "gameScene.h"
 #include "gameView.h"
 
 Dungeon::Dungeon(QWidget* parent)
@@ -18,7 +20,12 @@ void Dungeon::initUI() {
     this->resize(screenGeometry.width(), screenGeometry.height());
 
     GameScene* scene = new GameScene(this);
+    scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    scene->setSceneImg(UIResource::kSceneImg);
+    scene->generatorRandomMap(UIResource::kBrickImg);
+
     auto sceneView = new GameView(scene, this);
 
     this->setCentralWidget(sceneView);
+    //this->showFullScreen();
 }

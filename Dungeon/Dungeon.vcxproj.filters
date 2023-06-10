@@ -29,6 +29,15 @@
     <Filter Include="Source Files\qtComponent">
       <UniqueIdentifier>{baecd4a9-8c93-42b0-b28b-200189f78141}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\global">
+      <UniqueIdentifier>{4d1bd63d-816e-4434-b7ae-3c6bf09ae525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{f0d8a06d-ee17-43fc-ade1-e24385b14d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{5da053c5-0545-4818-822a-3c9aedd09b0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +48,15 @@
     </ClCompile>
     <ClCompile Include="gameView.cpp">
       <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="gameScene.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="brickItem.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="mazeGenerator.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +77,18 @@
   <ItemGroup>
     <ClInclude Include="gameView.h">
       <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\global</Filter>
+    </ClInclude>
+    <ClInclude Include="gameScene.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="brickItem.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="mazeGenerator.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
