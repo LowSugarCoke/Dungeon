@@ -10,3 +10,8 @@ void BrickItem::setPixmap(const QPixmap& kPixmap)
 {
     QGraphicsPixmapItem::setPixmap(kPixmap);
 }
+
+QRectF BrickItem::boundingRect() const {
+    // Use the pixmap's rectangle as the bounding rectangle
+    return pixmap().rect();
+}

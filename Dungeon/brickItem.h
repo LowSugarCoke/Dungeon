@@ -7,4 +7,5 @@ class BrickItem : public QGraphicsPixmapItem
 public:
     BrickItem(QGraphicsItem* parent = 0);
     void setPixmap(const QPixmap& pixmap);
+    QRectF boundingRect() const override;
 };

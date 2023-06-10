@@ -12,5 +12,7 @@ public:
     void setSceneImg(const QString& kSceneImg);
     void generatorRandomMap(const QString& kBrickImg, Difficulty difficulty);
 
+private:
+    int brickSize = 40;  // Save the size of your maze cells here
 
 };
