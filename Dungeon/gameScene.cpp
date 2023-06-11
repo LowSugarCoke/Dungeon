@@ -216,7 +216,7 @@ void GameScene::nextLevel() {
     // Save the current Hero's life.
     heroLife = hero->getLife();
 
-    if (level != 4) {
+    if (level != 2) {
         // Continue to the next level.
         static_cast<Dungeon*>(parent())->nextLevel();
     }

@@ -13,10 +13,12 @@
 #include <qdebug.h>
 
 Hero::Hero()
-    : QGraphicsPixmapItem() {
+    : QGraphicsPixmapItem() // 初始化音效播
+{
     setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
   // Update the life text
     isFrozen = false;
+
 }
 
 
@@ -49,6 +51,8 @@ void Hero::keyPressEvent(QKeyEvent* event) {
         newPos.setX(newPos.x() + brickSize);
     }
 
+
+
     // Check for collisions
     setPos(newPos);
     checkCollision();
@@ -58,6 +62,7 @@ void Hero::keyPressEvent(QKeyEvent* event) {
     for (auto* item : collidingItems) {
         auto* trap = dynamic_cast<Trap*>(item);
         if (trap) {
+            trapSound->play();
             QGraphicsItem::keyPressEvent(event);  // Pass the event to the base class
             isFrozen = true;
             QTimer::singleShot(1000, [this]() {
@@ -118,14 +123,17 @@ void Hero::checkCollision() {
         // Check if the colliding item is a monster
         auto* monster = dynamic_cast<Monster*>(item);
         if (monster) {
+            monsterSound->play();
             this->decreaseLife();
         }
         auto* collection = dynamic_cast<Collection*>(item);
         if (collection) {
+            collectionSound->play();
             collection->disappear();
         }
         auto* potion = dynamic_cast<Potion*>(item);
         if (potion) {
+            potionSound->play();
             addLife();
             potion->disappear();
 
@@ -147,4 +155,21 @@ void Hero::setStartPos(std::pair<int, int> startPos) {
 
 void Hero::addLife() {
     life += 1;
+}
+
+void Hero::setMonsterSound(QMediaPlayer* sound) {
+    monsterSound = sound;
+}
+
+
+void Hero::setPotionSound(QMediaPlayer* sound) {
+    potionSound = sound;
+}
+
+void Hero::setCollectionSound(QMediaPlayer* sound) {
+    collectionSound = sound;
+}
+
+void Hero::setTrapSound(QMediaPlayer* trap) {
+    trapSound = trap;
 }

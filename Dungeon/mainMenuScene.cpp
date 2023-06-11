@@ -1,4 +1,6 @@
-﻿#include "MainMenuScene.h"
+﻿
+
+#include "MainMenuScene.h"
 #include <QGraphicsProxyWidget>
 #include <QPushButton>
 #include <QGraphicsLinearLayout>
@@ -103,6 +105,8 @@ MainMenuScene::MainMenuScene(QObject* parent)
 
 void MainMenuScene::handleStartButton() {
     static_cast<Dungeon*>(parent())->battle();
+    mediaPlayer->mainMenu->stop();
+    mediaPlayer->start->play();
 }
 
 void MainMenuScene::handleSettingsButton() {
@@ -135,4 +139,8 @@ void MainMenuScene::fadeOut(int duration) {
     animation->setStartValue(1.0);
     animation->setEndValue(0.0);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void MainMenuScene::setMedia(MediaPlayer* player) {
+    mediaPlayer = player;
 }

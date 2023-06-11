@@ -10,7 +10,7 @@
 #include "gameView.h"
 #include "endingScene.h"
 #include "mainMenuScene.h"
-
+#include "mediaPlayer.h"
 
 class Dungeon : public QMainWindow
 {
@@ -33,4 +33,5 @@ private:
     GameView* sceneView;
     EndingScene* endingScene;
     MainMenuScene* menuScene;
+    MediaPlayer* mediaPlayer;
 };

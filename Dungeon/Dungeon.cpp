@@ -17,12 +17,21 @@ Dungeon::Dungeon(QWidget* parent)
     // Initialize the hero
 {
     ui.setupUi(this);
+
+    mediaPlayer = new MediaPlayer();
+    hero->setPotionSound(mediaPlayer->potion);
+    hero->setMonsterSound(mediaPlayer->monster);
+    hero->setCollectionSound(mediaPlayer->collection);
+    hero->setTrapSound(mediaPlayer->trap);
+    mediaPlayer->mainMenu->play();
+
     scene = new GameScene(this);
 
 
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
     menuScene = new MainMenuScene(this);
+    menuScene->setMedia(mediaPlayer);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -31,13 +40,12 @@ Dungeon::Dungeon(QWidget* parent)
     menuScene->setSceneImg(UIResource::kMenu);
     sceneView->setScene(menuScene);
 
-
     this->setCentralWidget(sceneView);
-
-
 }
 
 void Dungeon::win() {
+    mediaPlayer->battle->stop();
+    mediaPlayer->endingWin->play();
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
@@ -50,6 +58,8 @@ void Dungeon::win() {
 }
 
 void Dungeon::lose() {
+    mediaPlayer->battle->stop();
+    mediaPlayer->endingLose->play();
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
@@ -59,12 +69,10 @@ void Dungeon::lose() {
     endingScene->fadeIn(1000);
     endingScene->setMessage("You Lose");
     this->setCentralWidget(sceneView);
-
 }
 
 void Dungeon::nextLevel() {
     int heroLife = hero->getLife();
-    QPointF heroPos = hero->pos();
 
     // Continue to the next level
     if (currentLevel.level == Level::kEasy.level) {
@@ -78,7 +86,7 @@ void Dungeon::nextLevel() {
     battle();
     // Restore the Hero's life and position in the new scene
     hero->setLife(heroLife);
-    hero->setPos(heroPos);
+
     hero->setFocus();
     this->setCentralWidget(sceneView);
 
@@ -86,7 +94,9 @@ void Dungeon::nextLevel() {
 
 void Dungeon::battle() {
 
-    menuScene->fadeOut(1000);
+
+    menuScene->fadeOut(4000);
+
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -99,7 +109,8 @@ void Dungeon::battle() {
 
     scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
 
-    QTimer::singleShot(1000, [&]() {sceneView->setScene(scene);  hero->setFocus(); });
+    QTimer::singleShot(4000, [&]() {sceneView->setScene(scene);  hero->setFocus();
+    mediaPlayer->battle->play(); });
 
     //this->showFullScreen();
 }

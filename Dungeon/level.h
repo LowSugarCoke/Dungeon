@@ -17,32 +17,34 @@ namespace Level {
     static const LevelElement kEasy{
         "Easy",
        3, // mazeLevel = 3;
-       1,  // monsterCount
+       5,  // monsterCount
        1000, // monsterspeed
-       1, // starCount
-       1, // potionCount
-       3, // trapCount
+       3, // starCount = 3
+       2, // potionCount
+       1, // trapCount
     };
 
     static const LevelElement kMedium{
         "Medium",
-        5, // mazeLevel = 4;
-        1, // monsterCount
+        4, // mazeLevel = 5;
+        10, // monsterCount
         700, // monsterspeed
-        1, // starCount
+        5, // starCount = 5
         2, // potionCount
         3, // trapCount
     };
 
     static const LevelElement kHard{
         "Hard",
-        8, // mazeLevel = 8;
-        1, //monsterCount
+        5, // mazeLevel = 8;
+        15, //monsterCount
         300, // monsterspeed
-        1, // starCount
-        2, // potionCount
-        3, // trapCount
+        7, // starCount = 7
+        1, // potionCount
+        5, // trapCount
     };
+
+
 
 
 };
