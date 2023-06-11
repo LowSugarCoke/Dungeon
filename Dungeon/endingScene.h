@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
+#include <QPushButton>
 
 class EndingScene : public QGraphicsScene
 {
@@ -15,8 +16,12 @@ public:
     void setMessage(const QString& message);
 
 private:
+    void handleRestartButton();
+
+private:
     QGraphicsPixmapItem* m_backgroundItem;
     QGraphicsOpacityEffect* m_opacityEffect;
 
     QGraphicsTextItem* m_textItem;
+    QPushButton* backButton;
 };

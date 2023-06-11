@@ -41,13 +41,8 @@ Dungeon::Dungeon(QWidget* parent)
     menuScene = new MainMenuScene(this);
     menuScene->setMedia(mediaPlayer);
 
+    menu();
 
-
-    menuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    menuScene->setSceneImg(UIResource::kMenu);
-    sceneView->setScene(menuScene);
-
-    this->setCentralWidget(sceneView);
 }
 
 void Dungeon::setting() {
@@ -57,7 +52,18 @@ void Dungeon::setting() {
 }
 
 void Dungeon::menu() {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    this->resize(screenGeometry.width(), screenGeometry.height());
+    menuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    menuScene->setSceneImg(UIResource::kMenu);
+
+    menuScene->fadeIn(0);
+    mediaPlayer->endingWin->stop();
+    mediaPlayer->endingLose->stop();
+    mediaPlayer->mainMenu->play();
     sceneView->setScene(menuScene);
+    this->setCentralWidget(sceneView);
 }
 
 void Dungeon::win() {
@@ -111,9 +117,7 @@ void Dungeon::nextLevel() {
 
 void Dungeon::battle() {
 
-
     menuScene->fadeOut(4000);
-
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -130,4 +134,10 @@ void Dungeon::battle() {
     mediaPlayer->battle->play(); });
 
     //this->showFullScreen();
+}
+
+void Dungeon::restart() {
+    currentLevel = Level::kEasy;
+    hero->setLife(3);
+    menu();
 }

@@ -25,6 +25,7 @@ public:
     void battle();
     void setting();
     void menu();
+    void restart();
 private:
     Ui::DungeonClass ui;
 

@@ -2,8 +2,11 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <QGraphicsProxyWidget>
 #include <QBrush>
 #include <QFont>
+
+#include "Dungeon.h"
 
 EndingScene::EndingScene(QObject* parent)
     : QGraphicsScene(parent)
@@ -19,6 +22,33 @@ EndingScene::EndingScene(QObject* parent)
     m_textItem->setFont(font);
     m_textItem->setDefaultTextColor(QColor(255, 255, 255));
     addItem(m_textItem);
+
+    backButton = new QPushButton(QString::fromLocal8Bit("重新遊戲"));
+    backButton->setMinimumSize(400, 120);
+    backButton->setMaximumSize(400, 120);
+    backButton->setStyleSheet(R"(
+    QPushButton { 
+        font-size:20px; 
+        font-weight:bold; 
+        background:none; 
+        background-color:transparent; 
+        border-image: url(Resources/img/button.png) 0 0 0 0 stretch stretch; 
+    }
+    QPushButton:hover { 
+        color:white;
+    }
+    QPushButton:pressed { 
+        color:black;
+    }
+)");
+    QGraphicsProxyWidget* backButtonProxy = addWidget(backButton);
+    backButtonProxy->setPos(700, 700);  // 调整位置
+    connect(backButton, &QPushButton::clicked, this, &EndingScene::handleRestartButton);
+}
+
+void EndingScene::handleRestartButton() {
+    static_cast<Dungeon*>(parent())->restart();
+
 }
 
 void EndingScene::setSceneImg(const QString& kSceneImg) {

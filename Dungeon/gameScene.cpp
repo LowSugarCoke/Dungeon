@@ -221,13 +221,35 @@ void GameScene::nextLevel() {
         static_cast<Dungeon*>(parent())->nextLevel();
     }
     else {
+
         static_cast<Dungeon*>(parent())->win();
     }
 
 }
 
 void GameScene::lose() {
-    this->removeItem(hero);
+
+
+    for (auto b : bricks) {
+        this->removeItem(b);
+    }
+
+    for (auto m : monsters) {
+        this->removeItem(m);
+    }
+
+    for (auto c : collections) {
+        this->removeItem(c);
+    }
+
+    for (auto t : traps) {
+        this->removeItem(t);
+    }
+
+    for (auto p : potions) {
+        this->removeItem(p);
+    }
+
     static_cast<Dungeon*>(parent())->lose();
 }
 

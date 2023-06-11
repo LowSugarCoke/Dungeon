@@ -15,12 +15,28 @@
 MainMenuScene::MainMenuScene(QObject* parent)
     : QGraphicsScene(parent)
 {
+
+
+
+
     m_backgroundItem = new QGraphicsPixmapItem();
     addItem(m_backgroundItem);
     m_opacityEffect = new QGraphicsOpacityEffect();
     m_opacityEffect->setOpacity(1.0);
-
     m_backgroundItem->setGraphicsEffect(m_opacityEffect);
+
+
+    m_title = new QGraphicsPixmapItem();
+    addItem(m_title);
+    m_opacityEffect = new QGraphicsOpacityEffect();
+    m_opacityEffect->setOpacity(1.0);
+    m_title->setGraphicsEffect(m_opacityEffect);
+
+    QPixmap backgroundImage("Resources/img/title.png");
+    //backgroundImage = backgroundImage.scaled(400, 300, Qt::KeepAspectRatioByExpanding);
+    m_title->setPixmap(backgroundImage);
+    m_title->setPos(50, 50);
+
 
     QGraphicsWidget* root = new QGraphicsWidget();
     QGraphicsLinearLayout* layout = new QGraphicsLinearLayout(Qt::Vertical, root);
@@ -31,7 +47,7 @@ MainMenuScene::MainMenuScene(QObject* parent)
     root->setPos(700, 300);
 
 
-    QPushButton* startButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
+    startButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
     startButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
@@ -56,7 +72,7 @@ MainMenuScene::MainMenuScene(QObject* parent)
     layout->setAlignment(startButtonProxy, Qt::AlignCenter);  // 設定對齊方式
     connect(startButton, &QPushButton::clicked, this, &MainMenuScene::handleStartButton);
 
-    QPushButton* settingsButton = new QPushButton(QString::fromLocal8Bit("設定"));
+    settingsButton = new QPushButton(QString::fromLocal8Bit("設定"));
     settingsButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
@@ -79,7 +95,7 @@ MainMenuScene::MainMenuScene(QObject* parent)
     layout->setAlignment(settingsButtonProxy, Qt::AlignCenter);  // 設定對齊方式
     connect(settingsButton, &QPushButton::clicked, this, &MainMenuScene::handleSettingsButton);
 
-    QPushButton* exitButton = new QPushButton(QString::fromLocal8Bit("結束遊戲"));
+    exitButton = new QPushButton(QString::fromLocal8Bit("結束遊戲"));
     exitButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
@@ -104,9 +120,13 @@ MainMenuScene::MainMenuScene(QObject* parent)
 }
 
 void MainMenuScene::handleStartButton() {
+
+
     static_cast<Dungeon*>(parent())->battle();
     mediaPlayer->mainMenu->stop();
     mediaPlayer->start->play();
+
+
 }
 
 void MainMenuScene::handleSettingsButton() {
@@ -127,6 +147,9 @@ void MainMenuScene::setSceneImg(const QString& kSceneImg) {
 
 
 void MainMenuScene::fadeIn(int duration) {
+    startButton->show();
+    settingsButton->show();
+    exitButton->show();
     QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(0.0);
@@ -135,6 +158,9 @@ void MainMenuScene::fadeIn(int duration) {
 }
 
 void MainMenuScene::fadeOut(int duration) {
+    startButton->hide();
+    settingsButton->hide();
+    exitButton->hide();
     QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(1.0);

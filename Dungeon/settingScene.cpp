@@ -10,6 +10,17 @@ SettingScene::SettingScene(MediaPlayer* player, QObject* parent)
     : QGraphicsScene(parent),
     mediaPlayer(player)
 {
+    m_textItem = new QGraphicsTextItem();
+    QFont font;
+    font.setPixelSize(100);  // 設置字體大小
+    m_textItem->setFont(font);
+    m_textItem->setDefaultTextColor(QColor(255, 255, 255));
+    m_textItem->setPlainText("Voice");
+    m_textItem->setPos(550, 300);  // 將文字置中
+
+    addItem(m_textItem);
+
+
     volumeSlider = new QSlider(Qt::Horizontal);
     volumeSlider->setRange(0, 100);
     volumeSlider->setValue(70);
@@ -41,9 +52,8 @@ SettingScene::SettingScene(MediaPlayer* player, QObject* parent)
 )");
 
 
-
     QGraphicsProxyWidget* volumeSliderProxy = addWidget(volumeSlider);
-    volumeSliderProxy->setPos(700, 300);
+    volumeSliderProxy->setPos(850, 300);
     volumeSliderProxy->resize(400, 120); // Change this line to resize the slider to match the buttons
 
     connect(volumeSlider, &QSlider::valueChanged, this, &SettingScene::adjustVolume);
