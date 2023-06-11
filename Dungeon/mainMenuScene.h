@@ -11,7 +11,6 @@ class MainMenuScene : public QGraphicsScene
     Q_OBJECT
 public:
     MainMenuScene(QObject* parent = nullptr);
-    QSlider* getVolumeSlider() const;
     void setSceneImg(const QString& kSceneImg);
     void fadeIn(int duration);
     void fadeOut(int duration);

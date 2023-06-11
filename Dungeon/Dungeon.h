@@ -11,6 +11,7 @@
 #include "endingScene.h"
 #include "mainMenuScene.h"
 #include "mediaPlayer.h"
+#include "settingScene.h"
 
 class Dungeon : public QMainWindow
 {
@@ -22,6 +23,8 @@ public:
     void win();
     void lose();
     void battle();
+    void setting();
+    void menu();
 private:
     Ui::DungeonClass ui;
 
@@ -34,4 +37,5 @@ private:
     EndingScene* endingScene;
     MainMenuScene* menuScene;
     MediaPlayer* mediaPlayer;
+    SettingScene* settingScene;
 };

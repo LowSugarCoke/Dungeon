@@ -30,17 +30,34 @@ Dungeon::Dungeon(QWidget* parent)
 
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
-    menuScene = new MainMenuScene(this);
-    menuScene->setMedia(mediaPlayer);
+    settingScene = new SettingScene(mediaPlayer, this);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
+    settingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    settingScene->setSceneImg(UIResource::kMenu);
+
+    menuScene = new MainMenuScene(this);
+    menuScene->setMedia(mediaPlayer);
+
+
+
     menuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     menuScene->setSceneImg(UIResource::kMenu);
     sceneView->setScene(menuScene);
 
     this->setCentralWidget(sceneView);
+}
+
+void Dungeon::setting() {
+
+    sceneView->setScene(settingScene);
+
+}
+
+void Dungeon::menu() {
+    sceneView->setScene(menuScene);
 }
 
 void Dungeon::win() {

@@ -118,7 +118,7 @@
     <ClInclude Include="mazeGenerator.h" />
     <ClInclude Include="mediaPlayer.h" />
     <ClInclude Include="potion.h" />
-    <ClInclude Include="settingScene.h" />
+    <QtMoc Include="settingScene.h" />
     <ClInclude Include="trap.h" />
     <QtMoc Include="monster.h" />
     <ClInclude Include="resource.h" />

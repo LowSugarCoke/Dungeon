@@ -111,6 +111,7 @@ void MainMenuScene::handleStartButton() {
 
 void MainMenuScene::handleSettingsButton() {
     // 處理當"設定"按鈕被點擊時的邏輯
+    static_cast<Dungeon*>(parent())->setting();
 }
 
 void MainMenuScene::handleExitButton() {

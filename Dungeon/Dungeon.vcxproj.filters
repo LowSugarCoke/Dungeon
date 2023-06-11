@@ -99,6 +99,9 @@
     <QtMoc Include="mainMenuScene.h">
       <Filter>Header Files\qtComponent</Filter>
     </QtMoc>
+    <QtMoc Include="settingScene.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Dungeon.ui">
@@ -142,9 +145,6 @@
       <Filter>Header Files\qtComponent</Filter>
     </ClInclude>
     <ClInclude Include="mediaPlayer.h">
-      <Filter>Header Files\qtComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="settingScene.h">
       <Filter>Header Files\qtComponent</Filter>
     </ClInclude>
   </ItemGroup>
