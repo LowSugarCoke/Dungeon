@@ -18,6 +18,8 @@ Dungeon::Dungeon(QWidget* parent)
 {
     ui.setupUi(this);
     scene = new GameScene(this);
+
+
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
     menuScene = new MainMenuScene(this);
@@ -52,7 +54,7 @@ void Dungeon::lose() {
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
     endingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    endingScene->setSceneImg(UIResource::kWin);
+    endingScene->setSceneImg(UIResource::kLose);
     sceneView->setScene(endingScene);
     endingScene->fadeIn(1000);
     endingScene->setMessage("You Lose");

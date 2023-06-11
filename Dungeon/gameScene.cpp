@@ -74,6 +74,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
                 brick->setPixmap(scaledBrickImg);
                 brick->setPos(offsetX + i * brick->pixmap().width(), offsetY + j * brick->pixmap().height());
                 this->addItem(brick);
+                bricks.push_back(brick);
             }
         }
     }
@@ -100,6 +101,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
     for (int i = 0; i < kLevelElement.trapCount; i++) {
         Trap* trap = new Trap();
+        traps.push_back(trap);
         trap->setTrapImg(UIResource::kTrap);
 
         // Add the monster to the scene
@@ -116,6 +118,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
     for (int i = 0; i < kLevelElement.potionCount; i++) {
         Potion* potion = new Potion();
+        potions.push_back(potion);
         potion->setPotionImg(UIResource::kPotion);
 
         // Add the monster to the scene
@@ -133,6 +136,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
     remainingCollections = kLevelElement.starCount;
     for (int i = 0; i < kLevelElement.starCount; i++) {
         Collection* collection = new Collection();
+        collections.push_back(collection);
         collection->setCollectionImg(UIResource::kStar);
 
         // Add the monster to the scene
@@ -153,6 +157,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
     for (int i = 0; i < monsterCount; i++) {
         Monster* monster = new Monster();
+        monsters.push_back(monster);
         monster->setMonsterImg(UIResource::kMonster);
         // Set the step size to be the same as the brick size
         monster->setStepSize(brickSize);
@@ -185,12 +190,33 @@ bool GameScene::isAllCollectionsCollected() const { return remainingCollections 
 void GameScene::nextLevel() {
     level++;
     //this->removeItem(hero);
+    //this->clear();
+
+    for (auto b : bricks) {
+        this->removeItem(b);
+    }
+
+    for (auto m : monsters) {
+        this->removeItem(m);
+    }
+
+    for (auto c : collections) {
+        this->removeItem(c);
+    }
+
+    for (auto t : traps) {
+        this->removeItem(t);
+    }
+
+    for (auto p : potions) {
+        this->removeItem(p);
+    }
 
 
     // Save the current Hero's life.
     heroLife = hero->getLife();
 
-    if (level != 2) {
+    if (level != 4) {
         // Continue to the next level.
         static_cast<Dungeon*>(parent())->nextLevel();
     }

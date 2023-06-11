@@ -7,9 +7,14 @@
 #include "hero.h"
 #include "gameScene.h"
 #include "gameView.h"
+#include "brickItem.h"
+#include "trap.h"
+#include "potion.h"
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
 
+class Monster;
 class BrickItem;
 class GameScene : public QGraphicsScene
 {
@@ -39,5 +44,10 @@ private:
 
     QGraphicsPixmapItem* m_backgroundItem;
     QGraphicsOpacityEffect* m_opacityEffect;
+    std::vector<Monster*> monsters;
+    std::vector<BrickItem*> bricks;
+    std::vector<Collection*> collections;
+    std::vector<Trap*> traps;
+    std::vector<Potion*> potions;
 
 };

@@ -10,6 +10,7 @@ public:
     int operator()(int i, int j) const;
     int getWidth() const;
     int getHeight() const;
+    bool isConnected();
 
 private:
     int width;

@@ -16,7 +16,7 @@ Hero::Hero()
     : QGraphicsPixmapItem() {
     setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
   // Update the life text
-
+    isFrozen = false;
 }
 
 

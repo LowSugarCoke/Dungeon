@@ -13,7 +13,9 @@ MazeGenerator::MazeGenerator(int width, int height, const Level::LevelElement& k
     : width(width * 2 + 1), height(height * 2 + 1),
     maze(this->width, std::vector<int>(this->height, 1)) {
 
-    DFS(kLevelElement);
+    do {
+        DFS(kLevelElement);
+    } while (!isConnected());
 }
 
 
@@ -78,4 +80,42 @@ void MazeGenerator::DFS(const Level::LevelElement& kLevelElement) {
             }
         }
     }
+}
+
+bool MazeGenerator::isConnected() {
+    std::vector<std::vector<bool>> visited(width, std::vector<bool>(height, false));
+    std::stack<std::pair<int, int>> st;
+    st.push({ 2, 2 });
+
+    while (!st.empty()) {
+        std::pair<int, int> current = st.top();
+        st.pop();
+        int x = current.first;
+        int y = current.second;
+
+        if (!visited[x][y]) {
+            visited[x][y] = true;
+
+            std::vector<std::pair<int, int>> dirs = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+
+            for (auto dir : dirs) {
+                int nx = x + dir.first;
+                int ny = y + dir.second;
+
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height && maze[nx][ny] == 0 && !visited[nx][ny]) {
+                    st.push({ nx, ny });
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < width; ++i) {
+        for (int j = 0; j < height; ++j) {
+            if (maze[i][j] == 0 && !visited[i][j]) {
+                return false;  // Found an unvisited empty space, the maze is not connected.
+            }
+        }
+    }
+
+    return true;  // All empty spaces are visited, the maze is connected.
 }
