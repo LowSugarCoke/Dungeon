@@ -42,7 +42,7 @@ EndingScene::EndingScene(QObject* parent)
     }
 )");
     QGraphicsProxyWidget* backButtonProxy = addWidget(backButton);
-    backButtonProxy->setPos(700, 700);  // 调整位置
+    backButtonProxy->setPos(750, 700);  // 调整位置
     connect(backButton, &QPushButton::clicked, this, &EndingScene::handleRestartButton);
 }
 
@@ -60,7 +60,7 @@ void EndingScene::setSceneImg(const QString& kSceneImg) {
 void EndingScene::setMessage(const QString& message) {
     m_textItem->setPlainText(message);
     m_textItem->setPos((sceneRect().width() - m_textItem->boundingRect().width()) / 2,
-        (sceneRect().height() - m_textItem->boundingRect().height()) / 2);  // 將文字置中
+        (150));  // 將文字置中
 }
 
 void EndingScene::fadeIn(int duration) {

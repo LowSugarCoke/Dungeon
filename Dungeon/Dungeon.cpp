@@ -18,6 +18,9 @@ Dungeon::Dungeon(QWidget* parent)
 {
     ui.setupUi(this);
 
+    setWindowIcon(QIcon("Resources/img/logo.png"));
+
+
     mediaPlayer = new MediaPlayer();
     hero->setPotionSound(mediaPlayer->potion);
     hero->setMonsterSound(mediaPlayer->monster);
@@ -29,6 +32,7 @@ Dungeon::Dungeon(QWidget* parent)
 
 
     sceneView = new GameView(scene, this);
+
     endingScene = new EndingScene(this);
     settingScene = new SettingScene(mediaPlayer, this);
 
@@ -133,7 +137,7 @@ void Dungeon::battle() {
     QTimer::singleShot(4000, [&]() {sceneView->setScene(scene);  hero->setFocus();
     mediaPlayer->battle->play(); });
 
-    //this->showFullScreen();
+
 }
 
 void Dungeon::restart() {

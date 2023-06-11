@@ -33,7 +33,6 @@ MainMenuScene::MainMenuScene(QObject* parent)
     m_title->setGraphicsEffect(m_opacityEffect);
 
     QPixmap backgroundImage("Resources/img/title.png");
-    //backgroundImage = backgroundImage.scaled(400, 300, Qt::KeepAspectRatioByExpanding);
     m_title->setPixmap(backgroundImage);
     m_title->setPos(50, 50);
 
