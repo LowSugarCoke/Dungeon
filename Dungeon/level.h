@@ -101,7 +101,7 @@ namespace Level {
     5, // trapCount
     };
     static const LevelElement kLevel10{
-    "5",
+    "10",
     4, // mazeLevel = 8;
     20, //monsterCount
     300, // monsterspeed
