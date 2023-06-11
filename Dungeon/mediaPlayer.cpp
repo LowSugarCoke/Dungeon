@@ -17,7 +17,7 @@ MediaPlayer::MediaPlayer() {
     monster->setVolume(50);
 
     nextLevel = new QMediaPlayer();
-    nextLevel->setMedia(QUrl::fromLocalFile("Resources\\mp3\\potion.mp3"));
+    nextLevel->setMedia(QUrl::fromLocalFile("Resources\\mp3\\nextLevel.mp3"));
     nextLevel->setVolume(50);
 
     trap = new QMediaPlayer();

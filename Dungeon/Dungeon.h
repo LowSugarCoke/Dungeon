@@ -12,6 +12,7 @@
 #include "mainMenuScene.h"
 #include "mediaPlayer.h"
 #include "settingScene.h"
+#include "introScene.h"
 
 class Dungeon : public QMainWindow
 {
@@ -26,6 +27,7 @@ public:
     void setting();
     void menu();
     void restart();
+    void intro();
 private:
     Ui::DungeonClass ui;
 
@@ -39,4 +41,5 @@ private:
     MainMenuScene* menuScene;
     MediaPlayer* mediaPlayer;
     SettingScene* settingScene;
+    IntroScene* introScene;
 };

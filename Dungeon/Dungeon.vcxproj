@@ -62,7 +62,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -88,6 +88,7 @@
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameView.cpp" />
     <ClCompile Include="hero.cpp" />
+    <ClCompile Include="introScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuScene.cpp" />
     <ClCompile Include="mazeGenerator.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
     <ClInclude Include="hero.h" />
+    <QtMoc Include="introScene.h" />
     <ClInclude Include="level.h" />
     <QtMoc Include="mainMenuScene.h" />
     <ClInclude Include="mazeGenerator.h" />

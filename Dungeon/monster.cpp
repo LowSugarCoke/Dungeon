@@ -2,6 +2,8 @@
 
 #include "hero.h"
 #include "collection.h"
+#include "potion.h"
+#include "trap.h"
 
 #include <QPainter>
 #include <QKeyEvent>
@@ -57,10 +59,13 @@ void Monster::keyPressEvent(QKeyEvent* event) {
             }
 
             auto* collection = dynamic_cast<Collection*>(item);
-            if (!collection) {
+            auto* potion = dynamic_cast<Potion*>(item);
+            auto* trap = dynamic_cast<Trap*>(item);
+            if (!(collection || potion || trap)) {
                 setPos(beforePos);
                 return;
             }
+
 
 
         }

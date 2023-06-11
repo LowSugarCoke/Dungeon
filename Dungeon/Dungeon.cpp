@@ -12,7 +12,7 @@
 
 Dungeon::Dungeon(QWidget* parent)
     : QMainWindow(parent)
-    , currentLevel(Level::kEasy)
+    , currentLevel(Level::kLevel1)
     , hero(new Hero())
     // Initialize the hero
 {
@@ -26,7 +26,7 @@ Dungeon::Dungeon(QWidget* parent)
     hero->setMonsterSound(mediaPlayer->monster);
     hero->setCollectionSound(mediaPlayer->collection);
     hero->setTrapSound(mediaPlayer->trap);
-    mediaPlayer->mainMenu->play();
+
 
     scene = new GameScene(this);
 
@@ -35,6 +35,8 @@ Dungeon::Dungeon(QWidget* parent)
 
     endingScene = new EndingScene(this);
     settingScene = new SettingScene(mediaPlayer, this);
+    introScene = new IntroScene(this);
+
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -42,11 +44,24 @@ Dungeon::Dungeon(QWidget* parent)
     settingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     settingScene->setSceneImg(UIResource::kMenu);
 
+
+
     menuScene = new MainMenuScene(this);
     menuScene->setMedia(mediaPlayer);
 
+    introScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    introScene->setSceneImg(UIResource::kMenu);
+    introScene->setMedia(mediaPlayer);
+
     menu();
 
+}
+
+void Dungeon::intro() {
+    introScene->fadeIn(0);
+    sceneView->setScene(introScene);
+    introScene->startStory();
+    this->setCentralWidget(sceneView);
 }
 
 void Dungeon::setting() {
@@ -56,6 +71,7 @@ void Dungeon::setting() {
 }
 
 void Dungeon::menu() {
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
@@ -99,15 +115,40 @@ void Dungeon::lose() {
 }
 
 void Dungeon::nextLevel() {
+
+    mediaPlayer->nextLevel->play();
+
     int heroLife = hero->getLife();
 
     // Continue to the next level
-    if (currentLevel.level == Level::kEasy.level) {
-        currentLevel = Level::kMedium;
+    if (currentLevel.level == Level::kLevel1.level) {
+        currentLevel = Level::kLevel2;
     }
-    else if (currentLevel.level == Level::kMedium.level) {
-        currentLevel = Level::kHard;
+    else if (currentLevel.level == Level::kLevel2.level) {
+        currentLevel = Level::kLevel3;
     }
+    else if (currentLevel.level == Level::kLevel3.level) {
+        currentLevel = Level::kLevel4;
+    }
+    else if (currentLevel.level == Level::kLevel4.level) {
+        currentLevel = Level::kLevel5;
+    }
+    else if (currentLevel.level == Level::kLevel5.level) {
+        currentLevel = Level::kLevel6;
+    }
+    else if (currentLevel.level == Level::kLevel6.level) {
+        currentLevel = Level::kLevel7;
+    }
+    else if (currentLevel.level == Level::kLevel7.level) {
+        currentLevel = Level::kLevel8;
+    }
+    else if (currentLevel.level == Level::kLevel8.level) {
+        currentLevel = Level::kLevel9;
+    }
+    else if (currentLevel.level == Level::kLevel9.level) {
+        currentLevel = Level::kLevel10;
+    }
+
 
     // Recreate the game scene for the new level
     battle();
@@ -121,7 +162,7 @@ void Dungeon::nextLevel() {
 
 void Dungeon::battle() {
 
-    menuScene->fadeOut(4000);
+    introScene->fadeOut(4000);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -141,7 +182,7 @@ void Dungeon::battle() {
 }
 
 void Dungeon::restart() {
-    currentLevel = Level::kEasy;
+    currentLevel = Level::kLevel1;
     hero->setLife(3);
     menu();
 }

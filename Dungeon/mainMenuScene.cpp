@@ -119,13 +119,7 @@ MainMenuScene::MainMenuScene(QObject* parent)
 }
 
 void MainMenuScene::handleStartButton() {
-
-
-    static_cast<Dungeon*>(parent())->battle();
-    mediaPlayer->mainMenu->stop();
-    mediaPlayer->start->play();
-
-
+    static_cast<Dungeon*>(parent())->intro();
 }
 
 void MainMenuScene::handleSettingsButton() {

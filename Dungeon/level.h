@@ -14,37 +14,101 @@ namespace Level {
         int trapCount; // more trap more hard
     };
 
-    static const LevelElement kEasy{
-        "Easy",
-       3, // mazeLevel = 3;
-       5,  // monsterCount
-       1000, // monsterspeed
-       3, // starCount = 3
-       2, // potionCount
-       1, // trapCount
+    static const LevelElement kLevel1{
+    "1",
+   3, // mazeLevel = 3;
+   3,  // monsterCount
+   1200, // monsterspeed
+   1, // starCount = 3
+   0, // potionCount
+   1, // trapCount
     };
 
-    static const LevelElement kMedium{
-        "Medium",
+    static const LevelElement kLevel2{
+        "2",
+       3, // mazeLevel = 3;
+       5,  // monsterCount
+       1100, // monsterspeed
+       2, // starCount = 3
+       0, // potionCount
+       2, // trapCount
+    };
+
+    static const LevelElement kLevel3{
+        "3",
         4, // mazeLevel = 5;
-        10, // monsterCount
-        700, // monsterspeed
-        5, // starCount = 5
-        2, // potionCount
+        7, // monsterCount
+        1000, // monsterspeed
+        3, // starCount = 5
+        1, // potionCount
         3, // trapCount
     };
 
-    static const LevelElement kHard{
-        "Hard",
-        5, // mazeLevel = 8;
-        15, //monsterCount
-        300, // monsterspeed
-        7, // starCount = 7
-        1, // potionCount
-        5, // trapCount
+    static const LevelElement kLevel4{
+        "4",
+        4, // mazeLevel = 8;
+        9, //monsterCount
+        900, // monsterspeed
+        4, // starCount = 7
+        0, // potionCount
+        4, // trapCount
     };
 
+    static const LevelElement kLevel5{
+    "5",
+    4, // mazeLevel = 8;
+    11, //monsterCount
+    800, // monsterspeed
+    5, // starCount = 7
+    1, // potionCount
+    4, // trapCount
+    };
 
+    static const LevelElement kLevel6{
+    "6",
+    4, // mazeLevel = 8;
+    13, //monsterCount
+    700, // monsterspeed
+    6, // starCount = 7
+    1, // potionCount
+    4, // trapCount
+    };
+    static const LevelElement kLevel7{
+    "7",
+    4, // mazeLevel = 8;
+    15, //monsterCount
+    600, // monsterspeed
+    5, // starCount = 7
+    1, // potionCount
+    4, // trapCount
+    };
+    static const LevelElement kLevel8{
+    "8",
+    4, // mazeLevel = 8;
+    17, //monsterCount
+    500, // monsterspeed
+    6, // starCount = 7
+    1, // potionCount
+    5, // trapCount
+    };
+    static const LevelElement kLevel9{
+    "9",
+    4, // mazeLevel = 8;
+    19, //monsterCount
+    400, // monsterspeed
+    7, // starCount = 7
+    1, // potionCount
+    5, // trapCount
+    };
+    static const LevelElement kLevel10{
+    "5",
+    4, // mazeLevel = 8;
+    20, //monsterCount
+    300, // monsterspeed
+    8, // starCount = 7
+    1, // potionCount
+    6, // trapCount
+    };
 
 
 };

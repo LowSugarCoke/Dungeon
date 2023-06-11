@@ -31,6 +31,7 @@ public:
     void nextLevel();
     void lose();
     void setHero(Hero* hero);
+    int level;
 
 private:
     int brickSize = 40;  // Save the size of your maze cells here
@@ -39,7 +40,7 @@ private:
     int remainingCollections;
     Hero* hero;
     int heroLife;
-    int level;
+
 
 
     QGraphicsPixmapItem* m_backgroundItem;

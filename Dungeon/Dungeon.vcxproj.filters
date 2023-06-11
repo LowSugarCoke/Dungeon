@@ -85,6 +85,9 @@
     <ClCompile Include="settingScene.cpp">
       <Filter>Source Files\qtComponent</Filter>
     </ClCompile>
+    <ClCompile Include="introScene.cpp">
+      <Filter>Source Files\qtComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h">
@@ -100,6 +103,9 @@
       <Filter>Header Files\qtComponent</Filter>
     </QtMoc>
     <QtMoc Include="settingScene.h">
+      <Filter>Header Files\qtComponent</Filter>
+    </QtMoc>
+    <QtMoc Include="introScene.h">
       <Filter>Header Files\qtComponent</Filter>
     </QtMoc>
   </ItemGroup>

@@ -38,17 +38,33 @@ void Hero::keyPressEvent(QKeyEvent* event) {
     // Calculate new position
     QPointF newPos = pos();
     QPointF beforePos = pos();
-    if (event->key() == Qt::Key_W) {
+    if (event->key() == Qt::Key_W || event->key() == Qt::Key_Up) {
         newPos.setY(newPos.y() - brickSize);
     }
-    else if (event->key() == Qt::Key_S) {
+    else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down) {
         newPos.setY(newPos.y() + brickSize);
     }
-    else if (event->key() == Qt::Key_A) {
+    else if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left) {
         newPos.setX(newPos.x() - brickSize);
     }
-    else if (event->key() == Qt::Key_D) {
+    else if (event->key() == Qt::Key_D || event->key() == Qt::Key_Right) {
         newPos.setX(newPos.x() + brickSize);
+    }
+    else if (event->key() == Qt::Key_O) {
+        // Update the life text
+        GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+        if (gameScene) {
+            gameScene->level = 10;
+            gameScene->nextLevel();
+        }
+    }
+    else if (event->key() == Qt::Key_P) {
+        // Update the life text
+        GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+        if (gameScene) {
+            gameScene->updateLifeText(life);
+            gameScene->lose();
+        }
     }
 
 
