@@ -12,6 +12,7 @@
 #include "potion.h"
 #include "superPotion.h"
 #include "dragon.h"
+#include "history.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
@@ -34,6 +35,7 @@ public:
 	void lose();
 	void setHero(Hero* hero);
 	int level;
+	void loadData(History history);
 
 private:
 	int brickSize = 40;  // Save the size of your maze cells here

@@ -165,5 +165,8 @@
     <ClInclude Include="superPotion.h">
       <Filter>Header Files\qtComponent</Filter>
     </ClInclude>
+    <ClInclude Include="history.h">
+      <Filter>Header Files\global</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

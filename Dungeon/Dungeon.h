@@ -16,30 +16,31 @@
 
 class Dungeon : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Dungeon(QWidget* parent = Q_NULLPTR);
-    void nextLevel();
-    void win();
-    void lose();
-    void battle();
-    void setting();
-    void menu();
-    void restart();
-    void intro();
+	Dungeon(QWidget* parent = Q_NULLPTR);
+	void nextLevel();
+	void win();
+	void lose();
+	void battle();
+	void setting();
+	void menu();
+	void restart();
+	void intro();
+	void load();
 private:
-    Ui::DungeonClass ui;
+	Ui::DungeonClass ui;
 
-    int heroLife;
-    Level::LevelElement currentLevel;
-    Hero* hero; // Add this line
+	int heroLife;
+	Level::LevelElement currentLevel;
+	Hero* hero; // Add this line
 
-    GameScene* scene;
-    GameView* sceneView;
-    EndingScene* endingScene;
-    MainMenuScene* menuScene;
-    MediaPlayer* mediaPlayer;
-    SettingScene* settingScene;
-    IntroScene* introScene;
+	GameScene* scene;
+	GameView* sceneView;
+	EndingScene* endingScene;
+	MainMenuScene* menuScene;
+	MediaPlayer* mediaPlayer;
+	SettingScene* settingScene;
+	IntroScene* introScene;
 };

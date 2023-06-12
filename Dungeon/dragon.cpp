@@ -17,7 +17,7 @@ Dragon::Dragon(Hero* hero)
 	hero(hero),
 	speedMultiplier(1.0f) {
 	setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
-	boundary = QRectF(140, 70, 1600, 800);
+	boundary = QRectF(140, 70, 1400, 700);
 	QPixmap pixmap("Resources\\img\\exclamationMark.png");  // Change this to your image path
 	exclamationMark = new QGraphicsPixmapItem(pixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio), this);
 	exclamationMark->setPos(pos().x() + 110, pos().y() - exclamationMark->boundingRect().height());

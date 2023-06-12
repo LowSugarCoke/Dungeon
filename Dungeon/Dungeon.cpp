@@ -1,5 +1,10 @@
 ﻿#include "Dungeon.h"
 
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
+
 #include <QScreen>
 #include <QMouseEvent>
 #include <QTimer>
@@ -9,6 +14,7 @@
 #include "gameView.h"
 #include "collection.h"
 #include "level.h"
+#include "history.h"
 
 Dungeon::Dungeon(QWidget* parent)
 	: QMainWindow(parent)
@@ -50,6 +56,136 @@ Dungeon::Dungeon(QWidget* parent)
 	introScene->setMedia(mediaPlayer);
 
 	menu();
+}
+
+void Dungeon::load() {
+	mediaPlayer->mainMenu->stop();
+	std::string filename = "data.txt";
+	std::ifstream file(filename);
+
+	if (!file) {
+		std::cerr << "Unable to open file: " << filename << std::endl;
+		return;
+	}
+
+	History history;
+	// Load maze
+	for (int i = 0; i < 21; i++) {
+		std::string line;
+		std::getline(file, line);
+		std::stringstream ss(line);
+
+		history.maze.push_back(std::vector<int>());
+		std::string cell;
+		while (std::getline(ss, cell, ',')) { // Use ',' as delimiter
+			history.maze.back().push_back(std::stoi(cell));
+		}
+	}
+
+	// Load entities
+	std::string line;
+	while (std::getline(file, line)) {
+		std::istringstream is(line);
+		std::string entity;
+		is >> entity;
+		if (entity == "Level") {
+			is >> history.level;
+		}
+		else if (entity == "Hero") {
+			is >> history.heroPos.first >> history.heroPos.second >> history.heroLife;
+		}
+		else if (entity == "Monster") {
+			int x, y;
+			while (is >> x >> y) {
+				history.monsterPos.push_back({ x, y });
+			}
+		}
+		else if (entity == "MonsterSpeed") {
+			is >> history.monsterSpeed;
+		}
+		else if (entity == "Dragon") {
+			int x, y;
+			while (is >> x >> y) {
+				history.dragonPos.push_back({ x, y });
+			}
+		}
+		else if (entity == "DragonSpeed") {
+			is >> history.dragonSpeed;
+		}
+		else if (entity == "Collection") {
+			int x, y;
+			while (is >> x >> y) {
+				history.collectionPos.push_back({ x, y });
+			}
+		}
+		else if (entity == "Potion") {
+			int x, y;
+			while (is >> x >> y) {
+				history.potionPos.push_back({ x, y });
+			}
+		}
+		else if (entity == "SuperPotion") {
+			int x, y;
+			while (is >> x >> y) {
+				history.superPotionPos.push_back({ x, y });
+			}
+		}
+		else if (entity == "Trap") {
+			int x, y;
+			while (is >> x >> y) {
+				history.trapPos.push_back({ x, y });
+			}
+		}
+	}
+
+	file.close();
+
+	if (history.level == 1) {
+		currentLevel = Level::kLevel1;
+	}
+	else if (history.level == 2) {
+		currentLevel = Level::kLevel2;
+	}
+	else if (history.level == 3) {
+		currentLevel = Level::kLevel3;
+	}
+	else if (history.level == 4) {
+		currentLevel = Level::kLevel4;
+	}
+	else if (history.level == 5) {
+		currentLevel = Level::kLevel5;
+	}
+	else if (history.level == 6) {
+		currentLevel = Level::kLevel6;
+	}
+	else if (history.level == 7) {
+		currentLevel = Level::kLevel7;
+	}
+	else if (history.level == 8) {
+		currentLevel = Level::kLevel8;
+	}
+	else if (history.level == 9) {
+		currentLevel = Level::kLevel9;
+	}
+	else if (history.level == 10) {
+		currentLevel = Level::kLevel10;
+	}
+
+	scene->setHero(hero);
+
+	QScreen* screen = QGuiApplication::primaryScreen();
+	QRect screenGeometry = screen->geometry();
+	this->resize(screenGeometry.width(), screenGeometry.height());
+
+	scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+	scene->setSceneImg(UIResource::kSceneImg);
+	hero->setHeroImg(UIResource::kHero);
+	scene->setHero(hero);
+
+	scene->loadData(history);
+	sceneView->setScene(scene);
+	hero->setFocus();
+	mediaPlayer->battle->play();
 }
 
 void Dungeon::intro() {

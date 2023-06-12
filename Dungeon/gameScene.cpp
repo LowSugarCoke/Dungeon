@@ -53,6 +53,114 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
 	setBackgroundBrush(QBrush(backgroundImage));
 }
 
+void GameScene::loadData(History history) {
+	QImage brickImage(UIResource::kBrickImg);
+
+	// Adjust the size of the pixmap to fit your screen resolution
+	int brickSize = 40;  // Adjust this to get your desired brick size
+	QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(brickSize, brickSize, Qt::KeepAspectRatio);
+
+	// Calculate the offset to center the map
+	int offsetX = (width() - (mazeSize.first * 2 + 1) * brickSize) / 2;
+	int offsetY = (height() - (mazeSize.second * 2 + 1) * brickSize) / 2 - 50;
+
+	for (int i = 0; i < (mazeSize.first * 2 + 1); ++i) {
+		for (int j = 0; j < (mazeSize.second * 2 + 1); ++j) {
+			if (history.maze[j][i] == 1) {  // If the cell is a wall, create a brick
+				BrickItem* brick = new BrickItem(nullptr);
+				brick->setPixmap(scaledBrickImg);
+				brick->setPos(offsetX + i * brick->pixmap().width(), offsetY + j * brick->pixmap().height());
+				this->addItem(brick);
+				bricks.push_back(brick);
+			}
+		}
+	}
+
+	// Add the hero to the scene
+	this->addItem(hero);
+	hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetX);
+	hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetX });
+	hero->setLife(history.heroLife);
+	for (int i = 0; i < history.trapPos.size(); i++) {
+		Trap* trap = new Trap();
+		traps.push_back(trap);
+		trap->setTrapImg(UIResource::kTrap);
+		trap->setPos(history.trapPos[i].first * brickSize + offsetX, history.trapPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(trap);
+	}
+
+	for (int i = 0; i < history.potionPos.size(); i++) {
+		Potion* potion = new Potion();
+		potions.push_back(potion);
+		potion->setPotionImg(UIResource::kPotion);
+		potion->setPos(history.potionPos[i].first * brickSize + offsetX, history.potionPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(potion);
+	}
+
+	for (int i = 0; i < history.superPotionPos.size(); i++) {
+		SuperPotion* superPotion = new SuperPotion();
+		superPotions.push_back(superPotion);
+		superPotion->setPotionImg(UIResource::kSuperPotion);
+		superPotion->setPos(history.superPotionPos[i].first * brickSize + offsetX, history.superPotionPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(superPotion);
+	}
+
+	remainingCollections = history.collectionPos.size();
+	for (int i = 0; i < history.collectionPos.size(); i++) {
+		Collection* collection = new Collection();
+		collections.push_back(collection);
+		collection->setCollectionImg(UIResource::kStar);
+		collection->setPos(history.collectionPos[i].first * brickSize + offsetX, history.collectionPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(collection);
+	}
+
+	// Create the monsters based on the difficulty level
+	for (int i = 0; i < history.monsterPos.size(); i++) {
+		Monster* monster = new Monster();
+		monsters.push_back(monster);
+		monster->setMonsterImg(UIResource::kMonster);
+		// Set the step size to be the same as the brick size
+		monster->setStepSize(brickSize);
+		monster->setPos(history.monsterPos[i].first * brickSize + offsetX, history.monsterPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(monster);
+
+		// Setup a timer to move the monster every 1 second
+		QTimer* timer = new QTimer();
+		QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
+		timer->start(history.monsterSpeed);;
+	}
+
+	// Create the dragons based on the difficulty level
+
+	for (int i = 0; i < history.dragonPos.size(); i++) {
+		Dragon* dragon = new Dragon(hero);
+		dragons.push_back(dragon);
+		dragon->setDragonImg(UIResource::kDragon);
+		// Set the step size to be the same as the brick size
+		dragon->setStepSize(brickSize);
+		dragon->setZValue(1);
+		dragon->setPos(history.dragonPos[i].first * brickSize + offsetX, history.dragonPos[i].second * brickSize + offsetX);
+		// Add the monster to the scene
+		this->addItem(dragon);
+
+		// Setup a timer to move the monster every 1 second
+		QTimer* timer = new QTimer();
+		QObject::connect(timer, &QTimer::timeout, dragon, &Dragon::randomMove);
+		timer->start(history.dragonSpeed);
+	}
+
+	level = history.level;
+	updateLevelText(QString::number(history.level));
+	updateLifeText(hero->getLife());
+
+	hero->startInvincibleMode(2000);
+}
+
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
 	MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
 
@@ -261,6 +369,9 @@ void GameScene::nextLevel() {
 	for (auto p : superPotions) {
 		this->removeItem(p);
 	}
+	for (auto d : dragons) {
+		this->removeItem(d);
+	}
 
 	// Save the current Hero's life.
 	heroLife = hero->getLife();
@@ -298,6 +409,10 @@ void GameScene::lose() {
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
+	}
+
+	for (auto d : dragons) {
+		this->removeItem(d);
 	}
 
 	static_cast<Dungeon*>(parent())->lose();

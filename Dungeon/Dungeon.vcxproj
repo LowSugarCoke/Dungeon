@@ -118,6 +118,7 @@
     <ClInclude Include="gameView.h" />
     <QtMoc Include="hero.h" />
     <QtMoc Include="introScene.h" />
+    <ClInclude Include="history.h" />
     <ClInclude Include="level.h" />
     <QtMoc Include="mainMenuScene.h" />
     <ClInclude Include="mazeGenerator.h" />
