@@ -200,11 +200,13 @@ void Hero::checkCollision() {
 			if (monster) {
 				monsterSound->play();
 				this->decreaseLife();
+				startInvincibleMode(2000);
 			}
 			auto* dragon = dynamic_cast<Dragon*>(item);
 			if (dragon) {
 				monsterSound->play();
 				this->decreaseLife();
+				startInvincibleMode(2000);
 			}
 		}
 	}

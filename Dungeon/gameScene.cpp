@@ -207,7 +207,7 @@ void GameScene::loadData(History history) {
 	updateLevelText(QString::number(history.level));
 	updateLifeText(hero->getLife());
 
-	//hero->startInvincibleMode(2000);
+	hero->startInvincibleMode(2000);
 }
 
 void GameScene::saveData() {
@@ -460,7 +460,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 			x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
 			y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
 			dragon->setPos(x, y);
-		} while (x >= 140 && x <= 1400 && y >= 70 && y <= 700);
+		} while (x >= 140 && x <= 1000 && y >= 70 && y <= 500);
 
 		// Setup a timer to move the monster every 1 second
 		QTimer* timer = new QTimer();
