@@ -76,6 +76,24 @@ void Hero::keyPressEvent(QKeyEvent* event) {
 			gameScene->lose();
 		}
 	}
+	else if (event->key() == Qt::Key_U) {
+		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+		if (gameScene) {
+			gameScene->saveData();
+		}
+	}
+	else if (event->key() == Qt::Key_I) {
+		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+		if (gameScene) {
+			gameScene->callLoad();
+		}
+	}
+	else if (event->key() == Qt::Key_Y) {
+		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
+		if (gameScene) {
+			gameScene->nextLevel();
+		}
+	}
 
 	// Check for collisions
 	setPos(newPos);

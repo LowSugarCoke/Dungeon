@@ -2,6 +2,10 @@
 
 #include <QRandomGenerator>
 #include <QTimer>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 #include "brickItem.h"
 #include "hero.h"
@@ -52,6 +56,39 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
 	QImage backgroundImage(kSceneImg);
 	setBackgroundBrush(QBrush(backgroundImage));
 }
+void GameScene::callLoad() {
+	for (auto b : bricks) {
+		this->removeItem(b);
+	}
+
+	for (auto m : monsters) {
+		this->removeItem(m);
+	}
+
+	for (auto c : collections) {
+		this->removeItem(c);
+	}
+
+	for (auto t : traps) {
+		this->removeItem(t);
+	}
+
+	for (auto p : potions) {
+		this->removeItem(p);
+	}
+
+	for (auto p : superPotions) {
+		this->removeItem(p);
+	}
+
+	for (auto d : dragons) {
+		this->removeItem(d);
+	}
+
+	this->removeItem(hero);
+
+	static_cast<Dungeon*>(parent())->load();
+}
 
 void GameScene::loadData(History history) {
 	QImage brickImage(UIResource::kBrickImg);
@@ -61,8 +98,8 @@ void GameScene::loadData(History history) {
 	QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(brickSize, brickSize, Qt::KeepAspectRatio);
 
 	// Calculate the offset to center the map
-	int offsetX = (width() - (mazeSize.first * 2 + 1) * brickSize) / 2;
-	int offsetY = (height() - (mazeSize.second * 2 + 1) * brickSize) / 2 - 50;
+	int offsetX = 140;
+	int offsetY = 70;
 
 	for (int i = 0; i < (mazeSize.first * 2 + 1); ++i) {
 		for (int j = 0; j < (mazeSize.second * 2 + 1); ++j) {
@@ -78,14 +115,15 @@ void GameScene::loadData(History history) {
 
 	// Add the hero to the scene
 	this->addItem(hero);
-	hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetX);
-	hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetX });
+	auto t = history.heroPos.first * brickSize + offsetX;
+	hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY);
+	hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY });
 	hero->setLife(history.heroLife);
 	for (int i = 0; i < history.trapPos.size(); i++) {
 		Trap* trap = new Trap();
 		traps.push_back(trap);
 		trap->setTrapImg(UIResource::kTrap);
-		trap->setPos(history.trapPos[i].first * brickSize + offsetX, history.trapPos[i].second * brickSize + offsetX);
+		trap->setPos(history.trapPos[i].first * brickSize + offsetX, history.trapPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(trap);
 	}
@@ -94,7 +132,7 @@ void GameScene::loadData(History history) {
 		Potion* potion = new Potion();
 		potions.push_back(potion);
 		potion->setPotionImg(UIResource::kPotion);
-		potion->setPos(history.potionPos[i].first * brickSize + offsetX, history.potionPos[i].second * brickSize + offsetX);
+		potion->setPos(history.potionPos[i].first * brickSize + offsetX, history.potionPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(potion);
 	}
@@ -103,7 +141,7 @@ void GameScene::loadData(History history) {
 		SuperPotion* superPotion = new SuperPotion();
 		superPotions.push_back(superPotion);
 		superPotion->setPotionImg(UIResource::kSuperPotion);
-		superPotion->setPos(history.superPotionPos[i].first * brickSize + offsetX, history.superPotionPos[i].second * brickSize + offsetX);
+		superPotion->setPos(history.superPotionPos[i].first * brickSize + offsetX, history.superPotionPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(superPotion);
 	}
@@ -113,7 +151,7 @@ void GameScene::loadData(History history) {
 		Collection* collection = new Collection();
 		collections.push_back(collection);
 		collection->setCollectionImg(UIResource::kStar);
-		collection->setPos(history.collectionPos[i].first * brickSize + offsetX, history.collectionPos[i].second * brickSize + offsetX);
+		collection->setPos(history.collectionPos[i].first * brickSize + offsetX, history.collectionPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(collection);
 	}
@@ -125,7 +163,7 @@ void GameScene::loadData(History history) {
 		monster->setMonsterImg(UIResource::kMonster);
 		// Set the step size to be the same as the brick size
 		monster->setStepSize(brickSize);
-		monster->setPos(history.monsterPos[i].first * brickSize + offsetX, history.monsterPos[i].second * brickSize + offsetX);
+		monster->setPos(history.monsterPos[i].first * brickSize + offsetX, history.monsterPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(monster);
 
@@ -144,7 +182,7 @@ void GameScene::loadData(History history) {
 		// Set the step size to be the same as the brick size
 		dragon->setStepSize(brickSize);
 		dragon->setZValue(1);
-		dragon->setPos(history.dragonPos[i].first * brickSize + offsetX, history.dragonPos[i].second * brickSize + offsetX);
+		dragon->setPos(history.dragonPos[i].first * brickSize + offsetX, history.dragonPos[i].second * brickSize + offsetY);
 		// Add the monster to the scene
 		this->addItem(dragon);
 
@@ -161,9 +199,91 @@ void GameScene::loadData(History history) {
 	hero->startInvincibleMode(2000);
 }
 
+void GameScene::saveData() {
+	int brickSize = 40;
+
+	// Calculate the offset to center the map
+	int offsetX = 140;
+	int offsetY = 70;
+
+	std::string filename = "data.txt";
+	std::ofstream file(filename);
+
+	if (!file) {
+		std::cerr << "Unable to open file: " << filename << std::endl;
+		return;
+	}
+
+	// Save maze
+	for (size_t i = 0; i < maze[0].size(); ++i) {
+		for (size_t j = 0; j < maze.size(); ++j) {
+			file << maze[j][i];
+			if (j != maze.size() - 1) {
+				file << ",";
+			}
+		}
+		file << "\n";
+	}
+
+	// Save level
+	file << "Level " << level << "\n";
+
+	// Save hero
+	int ss = hero->x();
+	file << "Hero " << int(hero->x() - offsetX) / brickSize << " " << int(hero->y() - offsetY) / brickSize << " " << hero->getLife() << "\n";
+
+	// Save monsters
+	file << "Monster ";
+	for (const auto& monster : monsters) {
+		file << int(monster->x() - offsetX) / brickSize << " " << int(monster->y() - offsetY) / brickSize << " ";
+	}
+	file << "\n";
+
+	// Save MonsterSpeed
+	file << "MonsterSpeed  " << monsterSpeed << "\n";
+
+	// Save dragons
+	file << "Dragon ";
+	for (const auto& dragon : dragons) {
+		file << int(dragon->x() - offsetX) / brickSize << " " << int(dragon->y() - offsetY) / brickSize << " ";
+	}
+	file << "\n";
+
+	// Save DragonSpeed
+	file << "DragonSpeed   " << dragonSpeed << "\n";
+
+	// Save collections
+	file << "Collection  ";
+	for (const auto& collection : collections) {
+		file << int(collection->x() - offsetX) / brickSize << " " << int(collection->y() - offsetY) / brickSize << " ";
+	}
+	file << "\n";
+
+	// Save Potion
+	file << "Potion  ";
+	for (const auto& potion : potions) {
+		file << int(potion->x() - offsetX) / brickSize << " " << int(potion->y() - offsetY) / brickSize << " ";
+	}
+	file << "\n";
+
+	// Save super potions
+	file << "SuperPotion ";
+	for (const auto& superPotion : superPotions) {
+		file << int(superPotion->x() - offsetX) / brickSize << " " << int(superPotion->y() - offsetY) / brickSize << " ";
+	}
+	file << "\n";
+
+	file << "Trap  ";
+	for (const auto& trap : traps) {
+		file << int(trap->x() - offsetX) / brickSize << " " << int(trap->y() - offsetY) / brickSize << " ";
+	}
+
+	file.close();
+}
+
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
 	MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
-
+	this->maze = maze.getMaze();
 	QImage brickImage(kBrickImg);
 
 	// Adjust the size of the pixmap to fit your screen resolution
@@ -219,6 +339,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 		do {
 			x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
 			y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+
 			trap->setPos(x, y);
 		} while (!trap->collidingItems().isEmpty());
 	}
@@ -300,6 +421,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 		QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
 		timer->start(kLevelElement.monsterspeed);
 	}
+	monsterSpeed = kLevelElement.monsterspeed;
 
 	// Create the dragons based on the difficulty level
 	int dragonCount = kLevelElement.dragonCount;
@@ -319,13 +441,14 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 			x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
 			y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
 			dragon->setPos(x, y);
-		} while (x >= 140 && x <= 1600 && y >= 70 && y <= 800);
+		} while (x >= 140 && x <= 1400 && y >= 70 && y <= 700);
 
 		// Setup a timer to move the monster every 1 second
 		QTimer* timer = new QTimer();
 		QObject::connect(timer, &QTimer::timeout, dragon, &Dragon::randomMove);
 		timer->start(kLevelElement.dragonSpeed);
 	}
+	dragonSpeed = kLevelElement.dragonSpeed;
 
 	updateLevelText(kLevelElement.level);
 	updateLifeText(hero->getLife());
@@ -348,30 +471,45 @@ void GameScene::nextLevel() {
 
 	for (auto b : bricks) {
 		this->removeItem(b);
+		delete b;
 	}
+	bricks.clear();
 
 	for (auto m : monsters) {
 		this->removeItem(m);
+		delete m;
 	}
+	monsters.clear();
 
 	for (auto c : collections) {
 		this->removeItem(c);
+		delete c;
 	}
+	collections.clear();
 
 	for (auto t : traps) {
 		this->removeItem(t);
+		delete t;
 	}
+	traps.clear();
 
 	for (auto p : potions) {
 		this->removeItem(p);
+		delete p;
 	}
+	potions.clear();
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
+		delete p;
 	}
+	superPotions.clear();
+
 	for (auto d : dragons) {
 		this->removeItem(d);
+		delete d;
 	}
+	dragons.clear();
 
 	// Save the current Hero's life.
 	heroLife = hero->getLife();
@@ -389,31 +527,45 @@ void GameScene::nextLevel() {
 void GameScene::lose() {
 	for (auto b : bricks) {
 		this->removeItem(b);
+		delete b;
 	}
+	bricks.clear();
 
 	for (auto m : monsters) {
 		this->removeItem(m);
+		delete m;
 	}
+	monsters.clear();
 
 	for (auto c : collections) {
 		this->removeItem(c);
+		delete c;
 	}
+	collections.clear();
 
 	for (auto t : traps) {
 		this->removeItem(t);
+		delete t;
 	}
+	traps.clear();
 
 	for (auto p : potions) {
 		this->removeItem(p);
+		delete p;
 	}
+	potions.clear();
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
+		delete p;
 	}
+	superPotions.clear();
 
 	for (auto d : dragons) {
 		this->removeItem(d);
+		delete d;
 	}
+	dragons.clear();
 
 	static_cast<Dungeon*>(parent())->lose();
 }

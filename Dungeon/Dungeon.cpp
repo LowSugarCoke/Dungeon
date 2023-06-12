@@ -60,6 +60,7 @@ Dungeon::Dungeon(QWidget* parent)
 
 void Dungeon::load() {
 	mediaPlayer->mainMenu->stop();
+	mediaPlayer->battle->stop();
 	std::string filename = "data.txt";
 	std::ifstream file(filename);
 

@@ -36,6 +36,8 @@ public:
 	void setHero(Hero* hero);
 	int level;
 	void loadData(History history);
+	void callLoad();
+	void saveData();
 
 private:
 	int brickSize = 40;  // Save the size of your maze cells here
@@ -44,6 +46,8 @@ private:
 	int remainingCollections;
 	Hero* hero;
 	int heroLife;
+	int monsterSpeed;
+	int dragonSpeed;
 
 	QGraphicsPixmapItem* m_backgroundItem;
 	QGraphicsOpacityEffect* m_opacityEffect;
@@ -54,4 +58,5 @@ private:
 	std::vector<Trap*> traps;
 	std::vector<Potion*> potions;
 	std::vector<SuperPotion*> superPotions;
+	std::vector<std::vector<int>> maze;
 };
