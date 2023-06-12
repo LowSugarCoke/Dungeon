@@ -59,31 +59,45 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
 void GameScene::callLoad() {
 	for (auto b : bricks) {
 		this->removeItem(b);
+		//delete b;
 	}
+	bricks.clear();
 
 	for (auto m : monsters) {
 		this->removeItem(m);
+		//delete m;
 	}
+	monsters.clear();
 
 	for (auto c : collections) {
 		this->removeItem(c);
+		//delete c;
 	}
+	collections.clear();
 
 	for (auto t : traps) {
 		this->removeItem(t);
+		//delete t;
 	}
+	traps.clear();
 
 	for (auto p : potions) {
 		this->removeItem(p);
+		//delete p;
 	}
+	potions.clear();
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
+		//delete p;
 	}
+	superPotions.clear();
 
 	for (auto d : dragons) {
 		this->removeItem(d);
+		//delete d;
 	}
+	dragons.clear();
 
 	this->removeItem(hero);
 
@@ -119,6 +133,7 @@ void GameScene::loadData(History history) {
 	hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY);
 	hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY });
 	hero->setLife(history.heroLife);
+
 	for (int i = 0; i < history.trapPos.size(); i++) {
 		Trap* trap = new Trap();
 		traps.push_back(trap);
@@ -255,27 +270,35 @@ void GameScene::saveData() {
 	// Save collections
 	file << "Collection  ";
 	for (const auto& collection : collections) {
-		file << int(collection->x() - offsetX) / brickSize << " " << int(collection->y() - offsetY) / brickSize << " ";
+		if (collection->isVisible()) {
+			file << int(collection->x() - offsetX) / brickSize << " " << int(collection->y() - offsetY) / brickSize << " ";
+		}
 	}
 	file << "\n";
 
 	// Save Potion
 	file << "Potion  ";
 	for (const auto& potion : potions) {
-		file << int(potion->x() - offsetX) / brickSize << " " << int(potion->y() - offsetY) / brickSize << " ";
+		if (potion->isVisible()) {
+			file << int(potion->x() - offsetX) / brickSize << " " << int(potion->y() - offsetY) / brickSize << " ";
+		}
 	}
 	file << "\n";
 
 	// Save super potions
 	file << "SuperPotion ";
 	for (const auto& superPotion : superPotions) {
-		file << int(superPotion->x() - offsetX) / brickSize << " " << int(superPotion->y() - offsetY) / brickSize << " ";
+		if (superPotion->isVisible()) {
+			file << int(superPotion->x() - offsetX) / brickSize << " " << int(superPotion->y() - offsetY) / brickSize << " ";
+		}
 	}
 	file << "\n";
 
 	file << "Trap  ";
 	for (const auto& trap : traps) {
-		file << int(trap->x() - offsetX) / brickSize << " " << int(trap->y() - offsetY) / brickSize << " ";
+		if (trap->isVisible()) {
+			file << int(trap->x() - offsetX) / brickSize << " " << int(trap->y() - offsetY) / brickSize << " ";
+		}
 	}
 
 	file.close();
@@ -471,43 +494,43 @@ void GameScene::nextLevel() {
 
 	for (auto b : bricks) {
 		this->removeItem(b);
-		delete b;
+		//delete b;
 	}
 	bricks.clear();
 
 	for (auto m : monsters) {
 		this->removeItem(m);
-		delete m;
+		//delete m;
 	}
 	monsters.clear();
 
 	for (auto c : collections) {
 		this->removeItem(c);
-		delete c;
+		//delete c;
 	}
 	collections.clear();
 
 	for (auto t : traps) {
 		this->removeItem(t);
-		delete t;
+		//delete t;
 	}
 	traps.clear();
 
 	for (auto p : potions) {
 		this->removeItem(p);
-		delete p;
+		//delete p;
 	}
 	potions.clear();
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
-		delete p;
+		//delete p;
 	}
 	superPotions.clear();
 
 	for (auto d : dragons) {
 		this->removeItem(d);
-		delete d;
+		//delete d;
 	}
 	dragons.clear();
 
@@ -527,43 +550,43 @@ void GameScene::nextLevel() {
 void GameScene::lose() {
 	for (auto b : bricks) {
 		this->removeItem(b);
-		delete b;
+		//delete b;
 	}
 	bricks.clear();
 
 	for (auto m : monsters) {
 		this->removeItem(m);
-		delete m;
+		//delete m;
 	}
 	monsters.clear();
 
 	for (auto c : collections) {
 		this->removeItem(c);
-		delete c;
+		//delete c;
 	}
 	collections.clear();
 
 	for (auto t : traps) {
 		this->removeItem(t);
-		delete t;
+		//delete t;
 	}
 	traps.clear();
 
 	for (auto p : potions) {
 		this->removeItem(p);
-		delete p;
+		//delete p;
 	}
 	potions.clear();
 
 	for (auto p : superPotions) {
 		this->removeItem(p);
-		delete p;
+		//delete p;
 	}
 	superPotions.clear();
 
 	for (auto d : dragons) {
 		this->removeItem(d);
-		delete d;
+		//delete d;
 	}
 	dragons.clear();
 

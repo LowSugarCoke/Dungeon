@@ -172,16 +172,14 @@ void Dungeon::load() {
 		currentLevel = Level::kLevel10;
 	}
 
-	scene->setHero(hero);
-
 	QScreen* screen = QGuiApplication::primaryScreen();
 	QRect screenGeometry = screen->geometry();
 	this->resize(screenGeometry.width(), screenGeometry.height());
 
 	scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 	scene->setSceneImg(UIResource::kSceneImg);
-	hero->setHeroImg(UIResource::kHero);
 	scene->setHero(hero);
+	hero->setHeroImg(UIResource::kHero);
 
 	scene->loadData(history);
 	sceneView->setScene(scene);

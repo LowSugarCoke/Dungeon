@@ -25,8 +25,8 @@ namespace Level {
    1, // potionCount
    1, // trapCount
    1, // superPotionCount
-   1, // dragonCount
-   500, // dragonSpeed
+   0, // dragonCount
+   700, // dragonSpeed
 	};
 
 	static const LevelElement kLevel2{
@@ -39,7 +39,7 @@ namespace Level {
 	   2, // trapCount
 	   0, // superPotionCount
 	   0, // dragonCount
-		  500, // dragonSpeed
+		  700, // dragonSpeed
 	};
 
 	static const LevelElement kLevel3{
@@ -52,7 +52,7 @@ namespace Level {
 		3, // trapCount
 		0, // superPotionCount
 		0, // dragonCount
-		   500, // dragonSpeed
+		   700, // dragonSpeed
 	};
 
 	static const LevelElement kLevel4{
@@ -65,7 +65,7 @@ namespace Level {
 		4, // trapCount
 		1, // superPotionCount
 		0, // dragonCount
-		   500, // dragonSpeed
+		   700, // dragonSpeed
 	};
 
 	static const LevelElement kLevel5{
@@ -78,7 +78,7 @@ namespace Level {
 	4, // trapCount
 	1, // superPotionCount
 	0, // dragonCount
-	500, // dragonSpeed
+	700, // dragonSpeed
 	};
 
 	static const LevelElement kLevel6{
@@ -91,7 +91,7 @@ namespace Level {
 	4, // trapCount
 	1, // superPotionCount
 	1, // dragonCount
-	500, // dragonSpeed
+	600, // dragonSpeed
 	};
 	static const LevelElement kLevel7{
 	"7",
@@ -115,30 +115,30 @@ namespace Level {
 	5, // trapCount
 	1, // superPotionCount
 	1, // dragonCount
-	500, // dragonSpeed
+	400, // dragonSpeed
 	};
 	static const LevelElement kLevel9{
 	"9",
 	4, // mazeLevel = 8;
 	19, //monsterCount
-	400, // monsterspeed
+	500, // monsterspeed
 	7, // starCount = 7
 	1, // potionCount
 	5, // trapCount
 	2, // superPotionCount
 	1, // dragonCount
-	500, // dragonSpeed
+	400, // dragonSpeed
 	};
 	static const LevelElement kLevel10{
 	"10",
 	4, // mazeLevel = 8;
 	20, //monsterCount
-	300, // monsterspeed
+	500, // monsterspeed
 	8, // starCount = 7
 	1, // potionCount
 	6, // trapCount
-	2, // superPotionCount
-	1, // dragonCount
-	500, // dragonSpeed
+	3, // superPotionCount
+	3, // dragonCount
+	400, // dragonSpeed
 	};
 };
