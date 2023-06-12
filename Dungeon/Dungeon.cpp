@@ -35,7 +35,7 @@ Dungeon::Dungeon(QWidget* parent)
 	hero->setDrangonSound(mediaPlayer->start);
 
 	scene = new GameScene(this);
-
+	scene->setHero(hero);
 	sceneView = new GameView(scene, this);
 
 	endingScene = new EndingScene(this);
@@ -178,9 +178,7 @@ void Dungeon::load() {
 
 	scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 	scene->setSceneImg(UIResource::kSceneImg);
-	scene->setHero(hero);
 	hero->setHeroImg(UIResource::kHero);
-
 	scene->loadData(history);
 	sceneView->setScene(scene);
 	hero->setFocus();
@@ -294,7 +292,6 @@ void Dungeon::battle() {
 	scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 	scene->setSceneImg(UIResource::kSceneImg);
 	hero->setHeroImg(UIResource::kHero);
-	scene->setHero(hero);
 
 	scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
 

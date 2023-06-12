@@ -99,8 +99,6 @@ void GameScene::callLoad() {
 	}
 	dragons.clear();
 
-	this->removeItem(hero);
-
 	static_cast<Dungeon*>(parent())->load();
 }
 
@@ -128,8 +126,6 @@ void GameScene::loadData(History history) {
 	}
 
 	// Add the hero to the scene
-	this->addItem(hero);
-	auto t = history.heroPos.first * brickSize + offsetX;
 	hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY);
 	hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY });
 	hero->setLife(history.heroLife);
@@ -211,7 +207,7 @@ void GameScene::loadData(History history) {
 	updateLevelText(QString::number(history.level));
 	updateLifeText(hero->getLife());
 
-	hero->startInvincibleMode(2000);
+	//hero->startInvincibleMode(2000);
 }
 
 void GameScene::saveData() {
@@ -330,7 +326,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 	}
 
 	// Add the hero to the scene
-	this->addItem(hero);
+	//this->addItem(hero);
 
 	// Try to place the hero
 	bool heroPlaced = false;
@@ -595,4 +591,5 @@ void GameScene::lose() {
 
 void GameScene::setHero(Hero* hero) {
 	this->hero = hero;
+	this->addItem(hero);
 }

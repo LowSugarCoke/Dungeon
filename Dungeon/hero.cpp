@@ -66,6 +66,7 @@ void Hero::keyPressEvent(QKeyEvent* event) {
 		if (gameScene) {
 			gameScene->level = 10;
 			gameScene->nextLevel();
+			return;
 		}
 	}
 	else if (event->key() == Qt::Key_P) {
@@ -74,24 +75,28 @@ void Hero::keyPressEvent(QKeyEvent* event) {
 		if (gameScene) {
 			gameScene->updateLifeText(life);
 			gameScene->lose();
+			return;
 		}
 	}
 	else if (event->key() == Qt::Key_U) {
 		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
 		if (gameScene) {
 			gameScene->saveData();
+			return;
 		}
 	}
 	else if (event->key() == Qt::Key_I) {
 		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
 		if (gameScene) {
 			gameScene->callLoad();
+			return;
 		}
 	}
 	else if (event->key() == Qt::Key_Y) {
 		GameScene* gameScene = dynamic_cast<GameScene*>(scene());
 		if (gameScene) {
 			gameScene->nextLevel();
+			return;
 		}
 	}
 
