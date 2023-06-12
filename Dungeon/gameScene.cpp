@@ -201,7 +201,7 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 		dragon->setDragonImg(UIResource::kDragon);
 		// Set the step size to be the same as the brick size
 		dragon->setStepSize(brickSize);
-
+		dragon->setZValue(1);
 		// Add the monster to the scene
 		this->addItem(dragon);
 
@@ -221,6 +221,12 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
 	updateLevelText(kLevelElement.level);
 	updateLifeText(hero->getLife());
+	if (kLevelElement.level == Level::kLevel1.level) {
+		hero->startInvincibleMode(6000);
+	}
+	else {
+		hero->startInvincibleMode(2000);
+	}
 }
 
 void GameScene::decreaseCollectionCount() {

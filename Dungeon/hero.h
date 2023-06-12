@@ -27,6 +27,7 @@ public:
 	void setSuperPotionSound(QMediaPlayer* sound);
 	void setCollectionSound(QMediaPlayer* sound);
 	void setTrapSound(QMediaPlayer* trap);
+	void startInvincibleMode(int durationMs);
 
 private:
 	int brickSize = 40;  // Save the size of your maze cells here
@@ -47,7 +48,6 @@ private:
 	bool isInvincible;
 	int blinkState;
 
-	void startInvincibleMode(int durationMs);
 	void stopInvincibleMode();
 	void blink();
 };
