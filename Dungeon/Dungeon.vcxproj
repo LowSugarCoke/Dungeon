@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="brickItem.cpp" />
     <ClCompile Include="collection.cpp" />
+    <ClCompile Include="dragon.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="endingScene.cpp" />
     <ClCompile Include="gameScene.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="brickItem.h" />
     <ClInclude Include="collection.h" />
     <QtMoc Include="endingScene.h" />
+    <QtMoc Include="dragon.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
     <QtMoc Include="hero.h" />

@@ -22,6 +22,7 @@ public:
 	void checkCollision();
 	void setStartPos(std::pair<int, int> startPos);
 	void setMonsterSound(QMediaPlayer* sound);
+	void setDrangonSound(QMediaPlayer* sound);
 	void setPotionSound(QMediaPlayer* sound);
 	void setSuperPotionSound(QMediaPlayer* sound);
 	void setCollectionSound(QMediaPlayer* sound);
@@ -33,6 +34,7 @@ private:
 	std::pair<int, int> startPos;
 	bool isFrozen;
 	QMediaPlayer* monsterSound;  // 新增的音效播放器
+	QMediaPlayer* drangonSound;
 	QMediaPlayer* potionSound;
 	QMediaPlayer* superPotionSound;
 	QMediaPlayer* collectionSound;

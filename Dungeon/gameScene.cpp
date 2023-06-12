@@ -169,7 +169,6 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 
 	// Create the monsters based on the difficulty level
 	int monsterCount = kLevelElement.monsterCount;
-
 	for (int i = 0; i < monsterCount; i++) {
 		Monster* monster = new Monster();
 		monsters.push_back(monster);
@@ -192,6 +191,32 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
 		QTimer* timer = new QTimer();
 		QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
 		timer->start(kLevelElement.monsterspeed);
+	}
+
+	// Create the dragons based on the difficulty level
+	int dragonCount = kLevelElement.dragonCount;
+	for (int i = 0; i < dragonCount; i++) {
+		Dragon* dragon = new Dragon(hero);
+		dragons.push_back(dragon);
+		dragon->setDragonImg(UIResource::kDragon);
+		// Set the step size to be the same as the brick size
+		dragon->setStepSize(brickSize);
+
+		// Add the monster to the scene
+		this->addItem(dragon);
+
+		// Position the monster in a random location that doesn't collide with anything
+		int x, y;
+		do {
+			x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
+			y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+			dragon->setPos(x, y);
+		} while (x >= 140 && x <= 1600 && y >= 70 && y <= 800);
+
+		// Setup a timer to move the monster every 1 second
+		QTimer* timer = new QTimer();
+		QObject::connect(timer, &QTimer::timeout, dragon, &Dragon::randomMove);
+		timer->start(kLevelElement.dragonSpeed);
 	}
 
 	updateLevelText(kLevelElement.level);

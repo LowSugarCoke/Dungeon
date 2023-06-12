@@ -58,7 +58,7 @@ MediaPlayer::MediaPlayer() {
 		});
 
 	start = new QMediaPlayer();
-	start->setMedia(QUrl::fromLocalFile("Resources\\mp3\\start.mp3"));
+	start->setMedia(QUrl::fromLocalFile("Resources\\mp3\\dragon.mp3"));
 	start->setVolume(50);
 
 	battle = new QMediaPlayer();

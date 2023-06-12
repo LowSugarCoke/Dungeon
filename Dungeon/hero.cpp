@@ -6,6 +6,7 @@
 #include "potion.h"
 #include "trap.h"
 #include "superPotion.h"
+#include "dragon.h"
 
 #include <QObject>
 
@@ -94,12 +95,6 @@ void Hero::keyPressEvent(QKeyEvent* event) {
 					});
 				return;
 			}
-
-			auto* monster = dynamic_cast<Monster*>(item);
-			if (monster) {
-				monsterSound->play();
-				this->decreaseLife();
-			}
 		}
 	}
 
@@ -176,6 +171,19 @@ void Hero::checkCollision() {
 
 			startInvincibleMode(10000);
 		}
+
+		if (!isInvincible) {
+			auto* monster = dynamic_cast<Monster*>(item);
+			if (monster) {
+				monsterSound->play();
+				this->decreaseLife();
+			}
+			auto* dragon = dynamic_cast<Dragon*>(item);
+			if (dragon) {
+				monsterSound->play();
+				this->decreaseLife();
+			}
+		}
 	}
 }
 
@@ -206,6 +214,10 @@ void Hero::addLife() {
 
 void Hero::setMonsterSound(QMediaPlayer* sound) {
 	monsterSound = sound;
+}
+
+void Hero::setDrangonSound(QMediaPlayer* sound) {
+	drangonSound = sound;
 }
 
 void Hero::setPotionSound(QMediaPlayer* sound) {

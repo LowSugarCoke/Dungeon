@@ -26,6 +26,7 @@ Dungeon::Dungeon(QWidget* parent)
 	hero->setCollectionSound(mediaPlayer->collection);
 	hero->setTrapSound(mediaPlayer->trap);
 	hero->setSuperPotionSound(mediaPlayer->superPotion);
+	hero->setDrangonSound(mediaPlayer->start);
 
 	scene = new GameScene(this);
 

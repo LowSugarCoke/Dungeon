@@ -11,6 +11,7 @@
 #include "trap.h"
 #include "potion.h"
 #include "superPotion.h"
+#include "dragon.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
@@ -45,6 +46,7 @@ private:
 	QGraphicsPixmapItem* m_backgroundItem;
 	QGraphicsOpacityEffect* m_opacityEffect;
 	std::vector<Monster*> monsters;
+	std::vector<Dragon*> dragons;
 	std::vector<BrickItem*> bricks;
 	std::vector<Collection*> collections;
 	std::vector<Trap*> traps;

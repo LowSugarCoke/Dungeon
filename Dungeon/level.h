@@ -12,6 +12,8 @@ namespace Level {
 		int potionCount; // more potion more easy
 		int trapCount; // more trap more hard
 		int superPotionCount; // more super potion more easy
+		int dragonCount; // more dragon more hard
+		int dragonSpeed; // more low more quick ( 1000 = 1s)
 	};
 
 	static const LevelElement kLevel1{
@@ -23,6 +25,8 @@ namespace Level {
    1, // potionCount
    1, // trapCount
    1, // superPotionCount
+   1, // dragonCount
+   500, // dragonSpeed
 	};
 
 	static const LevelElement kLevel2{
@@ -34,6 +38,8 @@ namespace Level {
 	   0, // potionCount
 	   2, // trapCount
 	   0, // superPotionCount
+	   0, // dragonCount
+		  500, // dragonSpeed
 	};
 
 	static const LevelElement kLevel3{
@@ -45,6 +51,8 @@ namespace Level {
 		1, // potionCount
 		3, // trapCount
 		0, // superPotionCount
+		0, // dragonCount
+		   500, // dragonSpeed
 	};
 
 	static const LevelElement kLevel4{
@@ -56,6 +64,8 @@ namespace Level {
 		0, // potionCount
 		4, // trapCount
 		1, // superPotionCount
+		0, // dragonCount
+		   500, // dragonSpeed
 	};
 
 	static const LevelElement kLevel5{
@@ -67,6 +77,8 @@ namespace Level {
 	1, // potionCount
 	4, // trapCount
 	1, // superPotionCount
+	0, // dragonCount
+	500, // dragonSpeed
 	};
 
 	static const LevelElement kLevel6{
@@ -78,6 +90,8 @@ namespace Level {
 	1, // potionCount
 	4, // trapCount
 	1, // superPotionCount
+	1, // dragonCount
+	500, // dragonSpeed
 	};
 	static const LevelElement kLevel7{
 	"7",
@@ -88,6 +102,8 @@ namespace Level {
 	1, // potionCount
 	4, // trapCount
 	1, // superPotionCount
+	0, // dragonCount
+	500, // dragonSpeed
 	};
 	static const LevelElement kLevel8{
 	"8",
@@ -98,6 +114,8 @@ namespace Level {
 	1, // potionCount
 	5, // trapCount
 	1, // superPotionCount
+	1, // dragonCount
+	500, // dragonSpeed
 	};
 	static const LevelElement kLevel9{
 	"9",
@@ -108,6 +126,8 @@ namespace Level {
 	1, // potionCount
 	5, // trapCount
 	2, // superPotionCount
+	1, // dragonCount
+	500, // dragonSpeed
 	};
 	static const LevelElement kLevel10{
 	"10",
@@ -118,5 +138,7 @@ namespace Level {
 	1, // potionCount
 	6, // trapCount
 	2, // superPotionCount
+	1, // dragonCount
+	500, // dragonSpeed
 	};
 };
