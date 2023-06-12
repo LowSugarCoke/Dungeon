@@ -6,23 +6,18 @@
 class MediaPlayer {
 public:
 
-    MediaPlayer();
+	MediaPlayer();
 
+	QMediaPlayer* potion;
+	QMediaPlayer* superPotion;
 
-
-    QMediaPlayer* potion;
-
-    QMediaPlayer* collection;
-    QMediaPlayer* monster;
-    QMediaPlayer* nextLevel;
-    QMediaPlayer* trap;
-    QMediaPlayer* mainMenu;
-    QMediaPlayer* start;
-    QMediaPlayer* battle;
-    QMediaPlayer* endingWin;
-    QMediaPlayer* endingLose;
-
-
-
-
+	QMediaPlayer* collection;
+	QMediaPlayer* monster;
+	QMediaPlayer* nextLevel;
+	QMediaPlayer* trap;
+	QMediaPlayer* mainMenu;
+	QMediaPlayer* start;
+	QMediaPlayer* battle;
+	QMediaPlayer* endingWin;
+	QMediaPlayer* endingLose;
 };

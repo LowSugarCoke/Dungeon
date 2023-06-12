@@ -96,6 +96,7 @@
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="potion.cpp" />
     <ClCompile Include="settingScene.cpp" />
+    <ClCompile Include="superPotion.cpp" />
     <ClCompile Include="trap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,7 +114,7 @@
     <QtMoc Include="endingScene.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameView.h" />
-    <ClInclude Include="hero.h" />
+    <QtMoc Include="hero.h" />
     <QtMoc Include="introScene.h" />
     <ClInclude Include="level.h" />
     <QtMoc Include="mainMenuScene.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="mediaPlayer.h" />
     <ClInclude Include="potion.h" />
     <QtMoc Include="settingScene.h" />
+    <ClInclude Include="superPotion.h" />
     <ClInclude Include="trap.h" />
     <QtMoc Include="monster.h" />
     <ClInclude Include="resource.h" />

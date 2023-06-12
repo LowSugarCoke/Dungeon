@@ -10,6 +10,7 @@
 #include "brickItem.h"
 #include "trap.h"
 #include "potion.h"
+#include "superPotion.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
@@ -19,36 +20,34 @@ class BrickItem;
 class GameScene : public QGraphicsScene
 {
 public:
-    GameScene(QObject* parent = nullptr);
-    void setSceneImg(const QString& kSceneImg);
+	GameScene(QObject* parent = nullptr);
+	void setSceneImg(const QString& kSceneImg);
 
-    void generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement);
-    void updateLifeText(int life);
-    void updateLevelText(QString level);
+	void generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement);
+	void updateLifeText(int life);
+	void updateLevelText(QString level);
 
-    void decreaseCollectionCount();
-    bool isAllCollectionsCollected() const;
-    void nextLevel();
-    void lose();
-    void setHero(Hero* hero);
-    int level;
+	void decreaseCollectionCount();
+	bool isAllCollectionsCollected() const;
+	void nextLevel();
+	void lose();
+	void setHero(Hero* hero);
+	int level;
 
 private:
-    int brickSize = 40;  // Save the size of your maze cells here
-    QGraphicsTextItem* lifeText;
-    QGraphicsTextItem* levelText;
-    int remainingCollections;
-    Hero* hero;
-    int heroLife;
+	int brickSize = 40;  // Save the size of your maze cells here
+	QGraphicsTextItem* lifeText;
+	QGraphicsTextItem* levelText;
+	int remainingCollections;
+	Hero* hero;
+	int heroLife;
 
-
-
-    QGraphicsPixmapItem* m_backgroundItem;
-    QGraphicsOpacityEffect* m_opacityEffect;
-    std::vector<Monster*> monsters;
-    std::vector<BrickItem*> bricks;
-    std::vector<Collection*> collections;
-    std::vector<Trap*> traps;
-    std::vector<Potion*> potions;
-
+	QGraphicsPixmapItem* m_backgroundItem;
+	QGraphicsOpacityEffect* m_opacityEffect;
+	std::vector<Monster*> monsters;
+	std::vector<BrickItem*> bricks;
+	std::vector<Collection*> collections;
+	std::vector<Trap*> traps;
+	std::vector<Potion*> potions;
+	std::vector<SuperPotion*> superPotions;
 };
