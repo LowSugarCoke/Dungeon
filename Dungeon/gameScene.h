@@ -20,6 +20,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
 
+
 class Monster;
 class BrickItem;
 class GameScene : public QGraphicsScene
@@ -47,6 +48,7 @@ private:
     int brickSize = 40;  // Save the size of your maze cells here
     QGraphicsTextItem* lifeText;
     QGraphicsTextItem* levelText;
+    QGraphicsTextItem* mShurtkeyText;
     int remainingCollections;
     Hero* hero;
     int heroLife;

@@ -1,4 +1,12 @@
-﻿#pragma once
+﻿/**
+ * @file trap.h
+ * @author Jack Lee
+ * @date 2023.06.22
+ *
+ * @brief This file contains the Trap class, which represents a trap in the game.
+ */
+
+#pragma once
 
 #include <QGraphicsPixmapItem>
 

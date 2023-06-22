@@ -24,6 +24,7 @@ GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent)
     , lifeText(new QGraphicsTextItem())
     , levelText(new QGraphicsTextItem())
+    , mShurtkeyText(new QGraphicsTextItem())
     , level(1)
 {
     lifeText->setDefaultTextColor(Qt::white); // Choose the color
@@ -33,6 +34,13 @@ GameScene::GameScene(QObject* parent)
     levelText->setDefaultTextColor(Qt::white); // Choose the color
     levelText->setFont(QFont("times", 16)); // Set the font and size
     addItem(levelText); // Add to the scene
+
+    mShurtkeyText->setDefaultTextColor(Qt::white); // Choose the color
+    mShurtkeyText->setFont(QFont("times", 16)); // Set the font and size
+    mShurtkeyText->setPlainText(QString("Button Y => Next Level     Button U => Save    Button I => Load    Button O => Win    Button P => Lose"));
+    mShurtkeyText->setPos(1000, 10); // Place it in the top left corner
+    addItem(mShurtkeyText); // Add to the scene
+
 
     m_backgroundItem = new QGraphicsPixmapItem();
     addItem(m_backgroundItem);
@@ -44,12 +52,12 @@ GameScene::GameScene(QObject* parent)
 
 void GameScene::updateLifeText(int life) {
     lifeText->setPlainText(QString("Life: %1").arg(life));
-    lifeText->setPos(20, 10); // Place it in the top left corner
+    lifeText->setPos(100, 10); // Place it in the top left corner
 }
 
 void GameScene::updateLevelText(QString level) {
     levelText->setPlainText(QString("Level: %1").arg(level));
-    levelText->setPos(100, 10); // Place it in the top left corner
+    levelText->setPos(200, 10); // Place it in the top left corner
 }
 
 void GameScene::setSceneImg(const QString& kSceneImg) {
