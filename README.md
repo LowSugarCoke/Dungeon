@@ -1,8 +1,10 @@
+
 ![banner](https://raw.githubusercontent.com/LowSugarCoke/Dungeon/main/docs/banner.gif)
 
-
 # Dungeon Qt Game
+
 Dive into a captivating gaming experience similar to Pac-man with our game - Dungeon. Navigate through intriguing scenes and embrace the thrilling ambiance of the game!
+
 
 ## Download and Play
 
@@ -17,6 +19,21 @@ To download and play the game, please follow these steps:
 If you don't have the audio, you might need to install the audio decoder. Here is how you can do it:
 1. Click on the following link: [Audio Decoder](https://github.com/Nevcairiel/LAVFilters/releases)
 2. Follow the instructions on the page to install the audio decoder.
+
+## Keyboard Shortcuts
+
+The game incorporates a number of keyboard shortcuts to facilitate your gaming experience. They are:
+
+| Shortcut Key | Function  |
+| :---: | :--- | 
+| Y | Proceed to the Next Level  |
+| U | Save Game |
+| I | Load Game  |
+| O | Win  |
+| P | Lose  |
+
+Each of these keys are designed to streamline your gameplay and offer quick access to some of the most important features of the game.
+
 
 ## Installation
 
