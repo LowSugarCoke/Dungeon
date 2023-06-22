@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
@@ -15,14 +17,13 @@ public:
     void setSceneImg(const QString& kSceneImg);
     void fadeIn(int duration);
     void fadeOut(int duration);
-    void setMedia(MediaPlayer* player);
+    void setMedia(std::shared_ptr<MediaPlayer> mediaPlayer);
     void startStory();
 
 
 private:
     void handleStartButton();
-    MediaPlayer* mediaPlayer;  // 新增的音樂播放器
-
+    std::shared_ptr<MediaPlayer> mMediaPlayer;
 
     QGraphicsPixmapItem* m_backgroundItem;
     QGraphicsOpacityEffect* m_opacityEffect;

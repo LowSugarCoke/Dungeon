@@ -44,9 +44,10 @@ private:
     GameView* sceneView;
     EndingScene* endingScene;
     MainMenuScene* menuScene;
-    MediaPlayer* mediaPlayer;
+
     SettingScene* settingScene;
     IntroScene* introScene;
 
+    std::shared_ptr<MediaPlayer> mMediaPlayer;
     std::shared_ptr<DataHandler> mDataHandler;
 };

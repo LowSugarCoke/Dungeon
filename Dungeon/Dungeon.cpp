@@ -33,13 +33,13 @@ Dungeon::Dungeon(QWidget* parent)
 
     setWindowIcon(QIcon(UIResource::kLogo));
 
-    mediaPlayer = new MediaPlayer();
-    hero->setPotionSound(mediaPlayer->potion);
-    hero->setMonsterSound(mediaPlayer->monster);
-    hero->setCollectionSound(mediaPlayer->collection);
-    hero->setTrapSound(mediaPlayer->trap);
-    hero->setSuperPotionSound(mediaPlayer->superPotion);
-    hero->setDrangonSound(mediaPlayer->start);
+    mMediaPlayer = std::make_shared<MediaPlayer>();
+    hero->setPotionSound(mMediaPlayer->potion);
+    hero->setMonsterSound(mMediaPlayer->monster);
+    hero->setCollectionSound(mMediaPlayer->collection);
+    hero->setTrapSound(mMediaPlayer->trap);
+    hero->setSuperPotionSound(mMediaPlayer->superPotion);
+    hero->setDrangonSound(mMediaPlayer->start);
     hero->setHeroImg(UIResource::kHero);
 
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -53,7 +53,7 @@ Dungeon::Dungeon(QWidget* parent)
 
     sceneView = new GameView(scene, this);
     endingScene = new EndingScene(this);
-    settingScene = new SettingScene(mediaPlayer, this);
+    settingScene = new SettingScene(mMediaPlayer, this);
     introScene = new IntroScene(this);
 
 
@@ -62,19 +62,19 @@ Dungeon::Dungeon(QWidget* parent)
 
 
     menuScene = new MainMenuScene(this);
-    menuScene->setMedia(mediaPlayer);
+
 
     introScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     introScene->setSceneImg(UIResource::kMenu);
-    introScene->setMedia(mediaPlayer);
+    introScene->setMedia(mMediaPlayer);
 
     menu();
 }
 
 void Dungeon::load() {
-    mediaPlayer->mainMenu->stop();
-    mediaPlayer->battle->stop();
-    mediaPlayer->battle->play();
+    mMediaPlayer->mainMenu->stop();
+    mMediaPlayer->battle->stop();
+    mMediaPlayer->battle->play();
 
     auto history = mDataHandler->load(DataResource::kData.toStdString());
     currentLevel = mLevelData[history.level - 1];
@@ -102,16 +102,16 @@ void Dungeon::menu() {
     menuScene->setSceneImg(UIResource::kMenu);
 
     menuScene->fadeIn(0);
-    mediaPlayer->endingWin->stop();
-    mediaPlayer->endingLose->stop();
-    mediaPlayer->mainMenu->play();
+    mMediaPlayer->endingWin->stop();
+    mMediaPlayer->endingLose->stop();
+    mMediaPlayer->mainMenu->play();
     sceneView->setScene(menuScene);
     this->setCentralWidget(sceneView);
 }
 
 void Dungeon::win() {
-    mediaPlayer->battle->stop();
-    mediaPlayer->endingWin->play();
+    mMediaPlayer->battle->stop();
+    mMediaPlayer->endingWin->play();
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
@@ -124,8 +124,8 @@ void Dungeon::win() {
 }
 
 void Dungeon::lose() {
-    mediaPlayer->battle->stop();
-    mediaPlayer->endingLose->play();
+    mMediaPlayer->battle->stop();
+    mMediaPlayer->endingLose->play();
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
@@ -144,7 +144,7 @@ void Dungeon::nextLevel() {
         return;
     }
 
-    mediaPlayer->nextLevel->play();
+    mMediaPlayer->nextLevel->play();
 
     int heroLife = hero->getLife();
 
@@ -175,7 +175,7 @@ void Dungeon::battle() {
     scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
 
     QTimer::singleShot(4000, [&]() {sceneView->setScene(scene);  hero->setFocus();
-    mediaPlayer->battle->play();  });
+    mMediaPlayer->battle->play();  });
 }
 
 void Dungeon::restart() {

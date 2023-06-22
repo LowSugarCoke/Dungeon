@@ -178,7 +178,3 @@ void MainMenuScene::fadeOut(int duration) {
     animation->setEndValue(0.0);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
-
-void MainMenuScene::setMedia(MediaPlayer* player) {
-    mediaPlayer = player;
-}

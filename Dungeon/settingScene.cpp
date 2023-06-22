@@ -6,9 +6,9 @@
 
 #include "Dungeon.h"
 
-SettingScene::SettingScene(MediaPlayer* player, QObject* parent)
+SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* parent)
     : QGraphicsScene(parent),
-    mediaPlayer(player)
+    mMediaPlayer(mediaPlayer)
 {
     m_textItem = new QGraphicsTextItem();
     QFont font;
@@ -83,17 +83,16 @@ SettingScene::SettingScene(MediaPlayer* player, QObject* parent)
 }
 
 void SettingScene::adjustVolume(int volume) {
-    // 使用QMediaPlayer的setVolume方法调整所有音频的音量
-    mediaPlayer->potion->setVolume(volume);
-    mediaPlayer->collection->setVolume(volume);
-    mediaPlayer->monster->setVolume(volume);
-    mediaPlayer->nextLevel->setVolume(volume);
-    mediaPlayer->trap->setVolume(volume);
-    mediaPlayer->mainMenu->setVolume(volume);
-    mediaPlayer->start->setVolume(volume);
-    mediaPlayer->battle->setVolume(volume);
-    mediaPlayer->endingWin->setVolume(volume);
-    mediaPlayer->endingLose->setVolume(volume);
+    mMediaPlayer->potion->setVolume(volume);
+    mMediaPlayer->collection->setVolume(volume);
+    mMediaPlayer->monster->setVolume(volume);
+    mMediaPlayer->nextLevel->setVolume(volume);
+    mMediaPlayer->trap->setVolume(volume);
+    mMediaPlayer->mainMenu->setVolume(volume);
+    mMediaPlayer->start->setVolume(volume);
+    mMediaPlayer->battle->setVolume(volume);
+    mMediaPlayer->endingWin->setVolume(volume);
+    mMediaPlayer->endingLose->setVolume(volume);
 }
 
 void SettingScene::setSceneImg(const QString& kSceneImg) {

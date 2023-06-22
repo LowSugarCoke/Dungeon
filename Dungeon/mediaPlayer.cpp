@@ -5,67 +5,67 @@
 #include "resource.h"
 
 MediaPlayer::MediaPlayer() {
-    potion = new QMediaPlayer();
+    potion = std::make_shared<QMediaPlayer>();
     potion->setMedia(QUrl::fromLocalFile(MusicResource::kPotion));
     potion->setVolume(50);
 
-    superPotion = new QMediaPlayer();
+    superPotion = std::make_shared<QMediaPlayer>();
     superPotion->setMedia(QUrl::fromLocalFile(MusicResource::kSuperPotion));
     superPotion->setVolume(50);
 
-    collection = new QMediaPlayer();
+    collection = std::make_shared<QMediaPlayer>();
     collection->setMedia(QUrl::fromLocalFile(MusicResource::kCollection));
     collection->setVolume(50);
 
-    monster = new QMediaPlayer();
+    monster = std::make_shared<QMediaPlayer>();
     monster->setMedia(QUrl::fromLocalFile(MusicResource::kMonster));
     monster->setVolume(50);
 
-    nextLevel = new QMediaPlayer();
+    nextLevel = std::make_shared<QMediaPlayer>();
     nextLevel->setMedia(QUrl::fromLocalFile(MusicResource::kNextLevel));
     nextLevel->setVolume(50);
 
-    trap = new QMediaPlayer();
+    trap = std::make_shared<QMediaPlayer>();
     trap->setMedia(QUrl::fromLocalFile(MusicResource::kTrap));
     trap->setVolume(50);
 
-    mainMenu = new QMediaPlayer();
+    mainMenu = std::make_shared<QMediaPlayer>();
     mainMenu->setMedia(QUrl::fromLocalFile(MusicResource::kMainMenu));
     mainMenu->setVolume(50);
 
-    QObject::connect(mainMenu, &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
+    QObject::connect(mainMenu.get(), &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
         if (status == QMediaPlayer::EndOfMedia) {
             mainMenu->play();
         }
         });
 
-    endingWin = new QMediaPlayer();
+    endingWin = std::make_shared<QMediaPlayer>();
     endingWin->setMedia(QUrl::fromLocalFile(MusicResource::kEndingWin));
     endingWin->setVolume(50);
 
-    QObject::connect(endingWin, &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
+    QObject::connect(endingWin.get(), &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
         if (status == QMediaPlayer::EndOfMedia) {
             endingWin->play();
         }
         });
 
-    endingLose = new QMediaPlayer();
+    endingLose = std::make_shared<QMediaPlayer>();
     endingLose->setMedia(QUrl::fromLocalFile(MusicResource::kEndingLose));
     endingLose->setVolume(50);
 
-    QObject::connect(endingLose, &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
+    QObject::connect(endingLose.get(), &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
         if (status == QMediaPlayer::EndOfMedia) {
             endingLose->play();
         }
         });
 
-    start = new QMediaPlayer();
+    start = std::make_shared<QMediaPlayer>();
     start->setMedia(QUrl::fromLocalFile(MusicResource::kDragon));
     start->setVolume(50);
 
-    battle = new QMediaPlayer();
+    battle = std::make_shared<QMediaPlayer>();
     battle->setMedia(QUrl::fromLocalFile(MusicResource::kBattle));
-    QObject::connect(battle, &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
+    QObject::connect(battle.get(), &QMediaPlayer::mediaStatusChanged, [&](QMediaPlayer::MediaStatus status) {
         if (status == QMediaPlayer::EndOfMedia) {
             battle->play();
         }

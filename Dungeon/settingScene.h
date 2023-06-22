@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <memory>
+
 #include <QGraphicsScene>
 #include <QSlider>
 #include <QPushButton>
@@ -10,7 +12,7 @@ class SettingScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    SettingScene(MediaPlayer* player, QObject* parent = nullptr);
+    SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* parent = nullptr);
 
     void setSceneImg(const QString& kSceneImg);
 
@@ -22,8 +24,8 @@ private slots:
 
 private:
     QGraphicsPixmapItem* m_backgroundItem;
-    MediaPlayer* mediaPlayer;  // 新增的音樂播放器
-    QSlider* volumeSlider;  // 新增的音量滑块
+    std::shared_ptr<MediaPlayer> mMediaPlayer;
+    QSlider* volumeSlider;
     QPushButton* backButton;
 
     QGraphicsTextItem* m_textItem;

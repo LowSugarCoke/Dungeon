@@ -113,10 +113,8 @@ void IntroScene::updateStory() {
 
 void IntroScene::handleStartButton() {
     static_cast<Dungeon*>(parent())->battle();
-    mediaPlayer->mainMenu->stop();
-    mediaPlayer->start->play();
-
-
+    mMediaPlayer->mainMenu->stop();
+    mMediaPlayer->start->play();
 }
 
 void IntroScene::setSceneImg(const QString& kSceneImg) {
@@ -157,6 +155,6 @@ void IntroScene::fadeOut(int duration) {
     textAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void IntroScene::setMedia(MediaPlayer* player) {
-    mediaPlayer = player;
+void IntroScene::setMedia(std::shared_ptr<MediaPlayer> mediaPlayer) {
+    mMediaPlayer = mediaPlayer;
 }
