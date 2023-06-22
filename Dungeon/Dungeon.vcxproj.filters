@@ -94,6 +94,9 @@
     <ClCompile Include="dragon.cpp">
       <Filter>Source Files\qtComponent</Filter>
     </ClCompile>
+    <ClCompile Include="levelParser.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dungeon.h">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="history.h">
       <Filter>Header Files\global</Filter>
+    </ClInclude>
+    <ClInclude Include="levelParser.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -42,7 +42,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>5.15.2</QtInstall>
+    <QtInstall>Qt5.15.2</QtInstall>
     <QtModules>core;gui;multimedia;multimediawidgets;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -90,6 +90,7 @@
     <ClCompile Include="gameView.cpp" />
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="introScene.cpp" />
+    <ClCompile Include="levelParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenuScene.cpp" />
     <ClCompile Include="mazeGenerator.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="gameView.h" />
     <QtMoc Include="hero.h" />
     <QtMoc Include="introScene.h" />
+    <ClInclude Include="levelParser.h" />
     <ClInclude Include="history.h" />
     <ClInclude Include="level.h" />
     <QtMoc Include="mainMenuScene.h" />

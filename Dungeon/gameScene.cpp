@@ -469,9 +469,9 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
     }
     dragonSpeed = kLevelElement.dragonSpeed;
 
-    updateLevelText(kLevelElement.level);
+    updateLevelText(QString::fromStdString(kLevelElement.level));
     updateLifeText(hero->getLife());
-    if (kLevelElement.level == Level::kLevel1.level) {
+    if (kLevelElement.level == "1") {
         hero->startInvincibleMode(6000);
     }
     else {
