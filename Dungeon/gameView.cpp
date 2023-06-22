@@ -6,9 +6,7 @@
 #include "gameScene.h"
 
 GameView::GameView(QGraphicsScene* scene, QWidget* parent)
-    : QGraphicsView(scene, parent)
-{
-}
+    : QGraphicsView(scene, parent) {}
 
 void GameView::resizeEvent(QResizeEvent* event) {
     if (scene())

@@ -1,4 +1,5 @@
 ﻿#include "endingScene.h"
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
@@ -11,22 +12,22 @@
 EndingScene::EndingScene(QObject* parent)
     : QGraphicsScene(parent)
 {
-    m_backgroundItem = new QGraphicsPixmapItem();
-    addItem(m_backgroundItem);
-    m_opacityEffect = new QGraphicsOpacityEffect();
-    m_backgroundItem->setGraphicsEffect(m_opacityEffect);
+    mBackgroundItem = new QGraphicsPixmapItem();
+    addItem(mBackgroundItem);
+    mOpacityEffect = new QGraphicsOpacityEffect();
+    mBackgroundItem->setGraphicsEffect(mOpacityEffect);
 
-    m_textItem = new QGraphicsTextItem();
+    mTextItem = new QGraphicsTextItem();
     QFont font;
-    font.setPixelSize(300);  // 設置字體大小
-    m_textItem->setFont(font);
-    m_textItem->setDefaultTextColor(QColor(255, 255, 255));
-    addItem(m_textItem);
+    font.setPixelSize(300);
+    mTextItem->setFont(font);
+    mTextItem->setDefaultTextColor(QColor(255, 255, 255));
+    addItem(mTextItem);
 
-    backButton = new QPushButton(QString::fromLocal8Bit("重新遊戲"));
-    backButton->setMinimumSize(400, 120);
-    backButton->setMaximumSize(400, 120);
-    backButton->setStyleSheet(R"(
+    mBackButton = new QPushButton(QString::fromLocal8Bit("重新遊戲"));
+    mBackButton->setMinimumSize(400, 120);
+    mBackButton->setMaximumSize(400, 120);
+    mBackButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
         font-weight:bold; 
@@ -41,9 +42,9 @@ EndingScene::EndingScene(QObject* parent)
         color:black;
     }
 )");
-    QGraphicsProxyWidget* backButtonProxy = addWidget(backButton);
+    QGraphicsProxyWidget* backButtonProxy = addWidget(mBackButton);
     backButtonProxy->setPos(750, 700);  // 调整位置
-    connect(backButton, &QPushButton::clicked, this, &EndingScene::handleRestartButton);
+    connect(mBackButton, &QPushButton::clicked, this, &EndingScene::handleRestartButton);
 }
 
 void EndingScene::handleRestartButton() {
@@ -54,17 +55,16 @@ void EndingScene::handleRestartButton() {
 void EndingScene::setSceneImg(const QString& kSceneImg) {
     QPixmap backgroundImage(kSceneImg);
     backgroundImage = backgroundImage.scaled(sceneRect().size().toSize(), Qt::KeepAspectRatioByExpanding);
-    m_backgroundItem->setPixmap(backgroundImage);
+    mBackgroundItem->setPixmap(backgroundImage);
 }
 
 void EndingScene::setMessage(const QString& message) {
-    m_textItem->setPlainText(message);
-    m_textItem->setPos((sceneRect().width() - m_textItem->boundingRect().width()) / 2,
-        (150));  // 將文字置中
+    mTextItem->setPlainText(message);
+    mTextItem->setPos((sceneRect().width() - mTextItem->boundingRect().width()) / 2, (150));
 }
 
 void EndingScene::fadeIn(int duration) {
-    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    QPropertyAnimation* animation = new QPropertyAnimation(mOpacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
@@ -72,7 +72,7 @@ void EndingScene::fadeIn(int duration) {
 }
 
 void EndingScene::fadeOut(int duration) {
-    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    QPropertyAnimation* animation = new QPropertyAnimation(mOpacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(1.0);
     animation->setEndValue(0.0);
