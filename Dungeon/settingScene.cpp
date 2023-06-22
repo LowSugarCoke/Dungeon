@@ -1,7 +1,5 @@
 ﻿#include "settingScene.h"
 
-
-#include <QSlider>
 #include <QGraphicsProxyWidget>
 
 #include "Dungeon.h"
@@ -10,21 +8,20 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
     : QGraphicsScene(parent),
     mMediaPlayer(mediaPlayer)
 {
-    m_textItem = new QGraphicsTextItem();
+    mTextItem = new QGraphicsTextItem();
     QFont font;
-    font.setPixelSize(100);  // 設置字體大小
-    m_textItem->setFont(font);
-    m_textItem->setDefaultTextColor(QColor(255, 255, 255));
-    m_textItem->setPlainText("Voice");
-    m_textItem->setPos(550, 300);  // 將文字置中
+    font.setPixelSize(100);
+    mTextItem->setFont(font);
+    mTextItem->setDefaultTextColor(QColor(255, 255, 255));
+    mTextItem->setPlainText("Voice");
+    mTextItem->setPos(550, 300);
 
-    addItem(m_textItem);
+    addItem(mTextItem);
 
-
-    volumeSlider = new QSlider(Qt::Horizontal);
-    volumeSlider->setRange(0, 100);
-    volumeSlider->setValue(70);
-    volumeSlider->setStyleSheet(R"(
+    mVolumeSlider = new QSlider(Qt::Horizontal);
+    mVolumeSlider->setRange(0, 100);
+    mVolumeSlider->setValue(70);
+    mVolumeSlider->setStyleSheet(R"(
     QSlider{
         background:transparent;
     }
@@ -52,17 +49,17 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
 )");
 
 
-    QGraphicsProxyWidget* volumeSliderProxy = addWidget(volumeSlider);
+    QGraphicsProxyWidget* volumeSliderProxy = addWidget(mVolumeSlider);
     volumeSliderProxy->setPos(850, 300);
-    volumeSliderProxy->resize(400, 120); // Change this line to resize the slider to match the buttons
+    volumeSliderProxy->resize(400, 120);
 
-    connect(volumeSlider, &QSlider::valueChanged, this, &SettingScene::adjustVolume);
+    connect(mVolumeSlider, &QSlider::valueChanged, this, &SettingScene::adjustVolume);
 
 
-    backButton = new QPushButton(QString::fromLocal8Bit("返回主菜單"));
-    backButton->setMinimumSize(400, 120);
-    backButton->setMaximumSize(400, 120);
-    backButton->setStyleSheet(R"(
+    mBackButton = new QPushButton(QString::fromLocal8Bit("返回主菜單"));
+    mBackButton->setMinimumSize(400, 120);
+    mBackButton->setMaximumSize(400, 120);
+    mBackButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
         font-weight:bold; 
@@ -77,9 +74,9 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
         color:black;
     }
 )");
-    QGraphicsProxyWidget* backButtonProxy = addWidget(backButton);
-    backButtonProxy->setPos(700, 500);  // 调整位置
-    connect(backButton, &QPushButton::clicked, this, &SettingScene::handleBackButton);
+    QGraphicsProxyWidget* backButtonProxy = addWidget(mBackButton);
+    backButtonProxy->setPos(700, 500);
+    connect(mBackButton, &QPushButton::clicked, this, &SettingScene::handleBackButton);
 }
 
 void SettingScene::adjustVolume(int volume) {
