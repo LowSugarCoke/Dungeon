@@ -11,34 +11,34 @@
 #include "Dungeon.h"
 
 MainMenuScene::MainMenuScene(QObject* parent)
-	: QGraphicsScene(parent)
+    : QGraphicsScene(parent)
 {
-	m_backgroundItem = new QGraphicsPixmapItem();
-	addItem(m_backgroundItem);
-	m_opacityEffect = new QGraphicsOpacityEffect();
-	m_opacityEffect->setOpacity(1.0);
-	m_backgroundItem->setGraphicsEffect(m_opacityEffect);
+    m_backgroundItem = new QGraphicsPixmapItem();
+    addItem(m_backgroundItem);
+    m_opacityEffect = new QGraphicsOpacityEffect();
+    m_opacityEffect->setOpacity(1.0);
+    m_backgroundItem->setGraphicsEffect(m_opacityEffect);
 
-	m_title = new QGraphicsPixmapItem();
-	addItem(m_title);
-	m_opacityEffect = new QGraphicsOpacityEffect();
-	m_opacityEffect->setOpacity(1.0);
-	m_title->setGraphicsEffect(m_opacityEffect);
+    m_title = new QGraphicsPixmapItem();
+    addItem(m_title);
+    m_opacityEffect = new QGraphicsOpacityEffect();
+    m_opacityEffect->setOpacity(1.0);
+    m_title->setGraphicsEffect(m_opacityEffect);
 
-	QPixmap backgroundImage("Resources/img/title.png");
-	m_title->setPixmap(backgroundImage);
-	m_title->setPos(50, 50);
+    QPixmap backgroundImage(UIResource::kTitle);
+    m_title->setPixmap(backgroundImage);
+    m_title->setPos(50, 50);
 
-	QGraphicsWidget* root = new QGraphicsWidget();
-	QGraphicsLinearLayout* layout = new QGraphicsLinearLayout(Qt::Vertical, root);
-	root->setLayout(layout);
-	root->resize(1920, 1080);
-	addItem(root);
+    QGraphicsWidget* root = new QGraphicsWidget();
+    QGraphicsLinearLayout* layout = new QGraphicsLinearLayout(Qt::Vertical, root);
+    root->setLayout(layout);
+    root->resize(1920, 1080);
+    addItem(root);
 
-	root->setPos(700, 300);
+    root->setPos(700, 300);
 
-	startButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
-	startButton->setStyleSheet(R"(
+    startButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
+    startButton->setStyleSheet(R"(
     QPushButton {
         font-size:20px;
         font-weight:bold;
@@ -54,16 +54,16 @@ MainMenuScene::MainMenuScene(QObject* parent)
     }
 )");
 
-	startButton->setMinimumSize(400, 120);
-	startButton->setMaximumSize(400, 120);
-	QGraphicsProxyWidget* startButtonProxy = addWidget(startButton);
-	//startButtonProxy->resize(100, 30);
-	layout->addItem(startButtonProxy);
-	layout->setAlignment(startButtonProxy, Qt::AlignCenter);  // 設定對齊方式
-	connect(startButton, &QPushButton::clicked, this, &MainMenuScene::handleStartButton);
+    startButton->setMinimumSize(400, 120);
+    startButton->setMaximumSize(400, 120);
+    QGraphicsProxyWidget* startButtonProxy = addWidget(startButton);
+    //startButtonProxy->resize(100, 30);
+    layout->addItem(startButtonProxy);
+    layout->setAlignment(startButtonProxy, Qt::AlignCenter);  // 設定對齊方式
+    connect(startButton, &QPushButton::clicked, this, &MainMenuScene::handleStartButton);
 
-	loadingButton = new QPushButton(QString::fromLocal8Bit("讀取存檔"));
-	loadingButton->setStyleSheet(R"(
+    loadingButton = new QPushButton(QString::fromLocal8Bit("讀取存檔"));
+    loadingButton->setStyleSheet(R"(
     QPushButton {
         font-size:20px;
         font-weight:bold;
@@ -79,16 +79,16 @@ MainMenuScene::MainMenuScene(QObject* parent)
     }
 )");
 
-	loadingButton->setMinimumSize(400, 120);
-	loadingButton->setMaximumSize(400, 120);
-	QGraphicsProxyWidget* loadinguttonProxy = addWidget(loadingButton);
-	//startButtonProxy->resize(100, 30);
-	layout->addItem(loadinguttonProxy);
-	layout->setAlignment(loadinguttonProxy, Qt::AlignCenter);  // 設定對齊方式
-	connect(loadingButton, &QPushButton::clicked, this, &MainMenuScene::handleLoadingButton);
+    loadingButton->setMinimumSize(400, 120);
+    loadingButton->setMaximumSize(400, 120);
+    QGraphicsProxyWidget* loadinguttonProxy = addWidget(loadingButton);
+    //startButtonProxy->resize(100, 30);
+    layout->addItem(loadinguttonProxy);
+    layout->setAlignment(loadinguttonProxy, Qt::AlignCenter);  // 設定對齊方式
+    connect(loadingButton, &QPushButton::clicked, this, &MainMenuScene::handleLoadingButton);
 
-	settingsButton = new QPushButton(QString::fromLocal8Bit("設定"));
-	settingsButton->setStyleSheet(R"(
+    settingsButton = new QPushButton(QString::fromLocal8Bit("設定"));
+    settingsButton->setStyleSheet(R"(
     QPushButton {
         font-size:20px;
         font-weight:bold;
@@ -103,15 +103,15 @@ MainMenuScene::MainMenuScene(QObject* parent)
         color:black;
     }
 )");
-	settingsButton->setMinimumSize(400, 120);
-	settingsButton->setMaximumSize(400, 120);
-	QGraphicsProxyWidget* settingsButtonProxy = addWidget(settingsButton);
-	layout->addItem(settingsButtonProxy);
-	layout->setAlignment(settingsButtonProxy, Qt::AlignCenter);  // 設定對齊方式
-	connect(settingsButton, &QPushButton::clicked, this, &MainMenuScene::handleSettingsButton);
+    settingsButton->setMinimumSize(400, 120);
+    settingsButton->setMaximumSize(400, 120);
+    QGraphicsProxyWidget* settingsButtonProxy = addWidget(settingsButton);
+    layout->addItem(settingsButtonProxy);
+    layout->setAlignment(settingsButtonProxy, Qt::AlignCenter);  // 設定對齊方式
+    connect(settingsButton, &QPushButton::clicked, this, &MainMenuScene::handleSettingsButton);
 
-	exitButton = new QPushButton(QString::fromLocal8Bit("結束遊戲"));
-	exitButton->setStyleSheet(R"(
+    exitButton = new QPushButton(QString::fromLocal8Bit("結束遊戲"));
+    exitButton->setStyleSheet(R"(
     QPushButton {
         font-size:20px;
         font-weight:bold;
@@ -126,59 +126,59 @@ MainMenuScene::MainMenuScene(QObject* parent)
         color:black;
     }
 )");
-	exitButton->setMinimumSize(400, 120);
-	exitButton->setMaximumSize(400, 120);
-	QGraphicsProxyWidget* exitButtonProxy = addWidget(exitButton);
-	layout->addItem(exitButtonProxy);
-	layout->setAlignment(exitButtonProxy, Qt::AlignCenter);  // 設定對齊方式
-	connect(exitButton, &QPushButton::clicked, this, &MainMenuScene::handleExitButton);
+    exitButton->setMinimumSize(400, 120);
+    exitButton->setMaximumSize(400, 120);
+    QGraphicsProxyWidget* exitButtonProxy = addWidget(exitButton);
+    layout->addItem(exitButtonProxy);
+    layout->setAlignment(exitButtonProxy, Qt::AlignCenter);  // 設定對齊方式
+    connect(exitButton, &QPushButton::clicked, this, &MainMenuScene::handleExitButton);
 }
 
 void MainMenuScene::handleStartButton() {
-	static_cast<Dungeon*>(parent())->intro();
+    static_cast<Dungeon*>(parent())->intro();
 }
 void MainMenuScene::handleLoadingButton() {
-	static_cast<Dungeon*>(parent())->load();
+    static_cast<Dungeon*>(parent())->load();
 }
 
 void MainMenuScene::handleSettingsButton() {
-	// 處理當"設定"按鈕被點擊時的邏輯
-	static_cast<Dungeon*>(parent())->setting();
+    // 處理當"設定"按鈕被點擊時的邏輯
+    static_cast<Dungeon*>(parent())->setting();
 }
 
 void MainMenuScene::handleExitButton() {
-	// 處理當"結束遊戲"按鈕被點擊時的邏輯
-	QApplication::quit();
+    // 處理當"結束遊戲"按鈕被點擊時的邏輯
+    QApplication::quit();
 }
 
 void MainMenuScene::setSceneImg(const QString& kSceneImg) {
-	QPixmap backgroundImage(kSceneImg);
-	backgroundImage = backgroundImage.scaled(sceneRect().size().toSize(), Qt::KeepAspectRatioByExpanding);
-	m_backgroundItem->setPixmap(backgroundImage);
+    QPixmap backgroundImage(kSceneImg);
+    backgroundImage = backgroundImage.scaled(sceneRect().size().toSize(), Qt::KeepAspectRatioByExpanding);
+    m_backgroundItem->setPixmap(backgroundImage);
 }
 
 void MainMenuScene::fadeIn(int duration) {
-	startButton->show();
-	settingsButton->show();
-	exitButton->show();
-	QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
-	animation->setDuration(duration);
-	animation->setStartValue(0.0);
-	animation->setEndValue(1.0);
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+    startButton->show();
+    settingsButton->show();
+    exitButton->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    animation->setDuration(duration);
+    animation->setStartValue(0.0);
+    animation->setEndValue(1.0);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void MainMenuScene::fadeOut(int duration) {
-	startButton->hide();
-	settingsButton->hide();
-	exitButton->hide();
-	QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
-	animation->setDuration(duration);
-	animation->setStartValue(1.0);
-	animation->setEndValue(0.0);
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+    startButton->hide();
+    settingsButton->hide();
+    exitButton->hide();
+    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    animation->setDuration(duration);
+    animation->setStartValue(1.0);
+    animation->setEndValue(0.0);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void MainMenuScene::setMedia(MediaPlayer* player) {
-	mediaPlayer = player;
+    mediaPlayer = player;
 }

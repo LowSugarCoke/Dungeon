@@ -8,6 +8,7 @@
 
 
 #include "Dungeon.h"
+#include "resource.h"
 
 IntroScene::IntroScene(QObject* parent)
     : QGraphicsScene(parent)
@@ -86,7 +87,7 @@ IntroScene::IntroScene(QObject* parent)
     m_opacityEffect->setOpacity(1.0);
     m_title->setGraphicsEffect(m_opacityEffect);
 
-    QPixmap backgroundImage("Resources/img/title.png");
+    QPixmap backgroundImage(UIResource::kTitle);
     m_title->setPixmap(backgroundImage);
     m_title->setPos(50, 50);
 }

@@ -26,11 +26,11 @@ Dungeon::Dungeon(QWidget* parent)
 
     // Initialize the level data
     LevelParser levelParser;
-    mLevelData = levelParser.parser("level.txt");
+    mLevelData = levelParser.parser(DataResource::kLevel.toStdString());
     currentLevel = mLevelData[0];
 
 
-    setWindowIcon(QIcon("Resources/img/logo.png"));
+    setWindowIcon(QIcon(UIResource::kLogo));
 
     mediaPlayer = new MediaPlayer();
     hero->setPotionSound(mediaPlayer->potion);
@@ -67,7 +67,7 @@ Dungeon::Dungeon(QWidget* parent)
 void Dungeon::load() {
     mediaPlayer->mainMenu->stop();
     mediaPlayer->battle->stop();
-    std::string filename = "data.txt";
+    std::string filename = DataResource::kData.toStdString();
     std::ifstream file(filename);
 
     if (!file) {
