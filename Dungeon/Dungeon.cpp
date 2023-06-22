@@ -1,75 +1,74 @@
 ﻿#include "Dungeon.h"
 
-#include <fstream>
-#include <sstream>
-#include <string>
 #include <iostream>
 
 #include <QScreen>
-#include <QMouseEvent>
 #include <QTimer>
 
 #include "resource.h"
-#include "gameScene.h"
-#include "gameView.h"
-#include "collection.h"
-#include "level.h"
-#include "history.h"
 #include "levelParser.h"
 
 Dungeon::Dungeon(QWidget* parent)
     : QMainWindow(parent)
-    , hero(new Hero())
+    , mHero(new Hero())
     , mDataHandler(std::make_shared<DataHandler>())
-    // Initialize the hero
+    , mMediaPlayer(std::make_shared<MediaPlayer>())
 {
     ui.setupUi(this);
-
-    // Initialize the level data
-    LevelParser levelParser;
-    mLevelData = levelParser.parser(DataResource::kLevel.toStdString());
-    currentLevel = mLevelData[0];
-
-
     setWindowIcon(QIcon(UIResource::kLogo));
 
-    mMediaPlayer = std::make_shared<MediaPlayer>();
-    hero->setPotionSound(mMediaPlayer->potion);
-    hero->setMonsterSound(mMediaPlayer->monster);
-    hero->setCollectionSound(mMediaPlayer->collection);
-    hero->setTrapSound(mMediaPlayer->trap);
-    hero->setSuperPotionSound(mMediaPlayer->superPotion);
-    hero->setDrangonSound(mMediaPlayer->start);
-    hero->setHeroImg(UIResource::kHero);
+    LevelParser levelParser;
+    mLevelData = levelParser.parser(DataResource::kLevel.toStdString());
+    mCurrentLevel = mLevelData[0];
+
+    mHero->setPotionSound(mMediaPlayer->potion);
+    mHero->setMonsterSound(mMediaPlayer->monster);
+    mHero->setCollectionSound(mMediaPlayer->collection);
+    mHero->setTrapSound(mMediaPlayer->trap);
+    mHero->setSuperPotionSound(mMediaPlayer->superPotion);
+    mHero->setDrangonSound(mMediaPlayer->start);
+    mHero->setHeroImg(UIResource::kHero);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
 
-    scene = new GameScene(this);
-    scene->setHero(hero);
-    scene->setSceneImg(UIResource::kSceneImg);
-    scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    mGameScene = new GameScene(this);
+    mGameScene->setHero(mHero);
+    mGameScene->setSceneImg(UIResource::kSceneImg);
+    mGameScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 
-    sceneView = new GameView(scene, this);
-    endingScene = new EndingScene(this);
-    settingScene = new SettingScene(mMediaPlayer, this);
-    introScene = new IntroScene(this);
+    mSceneView = new GameView(mGameScene, this);
 
+    mEndingScene = new EndingScene(this);
+    mEndingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 
-    settingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    settingScene->setSceneImg(UIResource::kMenu);
+    mMenuScene = new MainMenuScene(this);
+    mMenuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
 
+    mSettingScene = new SettingScene(mMediaPlayer, this);
+    mSettingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    mSettingScene->setSceneImg(UIResource::kMenu);
 
-    menuScene = new MainMenuScene(this);
-
-
-    introScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    introScene->setSceneImg(UIResource::kMenu);
-    introScene->setMedia(mMediaPlayer);
+    mIntroScene = new IntroScene(this);
+    mIntroScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+    mIntroScene->setSceneImg(UIResource::kMenu);
+    mIntroScene->setMedia(mMediaPlayer);
 
     menu();
 }
+
+Dungeon::~Dungeon()
+{
+    delete mHero;
+    delete mGameScene;
+    delete mSceneView;
+    delete mEndingScene;
+    delete mMenuScene;
+    delete mSettingScene;
+    delete mIntroScene;
+}
+
 
 void Dungeon::load() {
     mMediaPlayer->mainMenu->stop();
@@ -77,109 +76,82 @@ void Dungeon::load() {
     mMediaPlayer->battle->play();
 
     auto history = mDataHandler->load(DataResource::kData.toStdString());
-    currentLevel = mLevelData[history.level - 1];
-    scene->loadData(history);
-    sceneView->setScene(scene);
-    hero->setFocus();
+    mCurrentLevel = mLevelData[history.level - 1];
+    mGameScene->loadData(history);
+    mSceneView->setScene(mGameScene);
+    mHero->setFocus();
 }
 
 void Dungeon::intro() {
-    introScene->fadeIn(0);
-    sceneView->setScene(introScene);
-    introScene->startStory();
-    this->setCentralWidget(sceneView);
+    mIntroScene->fadeIn(0);
+    mSceneView->setScene(mIntroScene);
+    mIntroScene->startStory();
+    this->setCentralWidget(mSceneView);
 }
 
 void Dungeon::setting() {
-    sceneView->setScene(settingScene);
+    mSceneView->setScene(mSettingScene);
 }
 
 void Dungeon::menu() {
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    this->resize(screenGeometry.width(), screenGeometry.height());
-    menuScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    menuScene->setSceneImg(UIResource::kMenu);
-
-    menuScene->fadeIn(0);
+    mMenuScene->setSceneImg(UIResource::kMenu);
+    mMenuScene->fadeIn(0);
     mMediaPlayer->endingWin->stop();
     mMediaPlayer->endingLose->stop();
     mMediaPlayer->mainMenu->play();
-    sceneView->setScene(menuScene);
-    this->setCentralWidget(sceneView);
+    mSceneView->setScene(mMenuScene);
+    this->setCentralWidget(mSceneView);
 }
 
 void Dungeon::win() {
     mMediaPlayer->battle->stop();
     mMediaPlayer->endingWin->play();
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    this->resize(screenGeometry.width(), screenGeometry.height());
-    endingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    endingScene->setSceneImg(UIResource::kWin);
-    sceneView->setScene(endingScene);
-    endingScene->fadeIn(1000);
-    endingScene->setMessage("You Win");
-    this->setCentralWidget(sceneView);
+
+    mEndingScene->setSceneImg(UIResource::kWin);
+    mSceneView->setScene(mEndingScene);
+    mEndingScene->fadeIn(1000);
+    mEndingScene->setMessage("You Win");
+    this->setCentralWidget(mSceneView);
 }
 
 void Dungeon::lose() {
     mMediaPlayer->battle->stop();
     mMediaPlayer->endingLose->play();
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    this->resize(screenGeometry.width(), screenGeometry.height());
-    endingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    endingScene->setSceneImg(UIResource::kLose);
-    sceneView->setScene(endingScene);
-    endingScene->fadeIn(1000);
-    endingScene->setMessage("You Lose");
-    this->setCentralWidget(sceneView);
+
+    mEndingScene->setSceneImg(UIResource::kLose);
+    mSceneView->setScene(mEndingScene);
+    mEndingScene->fadeIn(1000);
+    mEndingScene->setMessage("You Lose");
+    this->setCentralWidget(mSceneView);
 }
 
 void Dungeon::nextLevel() {
-
-    if (std::stoi(currentLevel.level) == mLevelData.size()) {
+    if (std::stoi(mCurrentLevel.level) == mLevelData.size()) {
         std::cout << "It's the highest level, can't move to the next level" << std::endl;
         return;
     }
 
     mMediaPlayer->nextLevel->play();
-
-    int heroLife = hero->getLife();
-
-    // Continue to the next level
-    currentLevel = mLevelData[std::stoi(currentLevel.level)];
-
-
-    // Recreate the game scene for the new level
+    int heroLife = mHero->getLife();
+    mCurrentLevel = mLevelData[std::stoi(mCurrentLevel.level)];
     battle();
-    // Restore the Hero's life and position in the new scene
-    hero->setLife(heroLife);
-
-    hero->setFocus();
-    this->setCentralWidget(sceneView);
+    mHero->setLife(heroLife);
+    mHero->setFocus();
+    this->setCentralWidget(mSceneView);
 }
 
 void Dungeon::battle() {
-    introScene->fadeOut(4000);
+    mIntroScene->fadeOut(4000);
+    mGameScene->setSceneImg(UIResource::kSceneImg);
+    mHero->setHeroImg(UIResource::kHero);
+    mGameScene->generatorRandomMap(UIResource::kBrickImg, mCurrentLevel);
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    this->resize(screenGeometry.width(), screenGeometry.height());
-
-    scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    scene->setSceneImg(UIResource::kSceneImg);
-    hero->setHeroImg(UIResource::kHero);
-
-    scene->generatorRandomMap(UIResource::kBrickImg, currentLevel);
-
-    QTimer::singleShot(4000, [&]() {sceneView->setScene(scene);  hero->setFocus();
+    QTimer::singleShot(4000, [&]() {mSceneView->setScene(mGameScene);  mHero->setFocus();
     mMediaPlayer->battle->play();  });
 }
 
 void Dungeon::restart() {
-    currentLevel = mLevelData[0];
-    hero->setLife(3);
+    mCurrentLevel = mLevelData[0];
+    mHero->setLife(3);
     menu();
 }
