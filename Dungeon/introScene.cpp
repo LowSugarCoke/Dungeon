@@ -1,4 +1,5 @@
 ﻿#include "introScene.h"
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
@@ -6,14 +7,13 @@
 #include <QBrush>
 #include <QFont>
 
-
 #include "Dungeon.h"
 #include "resource.h"
 
 IntroScene::IntroScene(QObject* parent)
     : QGraphicsScene(parent)
 {
-    m_story = QString::fromLocal8Bit("在遙遠的過去，曾有一個充滿魔法與神秘的世界，被稱為“艾瑞亞”。\n")
+    mStory = QString::fromLocal8Bit("在遙遠的過去，曾有一個充滿魔法與神秘的世界，被稱為“艾瑞亞”。\n")
         + QString::fromLocal8Bit("這個世界由龍們統治，他們富有智慧，擁有強大的魔法力量。\n")
         + QString::fromLocal8Bit("但是，在這個和平的世界裡，一個陰影悄然升起，那就是邪惡的法師薩格斯。\n")
         + QString::fromLocal8Bit("他渴望將艾瑞亞所有的力量納入己身。\n")
@@ -26,43 +26,43 @@ IntroScene::IntroScene(QObject* parent)
         + QString::fromLocal8Bit("這就是你的角色出場的時候。你將扮演其中的一個勇者，冒著生命危險，踏上了尋找神秘寶藏的旅程。\n")
         + QString::fromLocal8Bit("你將會遇到艱難的挑戰、巧妙的陷阱、強大的怪物，但是，只有你能夠打敗薩格斯，恢復艾瑞亞的和平。");
 
-    m_storyTimer = new QTimer(this);
-    connect(m_storyTimer, &QTimer::timeout, this, &IntroScene::updateStory);
+    mStoryTimer = new QTimer(this);
+    connect(mStoryTimer, &QTimer::timeout, this, &IntroScene::updateStory);
 
-    m_storyIndex = 0;
-    m_storyTimer = new QTimer(this);
-    connect(m_storyTimer, &QTimer::timeout, this, &IntroScene::updateStory);
+    mStoryIndex = 0;
+    mStoryTimer = new QTimer(this);
+    connect(mStoryTimer, &QTimer::timeout, this, &IntroScene::updateStory);
 
-    m_backgroundItem = new QGraphicsPixmapItem();
-    addItem(m_backgroundItem);
-    m_opacityEffect = new QGraphicsOpacityEffect();
-    m_opacityEffect->setOpacity(1.0);
-    m_backgroundItem->setGraphicsEffect(m_opacityEffect);
+    mBackgroundItem = new QGraphicsPixmapItem();
+    addItem(mBackgroundItem);
+    mOpacityEffect = new QGraphicsOpacityEffect();
+    mOpacityEffect->setOpacity(1.0);
+    mBackgroundItem->setGraphicsEffect(mOpacityEffect);
 
     QGraphicsRectItem* m_backgroundRect = new QGraphicsRectItem();
     addItem(m_backgroundRect);
-    QBrush brush(QColor(255, 255, 255));  // 使用白色作為背景色
+    QBrush brush(QColor(255, 255, 255));
     m_backgroundRect->setBrush(brush);
 
 
-    m_textItem = new QGraphicsTextItem();
+    mTextItem = new QGraphicsTextItem();
     QFont font;
-    font.setPixelSize(30);  // 設置字體大小
-    font.setWeight(QFont::Black); // 将字体设置为最粗
+    font.setPixelSize(30);
+    font.setWeight(QFont::Black);
 
-    m_textItem->setFont(font);
-    m_textItem->setDefaultTextColor(QColor(150, 200, 200));
-    addItem(m_textItem);
-    m_opacityEffect = new QGraphicsOpacityEffect();
-    m_opacityEffect->setOpacity(1.0);
-    m_textItem->setGraphicsEffect(m_opacityEffect);
-    m_textItem->hide();
+    mTextItem->setFont(font);
+    mTextItem->setDefaultTextColor(QColor(150, 200, 200));
+    addItem(mTextItem);
+    mOpacityEffect = new QGraphicsOpacityEffect();
+    mOpacityEffect->setOpacity(1.0);
+    mTextItem->setGraphicsEffect(mOpacityEffect);
+    mTextItem->hide();
 
-    startButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
-    startButton->hide();
-    startButton->setMinimumSize(400, 120);
-    startButton->setMaximumSize(400, 120);
-    startButton->setStyleSheet(R"(
+    mStartButton = new QPushButton(QString::fromLocal8Bit("開始遊戲"));
+    mStartButton->hide();
+    mStartButton->setMinimumSize(400, 120);
+    mStartButton->setMaximumSize(400, 120);
+    mStartButton->setStyleSheet(R"(
     QPushButton { 
         font-size:20px; 
         font-weight:bold; 
@@ -77,39 +77,36 @@ IntroScene::IntroScene(QObject* parent)
         color:black;
     }
 )");
-    QGraphicsProxyWidget* startButtonProxy = addWidget(startButton);
-    startButtonProxy->setPos(750, 700);  // 调整位置
-    connect(startButton, &QPushButton::clicked, this, &IntroScene::handleStartButton);
+    QGraphicsProxyWidget* startButtonProxy = addWidget(mStartButton);
+    startButtonProxy->setPos(750, 700);
+    connect(mStartButton, &QPushButton::clicked, this, &IntroScene::handleStartButton);
 
-    m_title = new QGraphicsPixmapItem();
-    addItem(m_title);
-    m_opacityEffect = new QGraphicsOpacityEffect();
-    m_opacityEffect->setOpacity(1.0);
-    m_title->setGraphicsEffect(m_opacityEffect);
+    mTitle = new QGraphicsPixmapItem();
+    addItem(mTitle);
+    mOpacityEffect = new QGraphicsOpacityEffect();
+    mOpacityEffect->setOpacity(1.0);
+    mTitle->setGraphicsEffect(mOpacityEffect);
 
     QPixmap backgroundImage(UIResource::kTitle);
-    m_title->setPixmap(backgroundImage);
-    m_title->setPos(50, 50);
+    mTitle->setPixmap(backgroundImage);
+    mTitle->setPos(50, 50);
 }
 
 
 void IntroScene::startStory() {
-    m_textItem->show();
-    m_storyTimer->start(10);  // every 0.1 second
-    m_textItem->setPlainText(m_story);
-    m_textItem->setPos(200, 400);
-
-
+    mTextItem->show();
+    mStoryTimer->start(10);
+    mTextItem->setPlainText(mStory);
+    mTextItem->setPos(200, 400);
 }
 
 void IntroScene::updateStory() {
-    m_textItem->setPos(200, m_textItem->pos().y() - 1);
-    if (m_textItem->pos().y() <= height() / 4) {
-        m_storyTimer->stop();
-        startButton->show();
+    mTextItem->setPos(200, mTextItem->pos().y() - 1);
+    if (mTextItem->pos().y() <= height() / 4) {
+        mStoryTimer->stop();
+        mStartButton->show();
     }
 }
-
 
 void IntroScene::handleStartButton() {
     static_cast<Dungeon*>(parent())->battle();
@@ -120,19 +117,19 @@ void IntroScene::handleStartButton() {
 void IntroScene::setSceneImg(const QString& kSceneImg) {
     QPixmap backgroundImage(kSceneImg);
     backgroundImage = backgroundImage.scaled(sceneRect().size().toSize(), Qt::KeepAspectRatioByExpanding);
-    m_backgroundItem->setPixmap(backgroundImage);
+    mBackgroundItem->setPixmap(backgroundImage);
 }
 
 void IntroScene::fadeIn(int duration) {
 
-    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    QPropertyAnimation* animation = new QPropertyAnimation(mOpacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 
-    // For m_textItem
-    QPropertyAnimation* textAnimation = new QPropertyAnimation(m_textItem->graphicsEffect(), "opacity");
+    // For mTextItem
+    QPropertyAnimation* textAnimation = new QPropertyAnimation(mTextItem->graphicsEffect(), "opacity");
     textAnimation->setDuration(duration);
     textAnimation->setStartValue(0.0);
     textAnimation->setEndValue(1.0);
@@ -140,15 +137,14 @@ void IntroScene::fadeIn(int duration) {
 }
 
 void IntroScene::fadeOut(int duration) {
-    startButton->hide();
-    QPropertyAnimation* animation = new QPropertyAnimation(m_opacityEffect, "opacity");
+    mStartButton->hide();
+    QPropertyAnimation* animation = new QPropertyAnimation(mOpacityEffect, "opacity");
     animation->setDuration(duration);
     animation->setStartValue(1.0);
     animation->setEndValue(0.0);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 
-    // For m_textItem
-    QPropertyAnimation* textAnimation = new QPropertyAnimation(m_textItem->graphicsEffect(), "opacity");
+    QPropertyAnimation* textAnimation = new QPropertyAnimation(mTextItem->graphicsEffect(), "opacity");
     textAnimation->setDuration(duration);
     textAnimation->setStartValue(1.0);
     textAnimation->setEndValue(0.0);

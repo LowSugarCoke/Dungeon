@@ -8,7 +8,7 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
     : QGraphicsScene(parent),
     mMediaPlayer(mediaPlayer)
 {
-    mTextItem = new QGraphicsTextItem();
+    mTextItem = std::make_shared<QGraphicsTextItem>();
     QFont font;
     font.setPixelSize(100);
     mTextItem->setFont(font);
@@ -16,9 +16,9 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
     mTextItem->setPlainText("Voice");
     mTextItem->setPos(550, 300);
 
-    addItem(mTextItem);
+    addItem(mTextItem.get());
 
-    mVolumeSlider = new QSlider(Qt::Horizontal);
+    mVolumeSlider = std::make_shared<QSlider>(Qt::Horizontal);
     mVolumeSlider->setRange(0, 100);
     mVolumeSlider->setValue(70);
     mVolumeSlider->setStyleSheet(R"(
@@ -48,15 +48,14 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
     }
 )");
 
-
-    QGraphicsProxyWidget* volumeSliderProxy = addWidget(mVolumeSlider);
+    QGraphicsProxyWidget* volumeSliderProxy = addWidget(mVolumeSlider.get());
     volumeSliderProxy->setPos(850, 300);
     volumeSliderProxy->resize(400, 120);
 
-    connect(mVolumeSlider, &QSlider::valueChanged, this, &SettingScene::adjustVolume);
+    connect(mVolumeSlider.get(), &QSlider::valueChanged, this, &SettingScene::adjustVolume);
 
 
-    mBackButton = new QPushButton(QString::fromLocal8Bit("返回主菜單"));
+    mBackButton = std::make_shared<QPushButton>(QString::fromLocal8Bit("返回主菜單"));
     mBackButton->setMinimumSize(400, 120);
     mBackButton->setMaximumSize(400, 120);
     mBackButton->setStyleSheet(R"(
@@ -74,9 +73,9 @@ SettingScene::SettingScene(std::shared_ptr<MediaPlayer> mediaPlayer, QObject* pa
         color:black;
     }
 )");
-    QGraphicsProxyWidget* backButtonProxy = addWidget(mBackButton);
+    QGraphicsProxyWidget* backButtonProxy = addWidget(mBackButton.get());
     backButtonProxy->setPos(700, 500);
-    connect(mBackButton, &QPushButton::clicked, this, &SettingScene::handleBackButton);
+    connect(mBackButton.get(), &QPushButton::clicked, this, &SettingScene::handleBackButton);
 }
 
 void SettingScene::adjustVolume(int volume) {

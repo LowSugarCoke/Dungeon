@@ -47,7 +47,7 @@ private slots:
 
 private:
     std::shared_ptr<MediaPlayer> mMediaPlayer;  // Media player
-    QSlider* mVolumeSlider;                    // Slider for adjusting the volume
-    QPushButton* mBackButton;                  // Button for going back to the previous scene
-    QGraphicsTextItem* mTextItem;              // Text item for displaying the volume level
+    std::shared_ptr<QSlider> mVolumeSlider;                    // Slider for adjusting the volume
+    std::shared_ptr<QPushButton> mBackButton;                  // Button for going back to the previous scene
+    std::shared_ptr<QGraphicsTextItem> mTextItem;              // Text item for displaying the volume level
 };
