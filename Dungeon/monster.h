@@ -5,6 +5,7 @@
  *
  * @brief This header file contains the Monster class, representing a monster in the game.
  */
+#pragma once
 
 #include <QObject>
 #include <QGraphicsPixmapItem>

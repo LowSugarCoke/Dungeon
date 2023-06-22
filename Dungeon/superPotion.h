@@ -30,7 +30,7 @@ public:
      *
      * @param kPotionImg The path to the image file to use to represent the super potion.
      */
-    void setPotionImg(const QString& kPotionImg);
+    void setImg(const QString& kPotionImg);
 
     /**
      * @brief Makes the super potion disappear from the game map.

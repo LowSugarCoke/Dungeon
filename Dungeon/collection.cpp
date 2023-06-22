@@ -7,7 +7,7 @@
 Collection::Collection()
     : QGraphicsPixmapItem() {}
 
-void Collection::setCollectionImg(const QString& kCollectionImg) {
+void Collection::setImg(const QString& kCollectionImg) {
     QPixmap pixmap(kCollectionImg);
     setPixmap(pixmap.scaled(QSize(34, 34), Qt::KeepAspectRatio));
 }

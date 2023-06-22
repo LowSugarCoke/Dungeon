@@ -28,7 +28,7 @@ public:
      *
      * @param kCollectionImg A QString representing the file path to the image for the Collection object.
      */
-    void setCollectionImg(const QString& kCollectionImg);
+    void setImg(const QString& kCollectionImg);
 
     /**
      * @brief Makes the Collection object disappear, typically after it has been collected in the game.

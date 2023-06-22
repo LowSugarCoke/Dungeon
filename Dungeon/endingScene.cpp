@@ -43,7 +43,7 @@ EndingScene::EndingScene(QObject* parent)
     }
 )");
     QGraphicsProxyWidget* backButtonProxy = addWidget(mBackButton);
-    backButtonProxy->setPos(750, 700);  // 调整位置
+    backButtonProxy->setPos(750, 700);
     connect(mBackButton, &QPushButton::clicked, this, &EndingScene::handleRestartButton);
 }
 

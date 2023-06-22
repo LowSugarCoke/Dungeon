@@ -1,39 +1,33 @@
 #include "gameScene.h"
 
-#include <QRandomGenerator>
-#include <QTimer>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <iostream>
 
-#include "brickItem.h"
-#include "hero.h"
-#include "monster.h"
+#include <QRandomGenerator>
+#include <QTimer>
+
 #include "level.h"
 #include "resource.h"
-#include "collection.h"
-#include "potion.h"
-#include "superPotion.h"
 #include "Dungeon.h"
-#include "trap.h"
+
 
 static const std::pair<int, int> mazeSize{ 20,10 };
 
 GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent)
-    , lifeText(new QGraphicsTextItem())
-    , levelText(new QGraphicsTextItem())
+    , mLifeText(new QGraphicsTextItem())
+    , mLevelText(new QGraphicsTextItem())
     , mShurtkeyText(new QGraphicsTextItem())
-    , level(1)
+    , mLevel(1)
+    , mBrickSize(40)
 {
-    lifeText->setDefaultTextColor(Qt::white); // Choose the color
-    lifeText->setFont(QFont("times", 16)); // Set the font and size
-    addItem(lifeText); // Add to the scene
+    mLifeText->setDefaultTextColor(Qt::white); // Choose the color
+    mLifeText->setFont(QFont("times", 16)); // Set the font and size
+    addItem(mLifeText); // Add to the scene
 
-    levelText->setDefaultTextColor(Qt::white); // Choose the color
-    levelText->setFont(QFont("times", 16)); // Set the font and size
-    addItem(levelText); // Add to the scene
+    mLevelText->setDefaultTextColor(Qt::white); // Choose the color
+    mLevelText->setFont(QFont("times", 16)); // Set the font and size
+    addItem(mLevelText); // Add to the scene
 
     mShurtkeyText->setDefaultTextColor(Qt::white); // Choose the color
     mShurtkeyText->setFont(QFont("times", 16)); // Set the font and size
@@ -42,22 +36,22 @@ GameScene::GameScene(QObject* parent)
     addItem(mShurtkeyText); // Add to the scene
 
 
-    m_backgroundItem = new QGraphicsPixmapItem();
-    addItem(m_backgroundItem);
-    m_opacityEffect = new QGraphicsOpacityEffect();
-    m_opacityEffect->setOpacity(1.0);
+    mBackgroundItem = new QGraphicsPixmapItem();
+    addItem(mBackgroundItem);
+    mOpacityEffect = new QGraphicsOpacityEffect();
+    mOpacityEffect->setOpacity(1.0);
 
-    m_backgroundItem->setGraphicsEffect(m_opacityEffect);
+    mBackgroundItem->setGraphicsEffect(mOpacityEffect);
 }
 
 void GameScene::updateLifeText(int life) {
-    lifeText->setPlainText(QString("Life: %1").arg(life));
-    lifeText->setPos(100, 10); // Place it in the top left corner
+    mLifeText->setPlainText(QString("Life: %1").arg(life));
+    mLifeText->setPos(100, 10); // Place it in the top left corner
 }
 
 void GameScene::updateLevelText(QString level) {
-    levelText->setPlainText(QString("Level: %1").arg(level));
-    levelText->setPos(200, 10); // Place it in the top left corner
+    mLevelText->setPlainText(QString("Level: %1").arg(level));
+    mLevelText->setPos(200, 10); // Place it in the top left corner
 }
 
 void GameScene::setSceneImg(const QString& kSceneImg) {
@@ -65,48 +59,7 @@ void GameScene::setSceneImg(const QString& kSceneImg) {
     setBackgroundBrush(QBrush(backgroundImage));
 }
 void GameScene::callLoad() {
-    for (auto b : bricks) {
-        this->removeItem(b);
-        //delete b;
-    }
-    bricks.clear();
-
-    for (auto m : monsters) {
-        this->removeItem(m);
-        //delete m;
-    }
-    monsters.clear();
-
-    for (auto c : collections) {
-        this->removeItem(c);
-        //delete c;
-    }
-    collections.clear();
-
-    for (auto t : traps) {
-        this->removeItem(t);
-        //delete t;
-    }
-    traps.clear();
-
-    for (auto p : potions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    potions.clear();
-
-    for (auto p : superPotions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    superPotions.clear();
-
-    for (auto d : dragons) {
-        this->removeItem(d);
-        //delete d;
-    }
-    dragons.clear();
-
+    cleanData();
     static_cast<Dungeon*>(parent())->load();
 }
 
@@ -114,8 +67,8 @@ void GameScene::loadData(History history) {
     QImage brickImage(UIResource::kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution
-    int brickSize = 40;  // Adjust this to get your desired brick size
-    QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(brickSize, brickSize, Qt::KeepAspectRatio);
+    int mBrickSize = 40;  // Adjust this to get your desired brick size
+    QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(mBrickSize, mBrickSize, Qt::KeepAspectRatio);
 
     // Calculate the offset to center the map
     int offsetX = 140;
@@ -128,80 +81,80 @@ void GameScene::loadData(History history) {
                 brick->setPixmap(scaledBrickImg);
                 brick->setPos(offsetX + i * brick->pixmap().width(), offsetY + j * brick->pixmap().height());
                 this->addItem(brick);
-                bricks.push_back(brick);
+                mBricks.push_back(brick);
             }
         }
     }
 
-    // Add the hero to the scene
-    hero->setPos(history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY);
-    hero->setStartPos({ history.heroPos.first * brickSize + offsetX, history.heroPos.second * brickSize + offsetY });
-    hero->setLife(history.heroLife);
+    // Add the mHero to the scene
+    mHero->setPos(history.heroPos.first * mBrickSize + offsetX, history.heroPos.second * mBrickSize + offsetY);
+    mHero->setStartPos({ history.heroPos.first * mBrickSize + offsetX, history.heroPos.second * mBrickSize + offsetY });
+    mHero->setLife(history.heroLife);
 
     for (int i = 0; i < history.trapPos.size(); i++) {
         Trap* trap = new Trap();
-        traps.push_back(trap);
-        trap->setTrapImg(UIResource::kTrap);
-        trap->setPos(history.trapPos[i].first * brickSize + offsetX, history.trapPos[i].second * brickSize + offsetY);
+        mTraps.push_back(trap);
+        trap->setImg(UIResource::kTrap);
+        trap->setPos(history.trapPos[i].first * mBrickSize + offsetX, history.trapPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(trap);
     }
 
     for (int i = 0; i < history.potionPos.size(); i++) {
         Potion* potion = new Potion();
-        potions.push_back(potion);
-        potion->setPotionImg(UIResource::kPotion);
-        potion->setPos(history.potionPos[i].first * brickSize + offsetX, history.potionPos[i].second * brickSize + offsetY);
+        mPotions.push_back(potion);
+        potion->setImg(UIResource::kPotion);
+        potion->setPos(history.potionPos[i].first * mBrickSize + offsetX, history.potionPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(potion);
     }
 
     for (int i = 0; i < history.superPotionPos.size(); i++) {
         SuperPotion* superPotion = new SuperPotion();
-        superPotions.push_back(superPotion);
-        superPotion->setPotionImg(UIResource::kSuperPotion);
-        superPotion->setPos(history.superPotionPos[i].first * brickSize + offsetX, history.superPotionPos[i].second * brickSize + offsetY);
+        mSuperPotions.push_back(superPotion);
+        superPotion->setImg(UIResource::kSuperPotion);
+        superPotion->setPos(history.superPotionPos[i].first * mBrickSize + offsetX, history.superPotionPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(superPotion);
     }
 
-    remainingCollections = history.collectionPos.size();
+    mRemainingCollections = history.collectionPos.size();
     for (int i = 0; i < history.collectionPos.size(); i++) {
         Collection* collection = new Collection();
-        collections.push_back(collection);
-        collection->setCollectionImg(UIResource::kStar);
-        collection->setPos(history.collectionPos[i].first * brickSize + offsetX, history.collectionPos[i].second * brickSize + offsetY);
+        mCollections.push_back(collection);
+        collection->setImg(UIResource::kStar);
+        collection->setPos(history.collectionPos[i].first * mBrickSize + offsetX, history.collectionPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(collection);
     }
 
-    // Create the monsters based on the difficulty level
+    // Create the mMonsters based on the difficulty level
     for (int i = 0; i < history.monsterPos.size(); i++) {
         Monster* monster = new Monster();
-        monsters.push_back(monster);
+        mMonsters.push_back(monster);
         monster->setMonsterImg(UIResource::kMonster);
         // Set the step size to be the same as the brick size
-        monster->setStepSize(brickSize);
-        monster->setPos(history.monsterPos[i].first * brickSize + offsetX, history.monsterPos[i].second * brickSize + offsetY);
+        monster->setStepSize(mBrickSize);
+        monster->setPos(history.monsterPos[i].first * mBrickSize + offsetX, history.monsterPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(monster);
 
         // Setup a timer to move the monster every 1 second
         QTimer* timer = new QTimer();
         QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
-        timer->start(history.monsterSpeed);;
+        timer->start(history.monsterSpeed);
     }
 
-    // Create the dragons based on the difficulty level
+    // Create the mDragons based on the difficulty level
 
     for (int i = 0; i < history.dragonPos.size(); i++) {
-        Dragon* dragon = new Dragon(hero);
-        dragons.push_back(dragon);
+        Dragon* dragon = new Dragon(mHero);
+        mDragons.push_back(dragon);
         dragon->setDragonImg(UIResource::kDragon);
         // Set the step size to be the same as the brick size
-        dragon->setStepSize(brickSize);
+        dragon->setStepSize(mBrickSize);
         dragon->setZValue(1);
-        dragon->setPos(history.dragonPos[i].first * brickSize + offsetX, history.dragonPos[i].second * brickSize + offsetY);
+        dragon->setPos(history.dragonPos[i].first * mBrickSize + offsetX, history.dragonPos[i].second * mBrickSize + offsetY);
         // Add the monster to the scene
         this->addItem(dragon);
 
@@ -211,15 +164,15 @@ void GameScene::loadData(History history) {
         timer->start(history.dragonSpeed);
     }
 
-    level = history.level;
+    mLevel = history.level;
     updateLevelText(QString::number(history.level));
-    updateLifeText(hero->getLife());
+    updateLifeText(mHero->getLife());
 
-    hero->startInvincibleMode(2000);
+    mHero->startInvincibleMode(2000);
 }
 
 void GameScene::saveData() {
-    int brickSize = 40;
+    int mBrickSize = 40;
 
     // Calculate the offset to center the map
     int offsetX = 140;
@@ -228,42 +181,42 @@ void GameScene::saveData() {
     // Create a new History object and fill it with current game state
     History kHistory;
 
-    kHistory.maze = maze;
-    kHistory.level = level;
-    kHistory.heroPos = { int(hero->x() - offsetX) / brickSize, int(hero->y() - offsetY) / brickSize };
-    kHistory.heroLife = hero->getLife();
+    kHistory.maze = mMaze;
+    kHistory.level = mLevel;
+    kHistory.heroPos = { int(mHero->x() - offsetX) / mBrickSize, int(mHero->y() - offsetY) / mBrickSize };
+    kHistory.heroLife = mHero->getLife();
 
-    for (const auto& monster : monsters) {
-        kHistory.monsterPos.push_back({ int(monster->x() - offsetX) / brickSize, int(monster->y() - offsetY) / brickSize });
+    for (const auto& monster : mMonsters) {
+        kHistory.monsterPos.push_back({ int(monster->x() - offsetX) / mBrickSize, int(monster->y() - offsetY) / mBrickSize });
     }
-    kHistory.monsterSpeed = monsterSpeed;
+    kHistory.monsterSpeed = mMonsterSpeed;
 
-    for (const auto& dragon : dragons) {
-        kHistory.dragonPos.push_back({ int(dragon->x() - offsetX) / brickSize, int(dragon->y() - offsetY) / brickSize });
+    for (const auto& dragon : mDragons) {
+        kHistory.dragonPos.push_back({ int(dragon->x() - offsetX) / mBrickSize, int(dragon->y() - offsetY) / mBrickSize });
     }
-    kHistory.dragonSpeed = dragonSpeed;
+    kHistory.dragonSpeed = mDragonSpeed;
 
-    for (const auto& collection : collections) {
+    for (const auto& collection : mCollections) {
         if (collection->isVisible()) {
-            kHistory.collectionPos.push_back({ int(collection->x() - offsetX) / brickSize, int(collection->y() - offsetY) / brickSize });
+            kHistory.collectionPos.push_back({ int(collection->x() - offsetX) / mBrickSize, int(collection->y() - offsetY) / mBrickSize });
         }
     }
 
-    for (const auto& potion : potions) {
+    for (const auto& potion : mPotions) {
         if (potion->isVisible()) {
-            kHistory.potionPos.push_back({ int(potion->x() - offsetX) / brickSize, int(potion->y() - offsetY) / brickSize });
+            kHistory.potionPos.push_back({ int(potion->x() - offsetX) / mBrickSize, int(potion->y() - offsetY) / mBrickSize });
         }
     }
 
-    for (const auto& superPotion : superPotions) {
+    for (const auto& superPotion : mSuperPotions) {
         if (superPotion->isVisible()) {
-            kHistory.superPotionPos.push_back({ int(superPotion->x() - offsetX) / brickSize, int(superPotion->y() - offsetY) / brickSize });
+            kHistory.superPotionPos.push_back({ int(superPotion->x() - offsetX) / mBrickSize, int(superPotion->y() - offsetY) / mBrickSize });
         }
     }
 
-    for (const auto& trap : traps) {
+    for (const auto& trap : mTraps) {
         if (trap->isVisible()) {
-            kHistory.trapPos.push_back({ int(trap->x() - offsetX) / brickSize, int(trap->y() - offsetY) / brickSize });
+            kHistory.trapPos.push_back({ int(trap->x() - offsetX) / mBrickSize, int(trap->y() - offsetY) / mBrickSize });
         }
     }
 
@@ -273,128 +226,149 @@ void GameScene::saveData() {
 
 
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
-    MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
-    this->maze = maze.getMaze();
+    mRemainingCollections = kLevelElement.starCount;
+    generateMaze(kBrickImg, kLevelElement);
+    placeHero();
+    placeItems(mTraps, kLevelElement.trapCount, UIResource::kTrap);
+    placeItems(mPotions, kLevelElement.potionCount, UIResource::kPotion);
+    placeItems(mSuperPotions, kLevelElement.superPotionCount, UIResource::kSuperPotion);
+    placeItems(mCollections, kLevelElement.starCount, UIResource::kStar);
+    placeMonster(kLevelElement.monsterCount, kLevelElement.monsterspeed);
+    placeDragon(kLevelElement.dragonCount, kLevelElement.dragonSpeed);
+    updateTextAndHero(kLevelElement);
+}
+
+void GameScene::decreaseCollectionCount() {
+    --mRemainingCollections;
+}
+bool GameScene::isAllCollectionsCollected() const { return mRemainingCollections == 0; }
+void GameScene::nextLevel() {
+    mLevel++;
+
+    cleanData();
+
+    // Save the current Hero's life.
+    mHeroLife = mHero->getLife();
+
+    if (mLevel != 11) {
+        static_cast<Dungeon*>(parent())->nextLevel();
+    }
+    else {
+        mLevel = 1;
+        static_cast<Dungeon*>(parent())->win();
+    }
+}
+
+void GameScene::lose() {
+    cleanData();
+    static_cast<Dungeon*>(parent())->lose();
+}
+
+void GameScene::setHero(Hero* mHero) {
+    this->mHero = mHero;
+    this->addItem(mHero);
+}
+
+
+void GameScene::setDataHanlder(std::shared_ptr<DataHandler> dataHandler) {
+    mDataHandler = dataHandler;
+}
+
+
+void GameScene::setLevel(const int& kLevel) {
+    mLevel = kLevel;
+}
+
+
+void GameScene::cleanData() {
+    for (auto b : mBricks) {
+        this->removeItem(b);
+    }
+    mBricks.clear();
+
+    for (auto m : mMonsters) {
+        this->removeItem(m);
+    }
+    mMonsters.clear();
+
+    for (auto c : mCollections) {
+        this->removeItem(c);
+    }
+    mCollections.clear();
+
+    for (auto t : mTraps) {
+        this->removeItem(t);
+    }
+    mTraps.clear();
+
+    for (auto p : mPotions) {
+        this->removeItem(p);
+    }
+    mPotions.clear();
+
+    for (auto p : mSuperPotions) {
+        this->removeItem(p);
+    }
+    mSuperPotions.clear();
+
+    for (auto d : mDragons) {
+        this->removeItem(d);
+    }
+    mDragons.clear();
+}
+
+
+void GameScene::generateMaze(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
+    MazeGenerator mMaze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 mMaze
+    this->mMaze = mMaze.getMaze();
     QImage brickImage(kBrickImg);
 
     // Adjust the size of the pixmap to fit your screen resolution
-    int brickSize = 40;  // Adjust this to get your desired brick size
-    QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(brickSize, brickSize, Qt::KeepAspectRatio);
+    int mBrickSize = 40;  // Adjust this to get your desired brick size
+    QPixmap scaledBrickImg = QPixmap::fromImage(brickImage).scaled(mBrickSize, mBrickSize, Qt::KeepAspectRatio);
 
     // Calculate the offset to center the map
-    int offsetX = (width() - maze.getWidth() * brickSize) / 2;
-    int offsetY = (height() - maze.getHeight() * brickSize) / 2 - 50;
+    mOffSetX = (width() - mMaze.getWidth() * mBrickSize) / 2;
+    mOffSetY = (height() - mMaze.getHeight() * mBrickSize) / 2 - 50;
 
-    for (int i = 0; i < maze.getWidth(); ++i) {
-        for (int j = 0; j < maze.getHeight(); ++j) {
-            if (maze(i, j) == 1) {  // If the cell is a wall, create a brick
+    for (int i = 0; i < mMaze.getWidth(); ++i) {
+        for (int j = 0; j < mMaze.getHeight(); ++j) {
+            if (mMaze(i, j) == 1) {  // If the cell is a wall, create a brick
                 BrickItem* brick = new BrickItem(nullptr);
                 brick->setPixmap(scaledBrickImg);
-                brick->setPos(offsetX + i * brick->pixmap().width(), offsetY + j * brick->pixmap().height());
+                brick->setPos(mOffSetX + i * brick->pixmap().width(), mOffSetY + j * brick->pixmap().height());
                 this->addItem(brick);
-                bricks.push_back(brick);
+                mBricks.push_back(brick);
             }
         }
     }
+}
+void GameScene::placeHero() {
 
-    // Add the hero to the scene
-    //this->addItem(hero);
-
-    // Try to place the hero
+    // Try to place the mHero
     bool heroPlaced = false;
     while (!heroPlaced) {
-        // Set the hero's position to a random place in the scene
-        int x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-        int y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+        // Set the mHero's position to a random place in the scene
+        int x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * mBrickSize + mOffSetX;
+        int y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * mBrickSize + mOffSetY;
 
-        hero->setPos(x, y);
+        mHero->setPos(x, y);
 
-        // Check if the hero is colliding with something
-        if (hero->collidingItems().isEmpty()) {
-            hero->setStartPos({ x,y });
-            // If not, then the hero is successfully placed
+        // Check if the mHero is colliding with something
+        if (mHero->collidingItems().isEmpty()) {
+            mHero->setStartPos({ x,y });
+            // If not, then the mHero is successfully placed
             heroPlaced = true;
         }
     }
-
-    for (int i = 0; i < kLevelElement.trapCount; i++) {
-        Trap* trap = new Trap();
-        traps.push_back(trap);
-        trap->setTrapImg(UIResource::kTrap);
-
-        // Add the monster to the scene
-        this->addItem(trap);
-
-        // Position the monster in a random location that doesn't collide with anything
-        int x, y;
-        do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
-
-            trap->setPos(x, y);
-        } while (!trap->collidingItems().isEmpty());
-    }
-
-    for (int i = 0; i < kLevelElement.potionCount; i++) {
-        Potion* potion = new Potion();
-        potions.push_back(potion);
-        potion->setPotionImg(UIResource::kPotion);
-
-        // Add the monster to the scene
-        this->addItem(potion);
-
-        // Position the monster in a random location that doesn't collide with anything
-        int x, y;
-        do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
-            potion->setPos(x, y);
-        } while (!potion->collidingItems().isEmpty());
-    }
-
-    for (int i = 0; i < kLevelElement.superPotionCount; i++) {
-        SuperPotion* superPotion = new SuperPotion();
-        superPotions.push_back(superPotion);
-        superPotion->setPotionImg(UIResource::kSuperPotion);
-
-        // Add the monster to the scene
-        this->addItem(superPotion);
-
-        // Position the monster in a random location that doesn't collide with anything
-        int x, y;
-        do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
-            superPotion->setPos(x, y);
-        } while (!superPotion->collidingItems().isEmpty());
-    }
-
-    remainingCollections = kLevelElement.starCount;
-    for (int i = 0; i < kLevelElement.starCount; i++) {
-        Collection* collection = new Collection();
-        collections.push_back(collection);
-        collection->setCollectionImg(UIResource::kStar);
-
-        // Add the monster to the scene
-        this->addItem(collection);
-
-        // Position the monster in a random location that doesn't collide with anything
-        int x, y;
-        do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
-            collection->setPos(x, y);
-        } while (!collection->collidingItems().isEmpty());
-    }
-
-    // Create the monsters based on the difficulty level
-    int monsterCount = kLevelElement.monsterCount;
+}
+void GameScene::placeMonster(int monsterCount, int monsterSpeed) {
     for (int i = 0; i < monsterCount; i++) {
         Monster* monster = new Monster();
-        monsters.push_back(monster);
+        mMonsters.push_back(monster);
         monster->setMonsterImg(UIResource::kMonster);
         // Set the step size to be the same as the brick size
-        monster->setStepSize(brickSize);
+        monster->setStepSize(mBrickSize);
 
         // Add the monster to the scene
         this->addItem(monster);
@@ -402,26 +376,25 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         // Position the monster in a random location that doesn't collide with anything
         int x, y;
         do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * mBrickSize + mOffSetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * mBrickSize + mOffSetY;
             monster->setPos(x, y);
         } while (!monster->collidingItems().isEmpty());
 
         // Setup a timer to move the monster every 1 second
         QTimer* timer = new QTimer();
         QObject::connect(timer, &QTimer::timeout, monster, &Monster::randomMove);
-        timer->start(kLevelElement.monsterspeed);
+        timer->start(monsterSpeed);
     }
-    monsterSpeed = kLevelElement.monsterspeed;
-
-    // Create the dragons based on the difficulty level
-    int dragonCount = kLevelElement.dragonCount;
+    mMonsterSpeed = monsterSpeed;
+}
+void GameScene::placeDragon(int dragonCount, int dragonSpeed) {
     for (int i = 0; i < dragonCount; i++) {
-        Dragon* dragon = new Dragon(hero);
-        dragons.push_back(dragon);
+        Dragon* dragon = new Dragon(mHero);
+        mDragons.push_back(dragon);
         dragon->setDragonImg(UIResource::kDragon);
         // Set the step size to be the same as the brick size
-        dragon->setStepSize(brickSize);
+        dragon->setStepSize(mBrickSize);
         dragon->setZValue(1);
         // Add the monster to the scene
         this->addItem(dragon);
@@ -429,144 +402,46 @@ void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelE
         // Position the monster in a random location that doesn't collide with anything
         int x, y;
         do {
-            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * brickSize + offsetX;
-            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * brickSize + offsetY;
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * mBrickSize + mOffSetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * mBrickSize + mOffSetY;
             dragon->setPos(x, y);
         } while (x <= 140 || x >= 1000 || y <= 70 || y >= 700);
 
         // Setup a timer to move the monster every 1 second
         QTimer* timer = new QTimer();
         QObject::connect(timer, &QTimer::timeout, dragon, &Dragon::randomMove);
-        timer->start(kLevelElement.dragonSpeed);
+        timer->start(dragonSpeed);
     }
-    dragonSpeed = kLevelElement.dragonSpeed;
+    mDragonSpeed = dragonSpeed;
+}
 
+template<typename T>
+void GameScene::placeItems(std::vector<T*>& items, int count, const QString& imageResource) {
+    for (int i = 0; i < count; i++) {
+        T* item = new T();
+        items.push_back(item);
+
+        item->setImg(imageResource);
+
+        this->addItem(item);
+
+        // Position the item in a random location that doesn't collide with anything
+        int x, y;
+        do {
+            x = QRandomGenerator::global()->bounded(mazeSize.first * 2) * mBrickSize + mOffSetX;
+            y = QRandomGenerator::global()->bounded(mazeSize.second * 2) * mBrickSize + mOffSetY;
+            item->setPos(x, y);
+        } while (!item->collidingItems().isEmpty());
+    }
+}
+
+void GameScene::updateTextAndHero(const Level::LevelElement& kLevelElement) {
     updateLevelText(QString::fromStdString(kLevelElement.level));
-    updateLifeText(hero->getLife());
+    updateLifeText(mHero->getLife());
     if (kLevelElement.level == "1") {
-        hero->startInvincibleMode(6000);
+        mHero->startInvincibleMode(6000);
     }
     else {
-        hero->startInvincibleMode(2000);
+        mHero->startInvincibleMode(2000);
     }
-}
-
-void GameScene::decreaseCollectionCount() {
-    --remainingCollections;
-}
-bool GameScene::isAllCollectionsCollected() const { return remainingCollections == 0; }
-void GameScene::nextLevel() {
-    level++;
-    //this->removeItem(hero);
-    //this->clear();
-
-    for (auto b : bricks) {
-        this->removeItem(b);
-        //delete b;
-    }
-    bricks.clear();
-
-    for (auto m : monsters) {
-        this->removeItem(m);
-        //delete m;
-    }
-    monsters.clear();
-
-    for (auto c : collections) {
-        this->removeItem(c);
-        //delete c;
-    }
-    collections.clear();
-
-    for (auto t : traps) {
-        this->removeItem(t);
-        //delete t;
-    }
-    traps.clear();
-
-    for (auto p : potions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    potions.clear();
-
-    for (auto p : superPotions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    superPotions.clear();
-
-    for (auto d : dragons) {
-        this->removeItem(d);
-        //delete d;
-    }
-    dragons.clear();
-
-    // Save the current Hero's life.
-    heroLife = hero->getLife();
-
-    if (level != 11) {
-        // Continue to the next level.
-        static_cast<Dungeon*>(parent())->nextLevel();
-    }
-    else {
-        level = 1;
-        static_cast<Dungeon*>(parent())->win();
-    }
-}
-
-void GameScene::lose() {
-    for (auto b : bricks) {
-        this->removeItem(b);
-        //delete b;
-    }
-    bricks.clear();
-
-    for (auto m : monsters) {
-        this->removeItem(m);
-        //delete m;
-    }
-    monsters.clear();
-
-    for (auto c : collections) {
-        this->removeItem(c);
-        //delete c;
-    }
-    collections.clear();
-
-    for (auto t : traps) {
-        this->removeItem(t);
-        //delete t;
-    }
-    traps.clear();
-
-    for (auto p : potions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    potions.clear();
-
-    for (auto p : superPotions) {
-        this->removeItem(p);
-        //delete p;
-    }
-    superPotions.clear();
-
-    for (auto d : dragons) {
-        this->removeItem(d);
-        //delete d;
-    }
-    dragons.clear();
-
-    static_cast<Dungeon*>(parent())->lose();
-}
-
-void GameScene::setHero(Hero* hero) {
-    this->hero = hero;
-    this->addItem(hero);
-}
-
-
-void GameScene::setDataHanlder(std::shared_ptr<DataHandler> dataHandler) {
-    mDataHandler = dataHandler;
 }

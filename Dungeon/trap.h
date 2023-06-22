@@ -30,5 +30,5 @@ public:
      *
      * @param kTrapImg The path to the image file to use to represent the trap.
      */
-    void setTrapImg(const QString& kTrapImg);
+    void setImg(const QString& kTrapImg);
 };

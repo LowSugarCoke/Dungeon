@@ -5,7 +5,7 @@
 Trap::Trap()
     : QGraphicsPixmapItem() {}
 
-void Trap::setTrapImg(const QString& kTrapImg) {
+void Trap::setImg(const QString& kTrapImg) {
     QPixmap pixmap(kTrapImg);
     setPixmap(pixmap.scaled(QSize(34, 34), Qt::KeepAspectRatio));
 }

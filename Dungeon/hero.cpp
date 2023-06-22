@@ -58,7 +58,7 @@ void Hero::keyPressEvent(QKeyEvent* event) {
     else if (event->key() == Qt::Key_O) {
         GameScene* gameScene = dynamic_cast<GameScene*>(scene());
         if (gameScene) {
-            gameScene->level = 10;
+            gameScene->setLevel(10);
             gameScene->nextLevel();
             return;
         }
