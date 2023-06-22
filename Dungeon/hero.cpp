@@ -1,5 +1,9 @@
 #include "hero.h"
 
+#include <QObject>
+#include <QKeyEvent>
+#include <QTimer>
+
 #include "monster.h"
 #include "gameScene.h"
 #include "collection.h"
@@ -8,60 +12,50 @@
 #include "superPotion.h"
 #include "dragon.h"
 
-#include <QObject>
-
-#include <QPainter>
-#include <QKeyEvent>
-#include <QTimer>
-
-#include <qdebug.h>
-
 Hero::Hero()
-    : QGraphicsPixmapItem() // 初始化音效播
-    , opacityEffect(new QGraphicsOpacityEffect(this)),
-    invincibleTimer(new QTimer(this)),
-    blinkTimer(new QTimer(this)),
-    isInvincible(false),
-    blinkState(0)
+    : QGraphicsPixmapItem()
+    , mOpacityEffect(new QGraphicsOpacityEffect(this)),
+    mInvincibleTimer(new QTimer(this)),
+    mBlinkTimer(new QTimer(this)),
+    mIsInvincible(false),
+    mBlinkState(0),
+    mBrickSize(40),
+    mLife(3)
 {
-    setGraphicsEffect(opacityEffect);
-    QObject::connect(invincibleTimer, &QTimer::timeout, this, &Hero::stopInvincibleMode);
-    QObject::connect(blinkTimer, &QTimer::timeout, this, &Hero::blink);
+    setGraphicsEffect(mOpacityEffect);
+    QObject::connect(mInvincibleTimer, &QTimer::timeout, this, &Hero::stopInvincibleMode);
+    QObject::connect(mBlinkTimer, &QTimer::timeout, this, &Hero::blink);
 
-    setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
-  // Update the life text
-    isFrozen = false;
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
+
+    mIsFrozen = false;
 }
 
 void Hero::setHeroImg(const QString& kHeroImg) {
-    QPixmap pixmap(kHeroImg);  // Change this to your image path
+    QPixmap pixmap(kHeroImg);
     setPixmap(pixmap.scaled(QSize(34, 34), Qt::KeepAspectRatio));
 }
 
 void Hero::keyPressEvent(QKeyEvent* event) {
-    if (isFrozen) {
-        return;  // Ignore user input if hero is frozen
+    if (mIsFrozen) {
+        return;
     }
 
-    qDebug() << "Key Pressed: " << event->text();
-
-    // Calculate new position
     QPointF newPos = pos();
     QPointF beforePos = pos();
     if (event->key() == Qt::Key_W || event->key() == Qt::Key_Up) {
-        newPos.setY(newPos.y() - brickSize);
+        newPos.setY(newPos.y() - mBrickSize);
     }
     else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down) {
-        newPos.setY(newPos.y() + brickSize);
+        newPos.setY(newPos.y() + mBrickSize);
     }
     else if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left) {
-        newPos.setX(newPos.x() - brickSize);
+        newPos.setX(newPos.x() - mBrickSize);
     }
     else if (event->key() == Qt::Key_D || event->key() == Qt::Key_Right) {
-        newPos.setX(newPos.x() + brickSize);
+        newPos.setX(newPos.x() + mBrickSize);
     }
     else if (event->key() == Qt::Key_O) {
-        // Update the life text
         GameScene* gameScene = dynamic_cast<GameScene*>(scene());
         if (gameScene) {
             gameScene->level = 10;
@@ -70,10 +64,9 @@ void Hero::keyPressEvent(QKeyEvent* event) {
         }
     }
     else if (event->key() == Qt::Key_P) {
-        // Update the life text
         GameScene* gameScene = dynamic_cast<GameScene*>(scene());
         if (gameScene) {
-            gameScene->updateLifeText(life);
+            gameScene->updateLifeText(mLife);
             gameScene->lose();
             return;
         }
@@ -100,21 +93,20 @@ void Hero::keyPressEvent(QKeyEvent* event) {
         }
     }
 
-    // Check for collisions
     setPos(newPos);
     checkCollision();
 
     QList<QGraphicsItem*> collidingItems = this->collidingItems();
 
-    if (!isInvincible) {
+    if (!mIsInvincible) {
         for (auto* item : collidingItems) {
             auto* trap = dynamic_cast<Trap*>(item);
             if (trap) {
                 mTrapSound->play();
-                QGraphicsItem::keyPressEvent(event);  // Pass the event to the base class
-                isFrozen = true;
+                QGraphicsItem::keyPressEvent(event);
+                mIsFrozen = true;
                 QTimer::singleShot(1000, [this]() {
-                    isFrozen = false;
+                    mIsFrozen = false;
                     });
                 return;
             }
@@ -129,28 +121,26 @@ void Hero::keyPressEvent(QKeyEvent* event) {
         }
     }
 
-    QGraphicsItem::keyPressEvent(event);  // Pass the event to the base class
+    QGraphicsItem::keyPressEvent(event);
 }
 
 void Hero::setStepSize(const int& kStepSize) {
-    brickSize = kStepSize;
+    mBrickSize = kStepSize;
 }
 
 void Hero::decreaseLife() {
-    if (life > 0) {
-        --life;
-        QPointF newPos(startPos.first, startPos.second);
+    if (mLife > 0) {
+        --mLife;
+        QPointF newPos(mStartPos.first, mStartPos.second);
         setPos(newPos);
     }
 
-    // Update the life text
     GameScene* gameScene = dynamic_cast<GameScene*>(scene());
     if (gameScene) {
-        gameScene->updateLifeText(life);
+        gameScene->updateLifeText(mLife);
     }
 
-    // if life becomes 0, restart the game or handle game over
-    if (life == 0) {
+    if (mLife == 0) {
         if (gameScene) {
             gameScene->lose();
         }
@@ -158,11 +148,11 @@ void Hero::decreaseLife() {
 }
 
 int Hero::getLife() const {
-    return life;
+    return mLife;
 }
 
-void Hero::setLife(int life) {
-    this->life = life;
+void Hero::setLife(int mLife) {
+    this->mLife = mLife;
 }
 
 void Hero::checkCollision() {
@@ -180,10 +170,9 @@ void Hero::checkCollision() {
             addLife();
             potion->disappear();
 
-            // Update the life text
             GameScene* gameScene = dynamic_cast<GameScene*>(scene());
             if (gameScene) {
-                gameScene->updateLifeText(life);
+                gameScene->updateLifeText(mLife);
             }
         }
 
@@ -195,7 +184,7 @@ void Hero::checkCollision() {
             startInvincibleMode(10000);
         }
 
-        if (!isInvincible) {
+        if (!mIsInvincible) {
             auto* monster = dynamic_cast<Monster*>(item);
             if (monster) {
                 mMonsterSound->play();
@@ -213,28 +202,28 @@ void Hero::checkCollision() {
 }
 
 void Hero::startInvincibleMode(int durationMs) {
-    isInvincible = true;
-    blinkTimer->start(100);  // 閃爍間隔，可以調整
-    invincibleTimer->start(durationMs);  // 無敵模式持續時間
+    mIsInvincible = true;
+    mBlinkTimer->start(100);
+    mInvincibleTimer->start(durationMs);
 }
 
 void Hero::stopInvincibleMode() {
-    isInvincible = false;
-    blinkTimer->stop();
-    opacityEffect->setOpacity(1);  // 停止閃爍，恢復正常狀態
+    mIsInvincible = false;
+    mBlinkTimer->stop();
+    mOpacityEffect->setOpacity(1);
 }
 
 void Hero::blink() {
-    blinkState = !blinkState;
-    opacityEffect->setOpacity(blinkState);
+    mBlinkState = !mBlinkState;
+    mOpacityEffect->setOpacity(mBlinkState);
 }
 
-void Hero::setStartPos(std::pair<int, int> startPos) {
-    this->startPos = startPos;
+void Hero::setStartPos(std::pair<int, int> mStartPos) {
+    this->mStartPos = mStartPos;
 }
 
 void Hero::addLife() {
-    life += 1;
+    mLife += 1;
 }
 
 void Hero::setMonsterSound(std::shared_ptr<QMediaPlayer> monsterSound) {
