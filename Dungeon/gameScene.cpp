@@ -217,88 +217,52 @@ void GameScene::saveData() {
     int offsetX = 140;
     int offsetY = 70;
 
-    std::string filename = "data.txt";
-    std::ofstream file(filename);
+    // Create a new History object and fill it with current game state
+    History kHistory;
 
-    if (!file) {
-        std::cerr << "Unable to open file: " << filename << std::endl;
-        return;
-    }
+    kHistory.maze = maze;
+    kHistory.level = level;
+    kHistory.heroPos = { int(hero->x() - offsetX) / brickSize, int(hero->y() - offsetY) / brickSize };
+    kHistory.heroLife = hero->getLife();
 
-    // Save maze
-    for (size_t i = 0; i < maze[0].size(); ++i) {
-        for (size_t j = 0; j < maze.size(); ++j) {
-            file << maze[j][i];
-            if (j != maze.size() - 1) {
-                file << ",";
-            }
-        }
-        file << "\n";
-    }
-
-    // Save level
-    file << "Level " << level << "\n";
-
-    // Save hero
-    int ss = hero->x();
-    file << "Hero " << int(hero->x() - offsetX) / brickSize << " " << int(hero->y() - offsetY) / brickSize << " " << hero->getLife() << "\n";
-
-    // Save monsters
-    file << "Monster ";
     for (const auto& monster : monsters) {
-        file << int(monster->x() - offsetX) / brickSize << " " << int(monster->y() - offsetY) / brickSize << " ";
+        kHistory.monsterPos.push_back({ int(monster->x() - offsetX) / brickSize, int(monster->y() - offsetY) / brickSize });
     }
-    file << "\n";
+    kHistory.monsterSpeed = monsterSpeed;
 
-    // Save MonsterSpeed
-    file << "MonsterSpeed  " << monsterSpeed << "\n";
-
-    // Save dragons
-    file << "Dragon ";
     for (const auto& dragon : dragons) {
-        file << int(dragon->x() - offsetX) / brickSize << " " << int(dragon->y() - offsetY) / brickSize << " ";
+        kHistory.dragonPos.push_back({ int(dragon->x() - offsetX) / brickSize, int(dragon->y() - offsetY) / brickSize });
     }
-    file << "\n";
+    kHistory.dragonSpeed = dragonSpeed;
 
-    // Save DragonSpeed
-    file << "DragonSpeed   " << dragonSpeed << "\n";
-
-    // Save collections
-    file << "Collection  ";
     for (const auto& collection : collections) {
         if (collection->isVisible()) {
-            file << int(collection->x() - offsetX) / brickSize << " " << int(collection->y() - offsetY) / brickSize << " ";
+            kHistory.collectionPos.push_back({ int(collection->x() - offsetX) / brickSize, int(collection->y() - offsetY) / brickSize });
         }
     }
-    file << "\n";
 
-    // Save Potion
-    file << "Potion  ";
     for (const auto& potion : potions) {
         if (potion->isVisible()) {
-            file << int(potion->x() - offsetX) / brickSize << " " << int(potion->y() - offsetY) / brickSize << " ";
+            kHistory.potionPos.push_back({ int(potion->x() - offsetX) / brickSize, int(potion->y() - offsetY) / brickSize });
         }
     }
-    file << "\n";
 
-    // Save super potions
-    file << "SuperPotion ";
     for (const auto& superPotion : superPotions) {
         if (superPotion->isVisible()) {
-            file << int(superPotion->x() - offsetX) / brickSize << " " << int(superPotion->y() - offsetY) / brickSize << " ";
+            kHistory.superPotionPos.push_back({ int(superPotion->x() - offsetX) / brickSize, int(superPotion->y() - offsetY) / brickSize });
         }
     }
-    file << "\n";
 
-    file << "Trap  ";
     for (const auto& trap : traps) {
         if (trap->isVisible()) {
-            file << int(trap->x() - offsetX) / brickSize << " " << int(trap->y() - offsetY) / brickSize << " ";
+            kHistory.trapPos.push_back({ int(trap->x() - offsetX) / brickSize, int(trap->y() - offsetY) / brickSize });
         }
     }
 
-    file.close();
+    // Save the History object using the DataHandler
+    mDataHandler->save(kHistory);
 }
+
 
 void GameScene::generatorRandomMap(const QString& kBrickImg, const Level::LevelElement& kLevelElement) {
     MazeGenerator maze(mazeSize.first, mazeSize.second, kLevelElement);  // Create a 20x15 maze
@@ -592,4 +556,9 @@ void GameScene::lose() {
 void GameScene::setHero(Hero* hero) {
     this->hero = hero;
     this->addItem(hero);
+}
+
+
+void GameScene::setDataHanlder(std::shared_ptr<DataHandler> dataHandler) {
+    mDataHandler = dataHandler;
 }

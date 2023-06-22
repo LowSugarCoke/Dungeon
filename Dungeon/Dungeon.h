@@ -13,6 +13,7 @@
 #include "mediaPlayer.h"
 #include "settingScene.h"
 #include "introScene.h"
+#include "dataHandler.h"
 
 
 class Dungeon : public QMainWindow
@@ -47,4 +48,5 @@ private:
     SettingScene* settingScene;
     IntroScene* introScene;
 
+    std::shared_ptr<DataHandler> mDataHandler;
 };

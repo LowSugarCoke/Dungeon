@@ -20,6 +20,7 @@
 Dungeon::Dungeon(QWidget* parent)
     : QMainWindow(parent)
     , hero(new Hero())
+    , mDataHandler(std::make_shared<DataHandler>())
     // Initialize the hero
 {
     ui.setupUi(this);
@@ -39,20 +40,26 @@ Dungeon::Dungeon(QWidget* parent)
     hero->setTrapSound(mediaPlayer->trap);
     hero->setSuperPotionSound(mediaPlayer->superPotion);
     hero->setDrangonSound(mediaPlayer->start);
-
-    scene = new GameScene(this);
-    scene->setHero(hero);
-    sceneView = new GameView(scene, this);
-
-    endingScene = new EndingScene(this);
-    settingScene = new SettingScene(mediaPlayer, this);
-    introScene = new IntroScene(this);
+    hero->setHeroImg(UIResource::kHero);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     this->resize(screenGeometry.width(), screenGeometry.height());
+
+    scene = new GameScene(this);
+    scene->setHero(hero);
+    scene->setSceneImg(UIResource::kSceneImg);
+    scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
+
+    sceneView = new GameView(scene, this);
+    endingScene = new EndingScene(this);
+    settingScene = new SettingScene(mediaPlayer, this);
+    introScene = new IntroScene(this);
+
+
     settingScene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
     settingScene->setSceneImg(UIResource::kMenu);
+
 
     menuScene = new MainMenuScene(this);
     menuScene->setMedia(mediaPlayer);
@@ -67,99 +74,13 @@ Dungeon::Dungeon(QWidget* parent)
 void Dungeon::load() {
     mediaPlayer->mainMenu->stop();
     mediaPlayer->battle->stop();
-    std::string filename = DataResource::kData.toStdString();
-    std::ifstream file(filename);
+    mediaPlayer->battle->play();
 
-    if (!file) {
-        std::cerr << "Unable to open file: " << filename << std::endl;
-        return;
-    }
-
-    History history;
-    // Load maze
-    for (int i = 0; i < 21; i++) {
-        std::string line;
-        std::getline(file, line);
-        std::stringstream ss(line);
-
-        history.maze.push_back(std::vector<int>());
-        std::string cell;
-        while (std::getline(ss, cell, ',')) { // Use ',' as delimiter
-            history.maze.back().push_back(std::stoi(cell));
-        }
-    }
-
-    // Load entities
-    std::string line;
-    while (std::getline(file, line)) {
-        std::istringstream is(line);
-        std::string entity;
-        is >> entity;
-        if (entity == "Level") {
-            is >> history.level;
-        }
-        else if (entity == "Hero") {
-            is >> history.heroPos.first >> history.heroPos.second >> history.heroLife;
-        }
-        else if (entity == "Monster") {
-            int x, y;
-            while (is >> x >> y) {
-                history.monsterPos.push_back({ x, y });
-            }
-        }
-        else if (entity == "MonsterSpeed") {
-            is >> history.monsterSpeed;
-        }
-        else if (entity == "Dragon") {
-            int x, y;
-            while (is >> x >> y) {
-                history.dragonPos.push_back({ x, y });
-            }
-        }
-        else if (entity == "DragonSpeed") {
-            is >> history.dragonSpeed;
-        }
-        else if (entity == "Collection") {
-            int x, y;
-            while (is >> x >> y) {
-                history.collectionPos.push_back({ x, y });
-            }
-        }
-        else if (entity == "Potion") {
-            int x, y;
-            while (is >> x >> y) {
-                history.potionPos.push_back({ x, y });
-            }
-        }
-        else if (entity == "SuperPotion") {
-            int x, y;
-            while (is >> x >> y) {
-                history.superPotionPos.push_back({ x, y });
-            }
-        }
-        else if (entity == "Trap") {
-            int x, y;
-            while (is >> x >> y) {
-                history.trapPos.push_back({ x, y });
-            }
-        }
-    }
-
-    file.close();
-
+    auto history = mDataHandler->load(DataResource::kData.toStdString());
     currentLevel = mLevelData[history.level - 1];
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    this->resize(screenGeometry.width(), screenGeometry.height());
-
-    scene->setSceneRect(0, 0, screenGeometry.width(), screenGeometry.height());
-    scene->setSceneImg(UIResource::kSceneImg);
-    hero->setHeroImg(UIResource::kHero);
     scene->loadData(history);
     sceneView->setScene(scene);
     hero->setFocus();
-    mediaPlayer->battle->play();
 }
 
 void Dungeon::intro() {

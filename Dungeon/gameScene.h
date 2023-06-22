@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <QGraphicsScene>
 
 #include "mazeGenerator.h"
@@ -13,6 +15,7 @@
 #include "superPotion.h"
 #include "dragon.h"
 #include "history.h"
+#include "dataHandler.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsOpacityEffect>
@@ -38,6 +41,7 @@ public:
     void loadData(History history);
     void callLoad();
     void saveData();
+    void setDataHanlder(std::shared_ptr<DataHandler> dataHandler);
 
 private:
     int brickSize = 40;  // Save the size of your maze cells here
@@ -59,4 +63,5 @@ private:
     std::vector<Potion*> potions;
     std::vector<SuperPotion*> superPotions;
     std::vector<std::vector<int>> maze;
+    std::shared_ptr<DataHandler> mDataHandler;
 };
