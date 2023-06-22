@@ -1,10 +1,7 @@
 ﻿#include "brickItem.h"
 
 BrickItem::BrickItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent)
-{
-
-}
+    : QGraphicsPixmapItem(parent) {}
 
 void BrickItem::setPixmap(const QPixmap& kPixmap)
 {
@@ -12,6 +9,5 @@ void BrickItem::setPixmap(const QPixmap& kPixmap)
 }
 
 QRectF BrickItem::boundingRect() const {
-    // Use the pixmap's rectangle as the bounding rectangle
     return pixmap().rect();
 }
