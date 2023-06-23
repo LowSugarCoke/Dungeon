@@ -8,10 +8,8 @@
 
 #pragma once
 
- // Include the QGraphicsView class from the Qt library
 #include <QGraphicsView>
 
-// The GameView class is a subclass of QGraphicsView and is used to visualize the game scene.
 class GameView : public QGraphicsView {
 public:
 
@@ -31,5 +29,12 @@ protected:
      */
     void resizeEvent(QResizeEvent* event) override;
 
+    /**
+     * @brief Overridden from QGraphicsView. This method is called whenever the mouse button is pressed over the GameView.
+     * If the mouse press event is on a QGraphicsPixmapItem or the background, the event is ignored and the focus is not changed.
+     * Otherwise, the event is passed to the parent QGraphicsView for normal processing.
+     *
+     * @param event A pointer to a QMouseEvent object representing the mouse press event.
+     */
     void mousePressEvent(QMouseEvent* event);
 };
