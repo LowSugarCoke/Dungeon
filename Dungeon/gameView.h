@@ -30,4 +30,6 @@ protected:
      * @param event A pointer to a QResizeEvent object representing the resize event.
      */
     void resizeEvent(QResizeEvent* event) override;
+
+    void mousePressEvent(QMouseEvent* event);
 };

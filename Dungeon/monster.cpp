@@ -13,7 +13,7 @@
 
 Monster::Monster()
     : QGraphicsPixmapItem() {
-    setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
 }
 
 void Monster::setMonsterImg(const QString& kMonsterImg) {

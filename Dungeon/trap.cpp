@@ -3,7 +3,9 @@
 #include <QPixmap>
 
 Trap::Trap()
-    : QGraphicsPixmapItem() {}
+    : QGraphicsPixmapItem() {
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
+}
 
 void Trap::setImg(const QString& kTrapImg) {
     QPixmap pixmap(kTrapImg);

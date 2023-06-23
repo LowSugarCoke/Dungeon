@@ -1,7 +1,9 @@
 ﻿#include "brickItem.h"
 
 BrickItem::BrickItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent) {}
+    : QGraphicsPixmapItem(parent) {
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
+}
 
 void BrickItem::setPixmap(const QPixmap& kPixmap)
 {

@@ -4,7 +4,9 @@
 #include <QPixmap>
 
 SuperPotion::SuperPotion()
-    : QGraphicsPixmapItem() {}
+    : QGraphicsPixmapItem() {
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
+}
 
 void SuperPotion::setImg(const QString& kPotionImg) {
     QPixmap pixmap(kPotionImg);  // Change this to your image path

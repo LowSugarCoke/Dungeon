@@ -3,7 +3,9 @@
 #include <QPixmap>
 
 Potion::Potion()
-    : QGraphicsPixmapItem() {}
+    : QGraphicsPixmapItem() {
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
+}
 
 void Potion::setImg(const QString& kPotionImg) {
     QPixmap pixmap(kPotionImg);

@@ -5,7 +5,9 @@
 #include <QPixmap>
 
 Collection::Collection()
-    : QGraphicsPixmapItem() {}
+    : QGraphicsPixmapItem() {
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
+}
 
 void Collection::setImg(const QString& kCollectionImg) {
     QPixmap pixmap(kCollectionImg);

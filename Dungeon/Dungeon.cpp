@@ -147,6 +147,7 @@ void Dungeon::battle() {
     mGameScene->generatorRandomMap(UIResource::kBrickImg, mCurrentLevel);
 
     QTimer::singleShot(4000, [&]() {mSceneView->setScene(mGameScene);  mHero->setFocus();
+
     mMediaPlayer->battle->play();  });
 }
 

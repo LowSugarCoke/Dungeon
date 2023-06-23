@@ -18,7 +18,7 @@ Dragon::Dragon(Hero* mHero)
     : QGraphicsPixmapItem(),  // Initialize the QGraphicsPixmapItem base class
     mHero(mHero),  // Initialize mHero with the provided Hero pointer
     mSpeedMultiplier(1.0f) {  // Initialize the speed multiplier
-    setFlag(QGraphicsItem::ItemIsFocusable, true);  // Set item to be focusable
+    this->setFlag(QGraphicsItem::ItemIsFocusable, false);
     mBoundary = QRectF(140, 70, 1400, 700);  // Set the boundary within which the dragon can move
     QPixmap pixmap(UIResource::kExclamationMark);  // Load the pixmap for the exclamation mark
     mExclamationMark = new QGraphicsPixmapItem(pixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio), this);  // Initialize the exclamation mark item
